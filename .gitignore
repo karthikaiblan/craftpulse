@@ -1,0 +1,4 @@
+# Ignore binaries and temporary logs
+cloudflared.exe
+*.log
+chrome_check.txt
