@@ -1,0 +1,3954 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>CraftPulse · Neighbourhood Makers & Live Craft Queue</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&display=swap" rel="stylesheet">
+  <style>
+    /* ==========================================================================
+       CRAFTPULSE DESIGN SYSTEM (Inspired by Smart Commerce Design Guide)
+       Colors: Cream, Forest Green, Craft Orange, Sand, Charcoal Ink
+       ========================================================================== */
+    :root {
+      --bg: #FDFBF5;
+      --paper: #FFFFFF;
+      --card-bg: #FFFFFF;
+      --ink: #1F2D2A;
+      --ink-muted: #56625E;
+      --line: #E4DCC8;
+      --line-subtle: #F0EAE1;
+      --forest: #0F5A45;
+      --forest-light: #E3EFE8;
+      --forest-hover: #0a4031;
+      --orange: #E8743B;
+      --orange-light: #FBE9D8;
+      --orange-hover: #cb5e27;
+      --sand: #ECD9B0;
+      --sand-light: #FAF4E6;
+      --coral: #C4551F;
+      --red: #C8402E;
+      --red-light: #FDEDE9;
+      --shadow-sm: 0 2px 8px rgba(31, 45, 42, 0.05);
+      --shadow: 0 10px 30px rgba(31, 45, 42, 0.07);
+      --shadow-lg: 0 20px 45px rgba(31, 45, 42, 0.12);
+      --radius-sm: 8px;
+      --radius: 14px;
+      --radius-lg: 20px;
+      --radius-pill: 9999px;
+      --font-serif: 'Fraunces', Georgia, serif;
+      --font-sans: 'DM Sans', system-ui, -apple-system, sans-serif;
+      --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      color-scheme: light;
+    }
+
+    html[data-theme="dark"] {
+      --bg: #14201C;
+      --paper: #1B2A25;
+      --card-bg: #1F2F29;
+      --ink: #F1EDE0;
+      --ink-muted: #A9B3AE;
+      --line: #2E3F38;
+      --line-subtle: #24342E;
+      --forest: #4FB08A;
+      --forest-light: #1F3D33;
+      --forest-hover: #63cfa5;
+      --orange: #F0925F;
+      --orange-light: #3D2A1C;
+      --orange-hover: #ffa877;
+      --sand: #6E5F43;
+      --sand-light: #2A261C;
+      --coral: #F0925F;
+      --red: #EF6B5B;
+      --red-light: #3A1E1B;
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      --shadow-lg: 0 20px 45px rgba(0, 0, 0, 0.5);
+      color-scheme: dark;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--font-sans);
+      font-size: 15px;
+      line-height: 1.55;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button, input, select, textarea { font-family: inherit; font-size: inherit; color: inherit; }
+    button { cursor: pointer; border: 0; background: transparent; }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; object-fit: cover; }
+    .serif { font-family: var(--font-serif); }
+
+    /* ==========================================================================
+       TOP NAVIGATION BAR - ALWAYS VISIBLE ACROSS ALL SCREEN SIZES
+       ========================================================================== */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(253, 251, 245, 0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+      padding: 10px 4vw;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: background 0.3s ease;
+    }
+    html[data-theme="dark"] .topbar {
+      background: rgba(20, 32, 28, 0.95);
+    }
+    .topbar-main-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+    }
+    .brand-logo-mark {
+      width: 42px;
+      height: 42px;
+      background: var(--forest);
+      color: #FFF;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 4px 12px rgba(15, 90, 69, 0.25);
+      transition: transform 0.2s ease;
+      flex-shrink: 0;
+    }
+    .brand-wrap:hover .brand-logo-mark { transform: scale(1.05) rotate(-3deg); }
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+    }
+    .brand-title {
+      font-family: var(--font-serif);
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+    .brand-title span { color: var(--orange); }
+    .brand-sub {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--ink-muted);
+      font-weight: 600;
+      margin-top: 3px;
+    }
+
+    /* ALL NAVIGATION TABS - NEVER HIDDEN */
+    .nav-links-scroll {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      overflow-x: auto;
+      padding: 4px 2px;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+      max-width: 100%;
+    }
+    .nav-links-scroll::-webkit-scrollbar { display: none; }
+    
+    .nav-btn {
+      padding: 8px 15px;
+      border-radius: var(--radius-pill);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink-muted);
+      background: var(--sand-light);
+      border: 1px solid var(--line);
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .nav-btn:hover { color: var(--ink); border-color: var(--forest); }
+    .nav-btn.active {
+      background: var(--forest);
+      color: #FFF;
+      border-color: var(--forest);
+      box-shadow: var(--shadow-sm);
+    }
+    html[data-theme="dark"] .nav-btn.active {
+      color: #0b1f18;
+      background: var(--forest);
+    }
+
+    .top-tools {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .sync-pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--forest-light);
+      color: var(--forest);
+      padding: 6px 12px;
+      border-radius: var(--radius-pill);
+      font-size: 11px;
+      font-weight: 600;
+      border: 1px solid rgba(15, 90, 69, 0.15);
+      white-space: nowrap;
+    }
+    .sync-dot {
+      width: 7px;
+      height: 7px;
+      background: var(--forest);
+      border-radius: 50%;
+      animation: pulse-dot 2s infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.3; transform: scale(0.7); }
+    }
+
+    .tool-btn {
+      padding: 7px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      background: var(--paper);
+      color: var(--ink);
+      font-size: 12px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: var(--transition);
+      white-space: nowrap;
+    }
+    .tool-btn:hover {
+      border-color: var(--forest);
+      background: var(--sand-light);
+    }
+
+    /* QUICK ROLE & SUB-NAVIGATION BAR */
+    .role-banner-bar {
+      background: var(--sand-light);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 8px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 12px;
+      margin-top: 2px;
+    }
+    .role-badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 700;
+      color: var(--forest);
+      background: var(--paper);
+      padding: 4px 12px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--line);
+    }
+
+    /* ==========================================================================
+       CONTAINER & LAYOUT
+       ========================================================================== */
+    .wrap {
+      max-width: 1240px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 24px 20px 80px;
+      flex: 1;
+    }
+
+    /* ==========================================================================
+       HERO BANNER
+       ========================================================================== */
+    .hero {
+      background: linear-gradient(135deg, #0F5A45 0%, #173e33 60%, #1f2d2a 100%);
+      color: #FFF;
+      border-radius: var(--radius-lg);
+      padding: 38px 40px;
+      margin-bottom: 28px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .hero-glow {
+      position: absolute;
+      top: -80px;
+      right: -80px;
+      width: 320px;
+      height: 320px;
+      background: radial-gradient(circle, rgba(232, 116, 59, 0.45) 0%, rgba(232, 116, 59, 0) 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .hero-watermark {
+      position: absolute;
+      right: 4%;
+      bottom: -15px;
+      font-size: 160px;
+      opacity: 0.08;
+      font-family: var(--font-serif);
+      pointer-events: none;
+      user-select: none;
+    }
+    .hero-kicker {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--sand);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .hero h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(30px, 4.2vw, 44px);
+      font-weight: 500;
+      line-height: 1.15;
+      margin-bottom: 14px;
+      max-width: 740px;
+    }
+    .hero p {
+      color: #E2E8E5;
+      font-size: 15px;
+      max-width: 620px;
+      line-height: 1.6;
+      margin-bottom: 22px;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 600;
+      transition: var(--transition);
+      white-space: nowrap;
+    }
+    .btn-primary {
+      background: var(--forest);
+      color: #FFF;
+      box-shadow: 0 4px 14px rgba(15, 90, 69, 0.25);
+    }
+    .btn-primary:hover {
+      background: var(--forest-hover);
+      transform: translateY(-1px);
+    }
+    .btn-orange {
+      background: var(--orange);
+      color: #FFF;
+      box-shadow: 0 4px 14px rgba(232, 116, 59, 0.25);
+    }
+    .btn-orange:hover {
+      background: var(--orange-hover);
+      transform: translateY(-1px);
+    }
+    .btn-white {
+      background: #FFF;
+      color: #0F5A45;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+    }
+    .btn-white:hover {
+      background: #F8F5EE;
+      transform: translateY(-1px);
+    }
+    .btn-outline {
+      border: 1px solid var(--line);
+      background: var(--paper);
+      color: var(--ink);
+    }
+    .btn-outline:hover {
+      border-color: var(--forest);
+      background: var(--sand-light);
+    }
+    .btn-soft {
+      background: var(--forest-light);
+      color: var(--forest);
+    }
+    .btn-soft:hover {
+      background: rgba(15, 90, 69, 0.2);
+    }
+    .btn-sm {
+      padding: 7px 13px;
+      font-size: 12px;
+      border-radius: 9px;
+    }
+    .btn-coral-soft {
+      background: var(--red-light);
+      color: var(--red);
+    }
+    .btn-coral-soft:hover {
+      background: rgba(200, 64, 46, 0.2);
+    }
+
+    /* ==========================================================================
+       SECTION HEADERS & TOOLBAR CONTROLS
+       ========================================================================== */
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .section-head h2 {
+      font-family: var(--font-serif);
+      font-size: 26px;
+      font-weight: 500;
+      color: var(--ink);
+      line-height: 1.2;
+    }
+    .section-head p {
+      font-size: 13px;
+      color: var(--ink-muted);
+      margin-top: 4px;
+    }
+
+    /* Controls Bar */
+    .controls-bar {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+    .filter-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .filter-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--ink-muted);
+      min-width: 90px;
+    }
+    .chips-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      flex: 1;
+    }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 14px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--line);
+      background: var(--bg);
+      color: var(--ink-muted);
+      font-size: 12px;
+      font-weight: 500;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+    .chip:hover {
+      border-color: var(--forest);
+      color: var(--ink);
+    }
+    .chip.active {
+      background: var(--forest);
+      border-color: var(--forest);
+      color: #FFF;
+      font-weight: 600;
+    }
+    .chip-logo {
+      width: 16px;
+      height: 16px;
+      display: grid;
+      place-items: center;
+    }
+    .chip-logo svg {
+      width: 100%;
+      height: 100%;
+      fill: none;
+      stroke: currentColor;
+    }
+
+    /* Rate slider & Search row */
+    .search-rate-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      padding-top: 12px;
+      border-top: 1px solid var(--line-subtle);
+    }
+    .search-input-wrap {
+      position: relative;
+      flex: 1;
+      min-width: 200px;
+    }
+    .search-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--ink-muted);
+      pointer-events: none;
+    }
+    .search-input {
+      width: 100%;
+      padding: 9px 14px 9px 38px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-pill);
+      background: var(--bg);
+      color: var(--ink);
+      font-size: 13px;
+      transition: var(--transition);
+    }
+    .search-input:focus {
+      outline: none;
+      border-color: var(--forest);
+      background: var(--paper);
+    }
+    .rate-slider-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      color: var(--ink-muted);
+      white-space: nowrap;
+    }
+    .rate-slider {
+      accent-color: var(--forest);
+      cursor: pointer;
+    }
+    .sort-select {
+      padding: 8px 14px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--bg);
+      color: var(--ink);
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    /* ==========================================================================
+       MAKER CARDS GRID
+       ========================================================================== */
+    .maker-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 22px;
+    }
+    .maker-card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+    .maker-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow);
+      border-color: rgba(15, 90, 69, 0.3);
+    }
+    .maker-cover {
+      height: 165px;
+      position: relative;
+      background: #ECE5D8;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .maker-cover-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+    .maker-card:hover .maker-cover-img {
+      transform: scale(1.04);
+    }
+    .maker-cover-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.05) 50%, rgba(0,0,0,0.7) 100%);
+    }
+
+    .card-top-badges {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      right: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 2;
+    }
+    .craft-tag {
+      background: rgba(255, 255, 255, 0.95);
+      color: var(--forest);
+      padding: 4px 10px;
+      border-radius: var(--radius-pill);
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .save-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.9);
+      display: grid;
+      place-items: center;
+      color: #A93F12;
+      font-size: 16px;
+      transition: var(--transition);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .save-btn:hover {
+      transform: scale(1.1);
+      background: #FFF;
+    }
+
+    .maker-logo-wrap {
+      position: absolute;
+      bottom: -22px;
+      left: 18px;
+      z-index: 3;
+      display: flex;
+      align-items: flex-end;
+      gap: 10px;
+    }
+    .maker-logo-badge {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      background: var(--paper);
+      border: 3px solid var(--paper);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+    }
+    .maker-logo-badge svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .maker-body {
+      padding: 30px 18px 18px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .maker-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 4px;
+    }
+    .maker-name {
+      font-family: var(--font-serif);
+      font-size: 19px;
+      font-weight: 600;
+      line-height: 1.25;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .kyc-verified-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      background: #E3EFE8;
+      color: #0F5A45;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: var(--radius-pill);
+      letter-spacing: 0.04em;
+    }
+    html[data-theme="dark"] .kyc-verified-badge {
+      background: #1F3D33;
+      color: #7FD6B3;
+    }
+    .rating-badge {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      white-space: nowrap;
+    }
+    .rating-badge svg { fill: #E8743B; }
+    .maker-desc {
+      font-size: 13px;
+      color: var(--ink-muted);
+      line-height: 1.45;
+      margin-bottom: 14px;
+    }
+
+    .maker-timing-bar {
+      background: var(--sand-light);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 10px 12px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 14px;
+      font-size: 11px;
+    }
+    .maker-timing-bar > div span {
+      display: block;
+      color: var(--ink-muted);
+      font-size: 9px;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      margin-bottom: 2px;
+    }
+    .maker-timing-bar > div b {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink);
+    }
+    .timing-highlight {
+      color: var(--orange) !important;
+    }
+
+    .card-products-preview {
+      margin-bottom: 14px;
+    }
+    .preview-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--ink-muted);
+      margin-bottom: 6px;
+    }
+    .preview-chips {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 2px;
+      scrollbar-width: none;
+    }
+    .preview-chips::-webkit-scrollbar { display: none; }
+    .product-mini-chip {
+      background: var(--bg);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 4px 8px;
+      font-size: 11px;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .product-mini-chip b { color: var(--forest); }
+
+    .card-footer {
+      display: flex;
+      gap: 8px;
+      margin-top: auto;
+      padding-top: 12px;
+      border-top: 1px solid var(--line-subtle);
+    }
+    .card-footer .btn { flex: 1; }
+
+    /* ==========================================================================
+       MAP RADAR VIEW SECTION
+       ========================================================================== */
+    .map-container {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 18px;
+      margin-top: 10px;
+    }
+    .map-canvas {
+      min-height: 480px;
+      background-color: #E3ECE4;
+      background-image:
+        radial-gradient(#CBD8CC 15%, transparent 16%),
+        linear-gradient(45deg, rgba(255,255,255,0.4) 25%, transparent 25%),
+        linear-gradient(-45deg, rgba(255,255,255,0.4) 25%, transparent 25%);
+      background-size: 60px 60px, 120px 120px, 120px 120px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      position: relative;
+      overflow: hidden;
+      box-shadow: inset 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .map-badge-city {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--forest);
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      z-index: 2;
+    }
+    .map-user-pin {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 18px;
+      height: 18px;
+      background: var(--orange);
+      border: 3px solid #FFF;
+      border-radius: 50%;
+      box-shadow: 0 0 0 8px rgba(232, 116, 59, 0.25);
+      z-index: 2;
+    }
+    .map-pin-btn {
+      position: absolute;
+      transform: translate(-50%, -100%);
+      background: var(--forest);
+      color: #FFF;
+      border-radius: 16px 16px 16px 2px;
+      padding: 7px 11px;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+      transition: var(--transition);
+      cursor: pointer;
+      z-index: 3;
+    }
+    .map-pin-btn:hover, .map-pin-btn.active {
+      background: var(--orange);
+      transform: translate(-50%, -108%) scale(1.1);
+      z-index: 5;
+    }
+    .map-pin-badge {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #FFF;
+      color: #0F5A45;
+      display: grid;
+      place-items: center;
+      font-size: 11px;
+    }
+    .map-sidebar {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* ==========================================================================
+       MAKER DETAIL & PRODUCT SHOWCASE
+       ========================================================================== */
+    .maker-detail-view {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .maker-banner-hero {
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1px solid var(--line);
+      background: var(--paper);
+      box-shadow: var(--shadow);
+    }
+    .maker-banner-img {
+      height: 260px;
+      width: 100%;
+      object-fit: cover;
+    }
+    .maker-banner-content {
+      padding: 24px 30px;
+      position: relative;
+    }
+    .banner-avatar {
+      position: absolute;
+      top: -45px;
+      left: 30px;
+      width: 84px;
+      height: 84px;
+      border-radius: 20px;
+      background: var(--paper);
+      border: 4px solid var(--paper);
+      box-shadow: var(--shadow);
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+    }
+    .banner-avatar svg, .banner-avatar img {
+      width: 100%;
+      height: 100%;
+    }
+    .banner-main {
+      margin-left: 100px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .banner-title-area h1 {
+      font-family: var(--font-serif);
+      font-size: 30px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .banner-meta {
+      display: flex;
+      gap: 16px;
+      color: var(--ink-muted);
+      font-size: 13px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+    .banner-meta a {
+      color: var(--forest);
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* Product Grid */
+    .products-section-title {
+      font-family: var(--font-serif);
+      font-size: 24px;
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      gap: 18px;
+      margin-top: 14px;
+    }
+    .product-card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      transition: var(--transition);
+    }
+    .product-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+      border-color: var(--forest);
+    }
+    .product-img-wrap {
+      height: 160px;
+      position: relative;
+      background: var(--sand-light);
+      overflow: hidden;
+    }
+    .product-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+    .product-card:hover .product-img {
+      transform: scale(1.05);
+    }
+    .product-time-tag {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      background: rgba(0, 0, 0, 0.75);
+      color: #FFF;
+      font-size: 10px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: var(--radius-pill);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .product-body {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .product-body h3 {
+      font-family: var(--font-serif);
+      font-size: 17px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .product-desc {
+      font-size: 12px;
+      color: var(--ink-muted);
+      line-height: 1.45;
+      margin-bottom: 14px;
+      flex: 1;
+    }
+    .product-foot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 12px;
+      border-top: 1px solid var(--line-subtle);
+    }
+    .product-price {
+      font-family: var(--font-serif);
+      font-size: 19px;
+      font-weight: 600;
+      color: var(--forest);
+    }
+
+    /* ==========================================================================
+       QUEUE & WORKBENCH ANIMATION
+       ========================================================================== */
+    .workbench-pipeline {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 24px;
+    }
+    .pipeline-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .pipeline-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .pipeline-badge {
+      background: var(--orange-light);
+      color: var(--orange);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: var(--radius-pill);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .workbench-slots {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+    .workbench-slot {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 16px;
+      background: var(--bg);
+      position: relative;
+    }
+    .slot-active {
+      border-color: var(--orange);
+      background: var(--sand-light);
+      box-shadow: 0 4px 16px rgba(232, 116, 59, 0.15);
+    }
+    .slot-kicker {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--ink-muted);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .slot-title {
+      font-family: var(--font-serif);
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+    .slot-detail {
+      font-size: 11px;
+      color: var(--ink-muted);
+    }
+
+    .craft-anim-pulse {
+      display: inline-block;
+      animation: tool-stitch 1.8s infinite ease-in-out;
+    }
+    @keyframes tool-stitch {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      25% { transform: translateY(-4px) rotate(-8deg); }
+      75% { transform: translateY(2px) rotate(6deg); }
+    }
+
+    .tracker-track-wrap {
+      margin: 14px 0 10px;
+    }
+    .tracker-bar-bg {
+      height: 8px;
+      background: var(--line);
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+    }
+    .tracker-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--forest) 0%, var(--orange) 100%);
+      border-radius: 4px;
+      transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .milestones-steps {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 4px;
+      margin-top: 10px;
+      text-align: center;
+    }
+    .milestone-step {
+      font-size: 10px;
+      color: var(--ink-muted);
+      font-weight: 500;
+      position: relative;
+    }
+    .milestone-step.done {
+      color: var(--forest);
+      font-weight: 700;
+    }
+    .milestone-step.current {
+      color: var(--orange);
+      font-weight: 700;
+      animation: pulse-step 1.5s infinite;
+    }
+    @keyframes pulse-step {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .countdown-box {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--sand-light);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 12px;
+      margin-top: 12px;
+    }
+    .countdown-timer-val {
+      font-family: var(--font-serif);
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--orange);
+      letter-spacing: 0.05em;
+    }
+
+    /* ==========================================================================
+       MAKER STUDIO & ANALYTICS
+       ========================================================================== */
+    .studio-dashboard {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 14px;
+    }
+    .stat-card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: var(--shadow-sm);
+    }
+    .stat-card span {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--ink-muted);
+    }
+    .stat-card b {
+      display: block;
+      font-family: var(--font-serif);
+      font-size: 28px;
+      font-weight: 600;
+      color: var(--ink);
+      margin: 6px 0 2px;
+    }
+    .stat-card small {
+      font-size: 11px;
+      color: var(--ink-muted);
+    }
+
+    /* Demand & Sales Analytics Chart */
+    .analytics-panel {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 16px;
+      margin-top: 10px;
+    }
+    .chart-box {
+      height: 130px;
+      display: flex;
+      align-items: flex-end;
+      gap: 12px;
+      padding: 14px 6px 4px;
+      border-bottom: 1px solid var(--line);
+    }
+    .bar-col {
+      flex: 1;
+      text-align: center;
+      font-size: 10px;
+      color: var(--ink-muted);
+    }
+    .bar-col-fill {
+      display: block;
+      background: linear-gradient(180deg, var(--forest-hover), var(--forest));
+      border-radius: 6px 6px 2px 2px;
+      margin: 0 auto 6px;
+      width: min(28px, 80%);
+      min-height: 6px;
+      transition: height 0.4s ease;
+    }
+    .metric-line {
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px solid var(--line);
+      padding: 10px 0;
+      font-size: 13px;
+    }
+
+    .kyc-verification-box {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: var(--shadow-sm);
+    }
+    .kyc-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .kyc-checklist {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .kyc-item {
+      background: var(--bg);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 12px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .kyc-check-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--forest-light);
+      color: var(--forest);
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+
+    /* Image upload & compression demo */
+    .upload-zone {
+      border: 2px dashed var(--line);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      background: var(--bg);
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+    }
+    .upload-zone:hover {
+      border-color: var(--forest);
+      background: var(--sand-light);
+    }
+    .upload-zone input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+    .upload-preview {
+      width: 90px;
+      height: 90px;
+      border-radius: 10px;
+      object-fit: cover;
+      margin: 8px auto 0;
+      display: none;
+      border: 1px solid var(--line);
+    }
+
+    /* ==========================================================================
+       MODALS & DIALOGS
+       ========================================================================== */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 30, 24, 0.7);
+      backdrop-filter: blur(6px);
+      z-index: 100;
+      display: none;
+      place-items: center;
+      padding: 20px;
+      overflow-y: auto;
+    }
+    .modal-backdrop.show {
+      display: grid;
+    }
+    .modal-window {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 580px;
+      padding: 28px;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 20px;
+    }
+    .modal-head h2 {
+      font-family: var(--font-serif);
+      font-size: 24px;
+      font-weight: 500;
+    }
+    .modal-close {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--bg);
+      display: grid;
+      place-items: center;
+      color: var(--ink-muted);
+      font-size: 20px;
+      transition: var(--transition);
+    }
+    .modal-close:hover {
+      background: var(--red-light);
+      color: var(--red);
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--ink);
+    }
+    .form-control {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--bg);
+      color: var(--ink);
+      font-size: 13px;
+    }
+    .form-control:focus {
+      outline: none;
+      border-color: var(--forest);
+      background: var(--paper);
+    }
+    textarea.form-control {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    /* Toast Notification */
+    .toast-pill {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translate(-50%, 40px);
+      opacity: 0;
+      background: #1F2D2A;
+      color: #FFF;
+      padding: 12px 22px;
+      border-radius: var(--radius-pill);
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: var(--shadow-lg);
+      z-index: 200;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      pointer-events: none;
+    }
+    .toast-pill.show {
+      transform: translate(-50%, 0);
+      opacity: 1;
+    }
+
+    /* UI Design Guide Card Layouts */
+    .guide-card-row {
+      display: grid;
+      grid-template-columns: minmax(0, 520px) 1fr;
+      gap: 24px;
+      padding: 24px 0;
+      border-top: 1px solid var(--line);
+      align-items: center;
+    }
+    .guide-pair {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .phone-mock {
+      background: #FDFBF5;
+      border: 6px solid #1F2D2A;
+      border-radius: 26px;
+      padding: 14px 12px;
+      min-height: 400px;
+      font-size: 11px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      color: #1F2D2A;
+    }
+    .phone-mock.dark-mock {
+      background: #14201C;
+      border-color: #0B1210;
+      color: #F1EDE0;
+    }
+    @media (max-width: 860px) {
+      .guide-card-row { grid-template-columns: 1fr; }
+      .analytics-panel { grid-template-columns: 1fr; }
+      .map-container { grid-template-columns: 1fr; }
+      .workbench-slots { grid-template-columns: 1fr; }
+      .banner-main { margin-left: 0; margin-top: 40px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========================================================================
+       TOP NAVIGATION BAR - ALL OPTIONS PROMINENT & VISIBLE
+       ======================================================================== -->
+  <header class="topbar">
+    <div class="topbar-main-row">
+      <div class="brand-wrap" onclick="navigate('discover')">
+        <div class="brand-logo-mark">
+          <!-- Interwoven craft loom & needle motif -->
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="6" cy="12" r="3"/>
+            <circle cx="18" cy="12" r="3"/>
+            <path d="M9 12h6"/>
+            <path d="M12 6c0 3.3 2.7 6 6 6"/>
+            <path d="M12 18c0-3.3-2.7-6-6-6"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <div class="brand-title">Craft<span>Pulse</span></div>
+          <div class="brand-sub">Neighbourhood Maker Network</div>
+        </div>
+      </div>
+
+      <!-- ALL MAIN NAVIGATION OPTIONS - ALWAYS ACCESSIBLE -->
+      <nav class="nav-links-scroll">
+        <button class="nav-btn active" data-page="discover" onclick="navigate('discover')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+          Explore Makers
+        </button>
+        <button class="nav-btn" data-page="orders" onclick="navigate('orders')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg>
+          My Orders <span id="orders-badge" style="background:var(--orange);color:#FFF;padding:1px 6px;border-radius:10px;font-size:10px;display:none;">0</span>
+        </button>
+        <button class="nav-btn" data-page="studio" onclick="navigate('studio')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+          Maker Studio
+        </button>
+        <button class="nav-btn" data-page="guide" onclick="navigate('guide')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+          UI Design Guide (15 Screens)
+        </button>
+        <button class="nav-btn" data-page="register" onclick="navigate('register')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+          Register Shop
+        </button>
+        <button class="nav-btn" data-page="invoice" onclick="navigate('invoice')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          Invoice &amp; Pay
+        </button>
+        <button class="nav-btn" data-page="profile" onclick="navigate('profile')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Profile &amp; KYC
+        </button>
+      </nav>
+
+      <div class="top-tools">
+        <div class="sync-pill" title="Cross-tab live storage sync via BroadcastChannel">
+          <div class="sync-dot"></div>
+          <span>Live Sync</span>
+        </div>
+
+        <!-- Database Manager Button (Item 8) -->
+        <button class="tool-btn" onclick="openDatabaseModal()" title="Inspect & Export Database">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+          <span>Database</span>
+        </button>
+
+        <!-- Theme Switcher -->
+        <button class="tool-btn" id="theme-toggle" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+          <span id="theme-icon">☾</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- QUICK ROLE SWITCHER & ACCESSIBILITY BAR -->
+    <div class="role-banner-bar">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+        <span style="font-weight:700;color:var(--ink-muted);">CURRENT ROLE:</span>
+        <span class="role-badge-pill" id="current-role-badge">
+          🧑 Customer Mode · Priya Raman
+        </span>
+        <button class="btn btn-outline btn-sm" onclick="quickSwitchRole()" style="padding:4px 10px;">
+          ⇄ Switch Role (Customer / Maker)
+        </button>
+      </div>
+
+      <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+        <span style="color:var(--ink-muted);font-size:11px;">Quick Options:</span>
+        <button class="btn btn-soft btn-sm" onclick="openRoleChooserModal()" style="padding:4px 9px;">
+          Choose Role (C1)
+        </button>
+        <button class="btn btn-soft btn-sm" onclick="navigate('register')" style="padding:4px 9px;">
+          Register as Maker (M1)
+        </button>
+        <button class="btn btn-soft btn-sm" onclick="navigate('guide')" style="padding:4px 9px;">
+          Design Guide (C1-S9)
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================================
+       MAIN APP CONTAINER
+       ======================================================================== -->
+  <main class="wrap" id="app-view">
+    <!-- Dynamic page screen renders here -->
+  </main>
+
+  <!-- ========================================================================
+       MODALS CONTAINER
+       ======================================================================== -->
+  <div class="modal-backdrop" id="modal-container" onclick="if(event.target===this)closeModal()">
+    <div class="modal-window" id="modal-content">
+      <!-- Dynamic modal renders here -->
+    </div>
+  </div>
+
+  <!-- Toast Element -->
+  <div class="toast-pill" id="toast">
+    <span id="toast-icon">✓</span>
+    <span id="toast-text">Update saved</span>
+  </div>
+
+  <!-- Hidden Canvas for In-Browser Image Resizing & Compression (Item 4) -->
+  <canvas id="img-compress-canvas" style="display:none;"></canvas>
+
+  <script>
+    /* ==========================================================================
+       SVG CATEGORY LOGOS (Item 5: General Maker Types)
+       ========================================================================== */
+    const CATEGORY_LOGOS = {
+      'Tailoring': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>`,
+      'Footwear': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 14c0 3 2 5 5 5h11a2 2 0 0 0 2-2v-4c0-2-2-3-4-3h-4l-3-4H4a1 1 0 0 0-1 1v7z"/><line x1="3" y1="19" x2="21" y2="19"/></svg>`,
+      'Cakes': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8"/><path d="M4 16s2-1 4-1 4 1 4 1 2-1 4-1 4 1 4 1"/><path d="M2 21h20"/><circle cx="12" cy="7" r="2"/></svg>`,
+      'Ceramics': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 21h10"/><path d="M12 21V8"/><path d="M6 8c0-3.3 2.7-5 6-5s6 1.7 6 5c0 4-3 6-6 6s-6-2-6-6z"/></svg>`,
+      'Jewelry': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="6 3 18 3 22 9 12 22 2 9 6 3"/><line x1="12" y1="22" x2="12" y2="9"/><line x1="2" y1="9" x2="22" y2="9"/></svg>`,
+      'Woodwork': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>`,
+      'Other': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`
+    };
+
+    /* ==========================================================================
+       SVG INDIVIDUAL MAKER LOGOS (Item 6: Unique Maker Logos)
+       ========================================================================== */
+    const MAKER_BRAND_LOGOS = {
+      'needle': `<svg viewBox="0 0 60 60"><rect width="60" height="60" rx="14" fill="#0F5A45"/><circle cx="30" cy="30" r="22" fill="none" stroke="#ECD9B0" stroke-width="2" stroke-dasharray="3,3"/><path d="M20 40 L40 20 M38 18 L42 22 M20 40 L24 40 L20 36 Z" stroke="#FFF" stroke-width="2.5" fill="#ECD9B0"/><circle cx="36" cy="24" r="2" fill="#FFF"/></svg>`,
+      'sole': `<svg viewBox="0 0 60 60"><rect width="60" height="60" rx="14" fill="#C4551F"/><circle cx="30" cy="30" r="22" fill="#FAF4E6"/><path d="M22 34 C22 26 26 22 34 22 C38 22 40 25 40 30 C40 35 34 38 26 38 Z" fill="#C4551F"/><circle cx="30" cy="30" r="2" fill="#FFF"/></svg>`,
+      'butter': `<svg viewBox="0 0 60 60"><rect width="60" height="60" rx="14" fill="#F8E4E9"/><circle cx="30" cy="30" r="20" fill="#FFF"/><path d="M30 18 C33 24 38 25 38 30 C38 35 33 38 30 38 C27 38 22 35 22 30 C22 25 27 24 30 18 Z" fill="#E8743B"/><circle cx="30" cy="30" r="3" fill="#FFF"/></svg>`,
+      'mend': `<svg viewBox="0 0 60 60"><rect width="60" height="60" rx="14" fill="#1F3D33"/><path d="M15 15 L45 45 M15 45 L45 15 M30 10 L30 50 M10 30 L50 30" stroke="#7FD6B3" stroke-width="2" stroke-dasharray="4,4"/><circle cx="30" cy="30" r="10" fill="#1F3D33" stroke="#FFF" stroke-width="2"/></svg>`,
+      'clay': `<svg viewBox="0 0 60 60"><rect width="60" height="60" rx="14" fill="#D27D56"/><ellipse cx="30" cy="42" rx="16" ry="6" fill="#A8522E"/><path d="M22 42 C20 30 24 24 28 20 L32 20 C36 24 40 30 38 42 Z" fill="#FDFBF5"/><circle cx="30" cy="24" r="2" fill="#D27D56"/></svg>`,
+      'aura': `<svg viewBox="0 0 60 60"><rect width="60" height="60" rx="14" fill="#1F2D2A"/><polygon points="30,14 42,24 38,44 22,44 18,24" fill="none" stroke="#ECD9B0" stroke-width="2.5"/><polygon points="30,18 38,26 35,40 25,40 22,26" fill="#4FB08A"/></svg>`
+    };
+
+    /* ==========================================================================
+       FALLBACK SVG AVATARS (Item 4: Robust Picture Fallback System)
+       ========================================================================== */
+    function handleImgError(img, craft) {
+      img.onerror = null;
+      const bg = craft === 'Tailoring' ? '%23E3EFE8' : craft === 'Footwear' ? '%23FBE9D8' : craft === 'Cakes' ? '%23F8E4E9' : '%23ECD9B0';
+      const text = encodeURIComponent(craft || 'Artisan');
+      img.src = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400"><rect width="600" height="400" fill="${bg}"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Georgia, serif" font-size="28" fill="%231F2D2A">${text} Workshop</text></svg>`;
+    }
+
+    /* ==========================================================================
+       INITIAL DATABASE SEED
+       ========================================================================== */
+    const STORAGE_KEY = 'craftpulse_db_v1';
+    const SYNC_CHANNEL = new BroadcastChannel('craftpulse-sync-v1');
+
+    function createSeedData() {
+      return {
+        theme: 'light',
+        activeRole: 'customer', // 'customer' or 'maker'
+        currentUser: 'user_priya',
+        users: [
+          {
+            id: 'user_priya',
+            name: 'Priya Raman',
+            email: 'priya@neighbour.local',
+            phone: '+91 98450 12345',
+            role: 'customer',
+            kycVerified: true,
+            kycType: 'Phone OTP & Address Verified'
+          },
+          {
+            id: 'user_asha',
+            name: 'Asha Kumar',
+            email: 'asha@needlestudio.local',
+            phone: '+91 98860 67890',
+            role: 'maker',
+            makerId: 'needle',
+            kycVerified: true,
+            kycType: 'Aadhaar & Trade License'
+          }
+        ],
+        savedMakers: ['butter', 'needle'],
+        makers: [
+          {
+            id: 'needle',
+            ownerId: 'user_asha',
+            name: 'Needle & Thread Atelier',
+            craft: 'Tailoring',
+            desc: 'Bespoke blouse tailoring, designer lehengas & invisible alterations with hand-finished seams.',
+            rating: 4.9,
+            reviewsCount: 114,
+            workers: 2,
+            queue: 2,
+            baseMinPerOrder: 45,
+            priceRange: '₹150 - ₹1,800',
+            startingRate: 150,
+            distance: 0.8,
+            address: '42, 12th Main Road, HAL 2nd Stage, Indiranagar',
+            city: 'Bengaluru',
+            lat: 12.9716,
+            lng: 77.6412,
+            paused: false,
+            kyc: {
+              status: 'Verified',
+              docType: 'Aadhaar & Trade License',
+              docNumber: 'XXXX-XXXX-8921',
+              verifiedDate: '2026-08-15',
+              badge: 'Master Guild Certified'
+            },
+            coverPhoto: 'https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=800&auto=format&fit=crop&q=80',
+            products: [
+              { id: 'p1', title: 'Silk Blouse Stitching', price: 450, timeMin: 60, desc: 'Padded designer cut with piping, hand-hemmed finish and perfect neckline fitting.', photo: 'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=500&auto=format&fit=crop&q=80' },
+              { id: 'p2', title: 'Custom Cotton Kurta', price: 750, timeMin: 120, desc: 'Tailored fit with pockets, reinforced stitching, and customer fabric choice.', photo: 'https://images.unsplash.com/photo-1584273143981-41c073dfe8f8?w=500&auto=format&fit=crop&q=80' },
+              { id: 'p3', title: 'Garment Alteration & Hem', price: 150, timeMin: 25, desc: 'Express trouser shortening, waist take-in or sleeve adjustment.', photo: 'https://images.unsplash.com/photo-1528459801416-a9e53bbf4e17?w=500&auto=format&fit=crop&q=80' },
+              { id: 'p4', title: 'Bridal Lehenga Fitting', price: 1800, timeMin: 240, desc: 'Detailed can-can attachment, waist structuring, and hand-embroidered borders.', photo: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=500&auto=format&fit=crop&q=80' }
+            ]
+          },
+          {
+            id: 'sole',
+            ownerId: '',
+            name: 'Sole Stories Cobbler & Care',
+            craft: 'Footwear',
+            desc: 'Traditional shoe repairs, vibram sole replacements, suede revival and leathercraft.',
+            rating: 4.8,
+            reviewsCount: 78,
+            workers: 1,
+            queue: 3,
+            baseMinPerOrder: 50,
+            priceRange: '₹120 - ₹850',
+            startingRate: 120,
+            distance: 1.2,
+            address: '118, 100 Feet Road, Near Domlur Flyover, Indiranagar',
+            city: 'Bengaluru',
+            lat: 12.9645,
+            lng: 77.6439,
+            paused: false,
+            kyc: {
+              status: 'Verified',
+              docType: 'MSME Udyam Registration',
+              docNumber: 'UDYAM-KR-03-00918',
+              verifiedDate: '2026-07-20',
+              badge: 'Master Cobbler'
+            },
+            coverPhoto: 'https://images.unsplash.com/photo-1533867617858-e7b97e060509?w=800&auto=format&fit=crop&q=80',
+            products: [
+              { id: 'p5', title: 'Vibram Sole Replacement', price: 380, timeMin: 90, desc: 'Heavy-duty non-slip grip sole glued and stitched for boots and formal shoes.', photo: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=500&auto=format&fit=crop&q=80' },
+              { id: 'p6', title: 'Stiletto & Formal Heel Tip', price: 180, timeMin: 30, desc: 'Durable nylon polyurethane tip replacement to eliminate click and wear.', photo: 'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=500&auto=format&fit=crop&q=80' },
+              { id: 'p7', title: 'Deep Leather Spa & Cream', price: 250, timeMin: 40, desc: 'Deep condition with Saphir waxes, removing scuffs and nourishing leather.', photo: 'https://images.unsplash.com/photo-1608256246200-53e635b5b65f?w=500&auto=format&fit=crop&q=80' },
+              { id: 'p8', title: 'Leather Belt Hole Punch & Fit', price: 120, timeMin: 15, desc: 'Precision hole punch, edge beveling, and shortening with solid brass screws.', photo: 'https://images.unsplash.com/photo-1624222247344-550fb60583dc?w=500&auto=format&fit=crop&q=80' }
+            ]
+          },
+          {
+            id: 'butter',
+            ownerId: '',
+            name: 'Butter & Bloom Patisserie',
+            craft: 'Cakes',
+            desc: 'Small-batch artisanal celebration cakes, edible floral bakes, and sourdough treats.',
+            rating: 5.0,
+            reviewsCount: 142,
+            workers: 3,
+            queue: 4,
+            baseMinPerOrder: 90,
+            priceRange: '₹220 - ₹2,200',
+            startingRate: 220,
+            distance: 1.7,
+            address: '89, Defence Colony, 6th Cross, Indiranagar',
+            city: 'Bengaluru',
+            lat: 12.9782,
+            lng: 77.6401,
+            paused: false,
+            kyc: {
+              status: 'Verified',
+              docType: 'FSSAI Food Safety License',
+              docNumber: 'FSSAI-21224012000341',
+              verifiedDate: '2026-09-01',
+              badge: 'FSSAI Food Safety Certified'
+            },
+            coverPhoto: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=800&auto=format&fit=crop&q=80',
+            products: [
+              { id: 'p9', title: 'Belgian Dark Truffle Cake (0.5kg)', price: 850, timeMin: 120, desc: '70% Callebaut chocolate ganache, moist sponge, and crunchy hazelnut praline.', photo: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=500&auto=format&fit=crop&q=80' },
+              { id: 'p10', title: 'Box of 6 Floral Cupcakes', price: 390, timeMin: 60, desc: 'Piped buttercream roses with vanilla bean and Madagascar chocolate.', photo: 'https://images.unsplash.com/photo-1587314168485-3236d6710814?w=500&auto=format&fit=crop&q=80' },
+              { id: 'p11', title: 'Artisan Sourdough Boule', price: 220, timeMin: 45, desc: '36-hour slow fermentation with whole wheat and sea salt crispy crust.', photo: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=500&auto=format&fit=crop&q=80' },
+              { id: 'p12', title: 'Two-Tier Celebration Cake', price: 2200, timeMin: 360, desc: 'Custom occasion showstopper with real edible botanical petals and berry compote.', photo: 'https://images.unsplash.com/photo-1535141192574-5d4897c13136?w=500&auto=format&fit=crop&q=80' }
+            ]
+          },
+          {
+            id: 'mend',
+            ownerId: '',
+            name: 'The Mending Room Studio',
+            craft: 'Tailoring',
+            desc: 'Visible Japanese Sashiko mending, zipper replacements, and textile rebirth.',
+            rating: 4.9,
+            reviewsCount: 52,
+            workers: 1,
+            queue: 1,
+            baseMinPerOrder: 35,
+            priceRange: '₹140 - ₹950',
+            startingRate: 140,
+            distance: 2.1,
+            address: '14, 5th Main, CMH Road, Indiranagar',
+            city: 'Bengaluru',
+            lat: 12.9798,
+            lng: 77.6329,
+            paused: false,
+            kyc: {
+              status: 'Verified',
+              docType: 'GST & Karnataka Trade License',
+              docNumber: '29AAACH7821B1Z8',
+              verifiedDate: '2026-06-12',
+              badge: 'Eco-Crafts Verified'
+            },
+            coverPhoto: 'https://images.unsplash.com/photo-1528459801416-a9e53bbf4e17?w=800&auto=format&fit=crop&q=80',
+            products: [
+              { id: 'p13', title: 'Sashiko Denim Repair', price: 280, timeMin: 50, desc: 'Reinforced geometric embroidery stitching that turns tears into art.', photo: 'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=500&auto=format&fit=crop&q=80' },
+              { id: 'p14', title: 'YKK Metal Zipper Replacement', price: 160, timeMin: 30, desc: 'Smooth heavy-duty brass zipper replacement for jackets or denim jeans.', photo: 'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=500&auto=format&fit=crop&q=80' }
+            ]
+          },
+          {
+            id: 'clay',
+            ownerId: '',
+            name: 'Clay & Kiln Studio',
+            craft: 'Ceramics',
+            desc: 'Stoneware ceramics, hand-thrown mugs, planters, and bespoke pottery repairs (Kintsugi).',
+            rating: 4.8,
+            reviewsCount: 46,
+            workers: 2,
+            queue: 2,
+            baseMinPerOrder: 60,
+            priceRange: '₹180 - ₹1,400',
+            startingRate: 180,
+            distance: 2.6,
+            address: '22, Michaelpalya, 80 Feet Road, Indiranagar',
+            city: 'Bengaluru',
+            lat: 12.9841,
+            lng: 77.6492,
+            paused: false,
+            kyc: {
+              status: 'Verified',
+              docType: 'Karnataka Crafts Council Member',
+              docNumber: 'KCC-IND-4091',
+              verifiedDate: '2026-08-01',
+              badge: 'Crafts Council Certified'
+            },
+            coverPhoto: 'https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=800&auto=format&fit=crop&q=80',
+            products: [
+              { id: 'p17', title: 'Hand-thrown Ceramic Coffee Mug', price: 350, timeMin: 70, desc: 'Earthy speckled glaze with ergonomic comfort handle, microwave safe.', photo: 'https://images.unsplash.com/photo-1610701596007-11502861dcfa?w=500&auto=format&fit=crop&q=80' },
+              { id: 'p18', title: 'Glazed Bonsai Planter', price: 480, timeMin: 90, desc: 'Drainage-fitted stoneware pot with moss-green reactive glaze.', photo: 'https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=500&auto=format&fit=crop&q=80' }
+            ]
+          },
+          {
+            id: 'aura',
+            ownerId: '',
+            name: 'Aura Silver Works',
+            craft: 'Jewelry',
+            desc: 'Hallmarked 92.5 sterling silver jewelry repairs, ring resizing and custom filigree.',
+            rating: 4.9,
+            reviewsCount: 65,
+            workers: 1,
+            queue: 2,
+            baseMinPerOrder: 40,
+            priceRange: '₹180 - ₹1,650',
+            startingRate: 180,
+            distance: 2.9,
+            address: '61, Old Airport Road, Kodihalli, Near Leela Palace',
+            city: 'Bengaluru',
+            lat: 12.9602,
+            lng: 77.6488,
+            paused: false,
+            kyc: {
+              status: 'Verified',
+              docType: 'BIS Hallmark License & PAN',
+              docNumber: 'BIS-HM-KA-88190',
+              verifiedDate: '2026-05-18',
+              badge: 'BIS Hallmark Licensed'
+            },
+            coverPhoto: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&auto=format&fit=crop&q=80',
+            products: [
+              { id: 'p20', title: 'Silver Ring Resizing & Ultrasonic Polish', price: 220, timeMin: 45, desc: 'Seamless sizing up or down, followed by mirror ultrasonic deep clean.', photo: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=500&auto=format&fit=crop&q=80' },
+              { id: 'p21', title: 'Laser Solder Broken Chain', price: 180, timeMin: 30, desc: 'Micro-laser welding of delicate gold or silver link chains with no mark.', photo: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=500&auto=format&fit=crop&q=80' }
+            ]
+          },
+          {
+            id: 'wood-craft',
+            ownerId: '',
+            name: 'Timber & Grain Woodcraft',
+            craft: 'Other',
+            desc: 'Hand-carved teak utensils, bespoke joinery repair, chair caning & wood restoration.',
+            rating: 4.9,
+            reviewsCount: 34,
+            workers: 2,
+            queue: 1,
+            baseMinPerOrder: 60,
+            priceRange: '₹180 - ₹2,400',
+            startingRate: 180,
+            distance: 3.1,
+            address: '5, HAL 3rd Stage, Jeevan Bima Nagar',
+            city: 'Bengaluru',
+            lat: 12.9650,
+            lng: 77.6530,
+            paused: false,
+            kyc: {
+              status: 'Verified',
+              docType: 'Artisanal Guild Certificate',
+              docNumber: 'AG-KA-WOOD-102',
+              verifiedDate: '2026-04-10',
+              badge: 'Heritage Woodcraft Certified'
+            },
+            coverPhoto: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=800&auto=format&fit=crop&q=80',
+            products: [
+              { id: 'p23', title: 'Teak Wooden Spoon / Spatula Carving', price: 180, timeMin: 40, desc: 'Sustainably sourced reclaimed teak, food-safe beeswax coating.', photo: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=500&auto=format&fit=crop&q=80' },
+              { id: 'p24', title: 'Antique Chair Joint Re-gluing', price: 350, timeMin: 90, desc: 'Hide-glue structural stabilization and clamp curing for loose joints.', photo: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=500&auto=format&fit=crop&q=80' }
+            ]
+          }
+        ],
+        orders: [
+          {
+            id: 'ord-101',
+            makerId: 'needle',
+            customerId: 'user_priya',
+            customerName: 'Priya Raman',
+            service: 'Silk Blouse Stitching',
+            productName: 'Silk Blouse Stitching',
+            amount: 450,
+            note: 'Navy blue Kanjeevaram silk with boat neck design and elbow-length sleeves.',
+            status: 'In progress',
+            created: Date.now() - 3600000,
+            acceptedAt: Date.now() - 2400000,
+            estimatedMinutes: 60,
+            readyAt: Date.now() + 1800000,
+            paymentStatus: 'Paid',
+            paymentMethod: 'UPI'
+          },
+          {
+            id: 'ord-102',
+            makerId: 'needle',
+            customerId: 'user_priya',
+            customerName: 'Priya Raman',
+            service: 'Custom Cotton Kurta',
+            productName: 'Custom Cotton Kurta',
+            amount: 750,
+            note: 'Handloom Ikkat fabric supplied with coconut shell buttons.',
+            status: 'Accepted',
+            created: Date.now() - 1800000,
+            acceptedAt: Date.now() - 600000,
+            estimatedMinutes: 120,
+            readyAt: Date.now() + 7200000,
+            paymentStatus: 'Unpaid'
+          }
+        ]
+      };
+    }
+
+    let db = null;
+    let currentPage = 'discover';
+    let selectedMakerId = null;
+    let categoryFilter = 'All';
+    let rateFilter = 'All';
+    let maxPriceSlider = 2500;
+    let searchQuery = '';
+    let sortMode = 'wait';
+    let currentViewMode = 'grid';
+
+    function loadDatabase() {
+      try {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (parsed.makers && parsed.users && parsed.orders) return parsed;
+        }
+      } catch (e) {
+        console.warn('Database load fallback:', e);
+      }
+      const initial = createSeedData();
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(initial));
+      } catch (e) {}
+      return initial;
+    }
+
+    db = loadDatabase();
+
+    function saveDatabase(newData) {
+      if (newData) db = newData;
+      if (!db) return;
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(db));
+        SYNC_CHANNEL.postMessage({ type: 'SYNC', payload: db });
+      } catch (e) {
+        console.error('Storage quota warning, handling:', e);
+      }
+    }
+
+    SYNC_CHANNEL.onmessage = (e) => {
+      if (e.data?.type === 'SYNC' && e.data.payload) {
+        db = e.data.payload;
+        renderCurrentPage();
+      }
+    };
+
+    /* In-Browser Image Compressor (Item 4) */
+    function compressImageFile(file, maxWidth = 600, quality = 0.75) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = (event) => {
+          const img = new Image();
+          img.src = event.target.result;
+          img.onload = () => {
+            const canvas = document.getElementById('img-compress-canvas');
+            const ctx = canvas.getContext('2d');
+            const scale = Math.min(1, maxWidth / img.width);
+            canvas.width = img.width * scale;
+            canvas.height = img.height * scale;
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            const compressed = canvas.toDataURL('image/jpeg', quality);
+            resolve(compressed);
+          };
+          img.onerror = reject;
+        };
+        reader.onerror = reject;
+      });
+    }
+
+    /* Timing Calculation (Item 10) */
+    function calculateMakerWaitMinutes(maker) {
+      if (!maker) return 60;
+      const queueCount = Number(maker.queue) || 0;
+      const workers = Math.max(1, Number(maker.workers) || 1);
+      const baseMin = Number(maker.baseMinPerOrder) || 45;
+      const wait = baseMin + Math.round((queueCount * 45) / workers);
+      return wait;
+    }
+
+    function formatWaitLabel(minutes) {
+      if (minutes <= 45) return `Ready in ~${minutes} mins`;
+      if (minutes < 120) return `Ready in ~1.5 hours`;
+      const hours = Math.round(minutes / 60);
+      if (hours < 8) return `Ready in ~${hours} hours`;
+      if (hours <= 24) return `Ready Today, evening`;
+      const days = Math.round(hours / 24);
+      return `Ready in ~${days} ${days === 1 ? 'day' : 'days'}`;
+    }
+
+    function formatTimeRemaining(readyAt) {
+      const diff = Math.max(0, readyAt - Date.now());
+      if (diff <= 0) return 'Ready for pickup!';
+      const h = Math.floor(diff / 3600000);
+      const m = Math.floor((diff % 3600000) / 60000);
+      const s = Math.floor((diff % 60000) / 1000);
+      return `${String(h).padStart(2, '0')}h ${String(m).padStart(2, '0')}m ${String(s).padStart(2, '0')}s`;
+    }
+
+    /* Router */
+    function navigate(page, param = null) {
+      currentPage = page;
+      if (param) selectedMakerId = param;
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.page === page);
+      });
+      renderCurrentPage();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function renderCurrentPage() {
+      const container = document.getElementById('app-view');
+      updateOrdersBadge();
+      updateRoleBanner();
+
+      if (currentPage === 'discover') {
+        container.innerHTML = renderDiscoverPage();
+      } else if (currentPage === 'maker-detail') {
+        container.innerHTML = renderMakerDetailPage(selectedMakerId);
+      } else if (currentPage === 'orders') {
+        container.innerHTML = renderOrdersPage();
+      } else if (currentPage === 'studio') {
+        container.innerHTML = renderMakerStudioPage();
+      } else if (currentPage === 'profile') {
+        container.innerHTML = renderProfilePage();
+      } else if (currentPage === 'guide') {
+        container.innerHTML = renderDesignGuideViewer();
+      } else if (currentPage === 'register') {
+        container.innerHTML = renderRegisterMakerPage();
+      } else if (currentPage === 'invoice') {
+        container.innerHTML = renderInvoiceAndPaymentPage();
+      }
+    }
+
+    function updateOrdersBadge() {
+      const count = db.orders.filter(o => o.status !== 'Collected').length;
+      const b = document.getElementById('orders-badge');
+      if (b) {
+        b.style.display = count > 0 ? 'inline-block' : 'none';
+        b.textContent = count;
+      }
+    }
+
+    function updateRoleBanner() {
+      const el = document.getElementById('current-role-badge');
+      if (el) {
+        if (db.currentUser === 'user_priya') {
+          el.innerHTML = `🧑 Customer Mode · Priya Raman`;
+        } else {
+          el.innerHTML = `👩‍🔧 Maker Studio Mode · Asha Kumar (Needle & Thread)`;
+        }
+      }
+    }
+
+    /* ==========================================================================
+       SCREEN 1: DISCOVER / FIND A MAKER
+       ========================================================================== */
+    function renderDiscoverPage() {
+      let list = db.makers.filter(m => {
+        if (categoryFilter !== 'All' && m.craft !== categoryFilter) return false;
+        if (searchQuery) {
+          const q = searchQuery.toLowerCase();
+          const matches = m.name.toLowerCase().includes(q) || m.desc.toLowerCase().includes(q) || m.craft.toLowerCase().includes(q);
+          if (!matches) return false;
+        }
+        if (rateFilter === '<200' && m.startingRate >= 200) return false;
+        if (rateFilter === '200-500' && (m.startingRate < 200 || m.startingRate > 500)) return false;
+        if (rateFilter === '500-1000' && (m.startingRate < 500 || m.startingRate > 1000)) return false;
+        if (rateFilter === '1000+' && m.startingRate < 1000) return false;
+        if (m.startingRate > maxPriceSlider) return false;
+        return true;
+      });
+
+      if (sortMode === 'wait') {
+        list.sort((a, b) => calculateMakerWaitMinutes(a) - calculateMakerWaitMinutes(b));
+      } else if (sortMode === 'price-low') {
+        list.sort((a, b) => a.startingRate - b.startingRate);
+      } else if (sortMode === 'price-high') {
+        list.sort((a, b) => b.startingRate - a.startingRate);
+      } else if (sortMode === 'rating') {
+        list.sort((a, b) => b.rating - a.rating);
+      } else if (sortMode === 'distance') {
+        list.sort((a, b) => a.distance - b.distance);
+      }
+
+      return `
+        <!-- Hero Banner -->
+        <section class="hero">
+          <div class="hero-glow"></div>
+          <div class="hero-watermark">✂</div>
+          <div class="hero-kicker">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            Hyperlocal Maker Network · Indiranagar, Bengaluru
+          </div>
+          <h1>Crafted with Care, Ready Without the Wait.</h1>
+          <p>Connect directly with independent neighbourhood tailors, cobblers, patissiers, ceramics and metalsmiths. Track live queue times before you leave home.</p>
+          <div class="hero-actions">
+            <button class="btn btn-white" onclick="document.getElementById('makers-explore').scrollIntoView({behavior:'smooth'})">
+              Find Your Maker →
+            </button>
+            <button class="btn btn-outline" style="color:#FFF;border-color:rgba(255,255,255,0.4);" onclick="openOrderModal('needle')">
+              + Quick Custom Request
+            </button>
+            <button class="btn btn-orange" onclick="navigate('guide')">
+              View UI Design Guide (15 Screens)
+            </button>
+          </div>
+        </section>
+
+        <!-- Controls & Filters Bar (Item 5, 11) -->
+        <div id="makers-explore" class="controls-bar">
+          <!-- Craft Category Chips with General SVG Logos + "Other Crafts" (Item 5) -->
+          <div class="filter-row">
+            <div class="filter-label">Craft Type:</div>
+            <div class="chips-group">
+              <button class="chip ${categoryFilter === 'All' ? 'active' : ''}" onclick="setCategoryFilter('All')">
+                All Makers
+              </button>
+              <button class="chip ${categoryFilter === 'Tailoring' ? 'active' : ''}" onclick="setCategoryFilter('Tailoring')">
+                <span class="chip-logo">${CATEGORY_LOGOS['Tailoring']}</span>
+                Tailoring &amp; Alteration
+              </button>
+              <button class="chip ${categoryFilter === 'Footwear' ? 'active' : ''}" onclick="setCategoryFilter('Footwear')">
+                <span class="chip-logo">${CATEGORY_LOGOS['Footwear']}</span>
+                Footwear Repair
+              </button>
+              <button class="chip ${categoryFilter === 'Cakes' ? 'active' : ''}" onclick="setCategoryFilter('Cakes')">
+                <span class="chip-logo">${CATEGORY_LOGOS['Cakes']}</span>
+                Artisanal Bakes
+              </button>
+              <button class="chip ${categoryFilter === 'Ceramics' ? 'active' : ''}" onclick="setCategoryFilter('Ceramics')">
+                <span class="chip-logo">${CATEGORY_LOGOS['Ceramics']}</span>
+                Pottery &amp; Ceramics
+              </button>
+              <button class="chip ${categoryFilter === 'Jewelry' ? 'active' : ''}" onclick="setCategoryFilter('Jewelry')">
+                <span class="chip-logo">${CATEGORY_LOGOS['Jewelry']}</span>
+                Jewelry &amp; Silver
+              </button>
+              <!-- "Other Crafts" Option -->
+              <button class="chip ${categoryFilter === 'Other' ? 'active' : ''}" onclick="setCategoryFilter('Other')">
+                <span class="chip-logo">${CATEGORY_LOGOS['Other']}</span>
+                Other Crafts &amp; Woodwork
+              </button>
+            </div>
+          </div>
+
+          <!-- Specific Rates Filter Chips (Item 11) -->
+          <div class="filter-row">
+            <div class="filter-label">Rate Filter:</div>
+            <div class="chips-group">
+              <button class="chip ${rateFilter === 'All' ? 'active' : ''}" onclick="setRateFilter('All')">All Rates</button>
+              <button class="chip ${rateFilter === '<200' ? 'active' : ''}" onclick="setRateFilter('<200')">Under ₹200</button>
+              <button class="chip ${rateFilter === '200-500' ? 'active' : ''}" onclick="setRateFilter('200-500')">₹200 - ₹500</button>
+              <button class="chip ${rateFilter === '500-1000' ? 'active' : ''}" onclick="setRateFilter('500-1000')">₹500 - ₹1,000</button>
+              <button class="chip ${rateFilter === '1000+' ? 'active' : ''}" onclick="setRateFilter('1000+')">₹1,000 &amp; Above</button>
+            </div>
+          </div>
+
+          <!-- Search & Max Price Slider Row -->
+          <div class="search-rate-row">
+            <div class="search-input-wrap">
+              <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="text" class="search-input" placeholder="Search by craft, item (e.g. blouse, sole, sourdough, wood)..." value="${escapeHtml(searchQuery)}" oninput="handleSearch(this.value)">
+            </div>
+
+            <div class="rate-slider-wrap">
+              <span>Max Starting Rate: <b>₹${maxPriceSlider}</b></span>
+              <input type="range" class="rate-slider" min="100" max="2500" step="50" value="${maxPriceSlider}" oninput="handlePriceSlider(this.value)">
+            </div>
+
+            <select class="sort-select" onchange="handleSortChange(this.value)">
+              <option value="wait" ${sortMode === 'wait' ? 'selected' : ''}>⚡ Fastest Turnaround</option>
+              <option value="price-low" ${sortMode === 'price-low' ? 'selected' : ''}>💰 Price: Low to High</option>
+              <option value="price-high" ${sortMode === 'price-high' ? 'selected' : ''}>💎 Price: High to Low</option>
+              <option value="rating" ${sortMode === 'rating' ? 'selected' : ''}>★ Highest Rated</option>
+              <option value="distance" ${sortMode === 'distance' ? 'selected' : ''}>📍 Closest Distance</option>
+            </select>
+
+            <div style="display:flex;gap:4px;">
+              <button class="btn btn-sm ${currentViewMode === 'grid' ? 'btn-primary' : 'btn-outline'}" onclick="setViewMode('grid')">
+                ☷ Cards
+              </button>
+              <button class="btn btn-sm ${currentViewMode === 'map' ? 'btn-primary' : 'btn-outline'}" onclick="setViewMode('map')">
+                ⌖ Radar Map
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section Title -->
+        <div class="section-head">
+          <div>
+            <h2>Verified Neighbourhood Makers</h2>
+            <p>${list.length} craft studios available within 3.5 km · Indiranagar cluster</p>
+          </div>
+        </div>
+
+        ${currentViewMode === 'grid' ? renderMakerCardsGrid(list) : renderMapView(list)}
+      `;
+    }
+
+    function renderMakerCardsGrid(list) {
+      if (!list.length) {
+        return `
+          <div style="background:var(--paper);border:1px dashed var(--line);border-radius:var(--radius);padding:40px;text-align:center;">
+            <p style="font-family:var(--font-serif);font-size:20px;margin-bottom:8px;">No makers match your filter</p>
+            <p style="color:var(--ink-muted);font-size:13px;margin-bottom:16px;">Try expanding your price range or clearing search keywords.</p>
+            <button class="btn btn-soft" onclick="resetFilters()">Reset All Filters</button>
+          </div>
+        `;
+      }
+
+      return `
+        <div class="maker-grid">
+          ${list.map(m => {
+            const waitMin = calculateMakerWaitMinutes(m);
+            const waitStr = formatWaitLabel(waitMin);
+            const isSaved = db.savedMakers.includes(m.id);
+            const brandLogo = MAKER_BRAND_LOGOS[m.id] || CATEGORY_LOGOS[m.craft] || CATEGORY_LOGOS['Other'];
+
+            return `
+              <article class="maker-card">
+                <div class="maker-cover" onclick="navigate('maker-detail', '${m.id}')">
+                  <img class="maker-cover-img" src="${m.coverPhoto}" alt="${escapeHtml(m.name)}" onerror="handleImgError(this, '${m.craft}')" loading="lazy">
+                  <div class="maker-cover-overlay"></div>
+                  
+                  <div class="card-top-badges">
+                    <div class="craft-tag">
+                      <span style="width:14px;height:14px;display:inline-block;">${CATEGORY_LOGOS[m.craft] || CATEGORY_LOGOS['Other']}</span>
+                      ${m.craft}
+                    </div>
+                    <button class="save-btn" onclick="event.stopPropagation();toggleSaveMaker('${m.id}')" title="Save maker">
+                      ${isSaved ? '♥' : '♡'}
+                    </button>
+                  </div>
+
+                  <div class="maker-logo-wrap">
+                    <div class="maker-logo-badge">
+                      ${brandLogo}
+                    </div>
+                  </div>
+                </div>
+
+                <div class="maker-body">
+                  <div class="maker-header-row">
+                    <h3 class="maker-name" onclick="navigate('maker-detail', '${m.id}')" style="cursor:pointer;">
+                      ${escapeHtml(m.name)}
+                    </h3>
+                    <div class="rating-badge">
+                      <svg width="13" height="13" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                      <b>${m.rating.toFixed(1)}</b> (${m.reviewsCount})
+                    </div>
+                  </div>
+
+                  <div style="margin-bottom:8px;">
+                    <span class="kyc-verified-badge" title="${m.kyc.docType}">
+                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                      ${m.kyc.badge}
+                    </span>
+                  </div>
+
+                  <p class="maker-desc">${escapeHtml(m.desc)}</p>
+
+                  <div class="maker-timing-bar">
+                    <div>
+                      <span>Live Wait Time</span>
+                      <b class="timing-highlight">${waitStr}</b>
+                    </div>
+                    <div>
+                      <span>Queue Position</span>
+                      <b>${m.queue} orders ahead</b>
+                    </div>
+                    <div>
+                      <span>Starting Rate</span>
+                      <b style="color:var(--forest);">From ₹${m.startingRate}</b>
+                    </div>
+                    <div>
+                      <span>Distance</span>
+                      <b>${m.distance} km away</b>
+                    </div>
+                  </div>
+
+                  <div class="card-products-preview">
+                    <div class="preview-header">
+                      <span>Popular Offerings</span>
+                      <a href="javascript:void(0)" onclick="navigate('maker-detail', '${m.id}')" style="color:var(--forest);">View All ${m.products?.length || 0} →</a>
+                    </div>
+                    <div class="preview-chips">
+                      ${(m.products || []).slice(0, 3).map(p => `
+                        <div class="product-mini-chip" onclick="openProductOrderModal('${m.id}', '${p.id}')" style="cursor:pointer;" title="Click to order: ${escapeHtml(p.title)}">
+                          <span>${escapeHtml(p.title)}</span>
+                          <b>₹${p.price}</b>
+                        </div>
+                      `).join('')}
+                    </div>
+                  </div>
+
+                  <div class="card-footer">
+                    <a class="btn btn-outline btn-sm" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(m.address + ', ' + m.city)}" title="Open in Google Maps">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+                      Directions ↗
+                    </a>
+                    <button class="btn btn-primary btn-sm" onclick="navigate('maker-detail', '${m.id}')">
+                      View Catalog &amp; Queue →
+                    </button>
+                  </div>
+                </div>
+              </article>
+            `;
+          }).join('')}
+        </div>
+      `;
+    }
+
+    function renderMapView(list) {
+      const activeMaker = list.find(m => m.id === selectedMakerId) || list[0];
+
+      return `
+        <div class="map-container">
+          <div class="map-canvas">
+            <div class="map-badge-city">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              INDIRANAGAR CLUSTER · BENGALURU
+            </div>
+
+            <div class="map-user-pin" title="Your Location (Indiranagar 100ft Rd)"></div>
+
+            ${list.map((m, idx) => {
+              const leftPercent = 22 + ((idx * 16) % 58);
+              const topPercent = 20 + ((idx * 21) % 55);
+              const isSelected = activeMaker?.id === m.id;
+
+              return `
+                <button class="map-pin-btn ${isSelected ? 'active' : ''}" style="left:${leftPercent}%;top:${topPercent}%;" onclick="selectMapMaker('${m.id}')" title="${escapeHtml(m.name)}">
+                  <span class="map-pin-badge">${idx + 1}</span>
+                  <span>${escapeHtml(m.name.split(' ')[0])}</span>
+                </button>
+              `;
+            }).join('')}
+          </div>
+
+          <aside class="map-sidebar">
+            ${activeMaker ? `
+              <div style="display:flex;align-items:center;gap:12px;">
+                <div style="width:50px;height:50px;border-radius:12px;overflow:hidden;border:1px solid var(--line);flex-shrink:0;">
+                  <img src="${activeMaker.coverPhoto}" style="width:100%;height:100%;object-fit:cover;" onerror="handleImgError(this, '${activeMaker.craft}')">
+                </div>
+                <div>
+                  <span class="kyc-verified-badge" style="margin-bottom:3px;">${activeMaker.kyc.badge}</span>
+                  <h3 style="font-family:var(--font-serif);font-size:18px;line-height:1.2;">${escapeHtml(activeMaker.name)}</h3>
+                  <small style="color:var(--ink-muted);font-size:12px;">${activeMaker.craft} · ${activeMaker.distance} km away</small>
+                </div>
+              </div>
+
+              <div class="maker-timing-bar" style="margin:0;">
+                <div>
+                  <span>Wait Time</span>
+                  <b class="timing-highlight">${formatWaitLabel(calculateMakerWaitMinutes(activeMaker))}</b>
+                </div>
+                <div>
+                  <span>Queue Size</span>
+                  <b>${activeMaker.queue} orders</b>
+                </div>
+              </div>
+
+              <div>
+                <b style="font-size:12px;color:var(--ink-muted);text-transform:uppercase;">Workshop Address:</b>
+                <p style="font-size:13px;margin-top:2px;">${escapeHtml(activeMaker.address)}, ${activeMaker.city}</p>
+              </div>
+
+              <a class="btn btn-outline" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(activeMaker.address + ', ' + activeMaker.city)}" style="width:100%;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+                Get Google Maps Directions ↗
+              </a>
+
+              <button class="btn btn-primary" onclick="navigate('maker-detail', '${activeMaker.id}')" style="width:100%;">
+                Open Full Catalog &amp; Order
+              </button>
+            ` : '<p style="color:var(--ink-muted);">Select a pin on the radar map to inspect maker details.</p>'}
+          </aside>
+        </div>
+      `;
+    }
+
+    function selectMapMaker(makerId) {
+      selectedMakerId = makerId;
+      renderCurrentPage();
+    }
+
+    /* ==========================================================================
+       SCREEN 2: MAKER PROFILE & PRODUCTS
+       ========================================================================== */
+    function renderMakerDetailPage(makerId) {
+      const m = db.makers.find(x => x.id === makerId) || db.makers[0];
+      const waitMin = calculateMakerWaitMinutes(m);
+      const waitStr = formatWaitLabel(waitMin);
+      const brandLogo = MAKER_BRAND_LOGOS[m.id] || CATEGORY_LOGOS[m.craft] || CATEGORY_LOGOS['Other'];
+
+      return `
+        <div class="maker-detail-view">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <button class="btn btn-outline btn-sm" onclick="navigate('discover')">
+              ← Back to All Makers
+            </button>
+            <div style="display:flex;gap:8px;">
+              <button class="btn btn-outline btn-sm" onclick="toggleSaveMaker('${m.id}')">
+                ${db.savedMakers.includes(m.id) ? '♥ Saved' : '♡ Save Maker'}
+              </button>
+              <a class="btn btn-outline btn-sm" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(m.address + ', ' + m.city)}">
+                Google Maps ↗
+              </a>
+            </div>
+          </div>
+
+          <div class="maker-banner-hero">
+            <img class="maker-banner-img" src="${m.coverPhoto}" alt="${escapeHtml(m.name)}" onerror="handleImgError(this, '${m.craft}')">
+            <div class="maker-banner-content">
+              <div class="banner-avatar">
+                ${brandLogo}
+              </div>
+
+              <div class="banner-main">
+                <div class="banner-title-area">
+                  <h1>
+                    ${escapeHtml(m.name)}
+                    <span class="kyc-verified-badge" title="Verified ID: ${m.kyc.docType}">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                      ${m.kyc.badge}
+                    </span>
+                  </h1>
+                  <p style="color:var(--ink-muted);font-size:14px;margin-top:4px;">${escapeHtml(m.desc)}</p>
+
+                  <div class="banner-meta">
+                    <span>★ <b>${m.rating.toFixed(1)}</b> (${m.reviewsCount} verified reviews)</span>
+                    <span>📍 <b>${m.distance} km</b> · ${m.address}</span>
+                    <a target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(m.name + ' ' + m.address)}">
+                      Navigate in Google Maps ↗
+                    </a>
+                  </div>
+                </div>
+
+                <button class="btn btn-primary" onclick="openOrderModal('${m.id}')">
+                  Request Custom Service →
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="workbench-pipeline">
+            <div class="pipeline-header">
+              <div class="pipeline-title">
+                <div class="pipeline-badge">Live Shop Capacity</div>
+                <h3 style="font-family:var(--font-serif);font-size:18px;">Active Workbench &amp; Estimated Turnaround</h3>
+              </div>
+              <div style="font-size:13px;color:var(--forest);font-weight:600;">
+                ⚡ ${m.workers} Artisan(s) on Bench · ${m.queue} Active Jobs
+              </div>
+            </div>
+
+            <div class="workbench-slots">
+              <div class="workbench-slot slot-active">
+                <div class="slot-kicker">
+                  <span>Slot #1: On Workbench</span>
+                  <span class="craft-anim-pulse">⚡ Active</span>
+                </div>
+                <div class="slot-title">In Progress Now</div>
+                <div class="slot-detail">Estimated completion in ~${Math.max(15, Math.round(waitMin * 0.4))} mins</div>
+              </div>
+
+              <div class="workbench-slot">
+                <div class="slot-kicker">Slot #2: Next in Line</div>
+                <div class="slot-title">Staging &amp; Prep</div>
+                <div class="slot-detail">Estimated start in ~${Math.round(waitMin * 0.6)} mins</div>
+              </div>
+
+              <div class="workbench-slot">
+                <div class="slot-kicker">Your Estimated Window</div>
+                <div class="slot-title" style="color:var(--orange);">${waitStr}</div>
+                <div class="slot-detail">Join queue now to reserve today's slot</div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="section-head">
+              <div>
+                <h2 class="products-section-title">Individual Maker Products &amp; Catalog</h2>
+                <p>Select any signature handcrafted product below or choose "Other / Custom Work"</p>
+              </div>
+            </div>
+
+            <div class="products-grid">
+              ${(m.products || []).map(p => `
+                <div class="product-card">
+                  <div class="product-img-wrap">
+                    <img class="product-img" src="${p.photo}" alt="${escapeHtml(p.title)}" onerror="handleImgError(this, '${m.craft}')" loading="lazy">
+                    <div class="product-time-tag">
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                      ~${p.timeMin} mins craft time
+                    </div>
+                  </div>
+
+                  <div class="product-body">
+                    <h3>${escapeHtml(p.title)}</h3>
+                    <p class="product-desc">${escapeHtml(p.desc)}</p>
+
+                    <div class="product-foot">
+                      <div>
+                        <small style="font-size:10px;text-transform:uppercase;color:var(--ink-muted);display:block;">Price</small>
+                        <div class="product-price">₹${p.price}</div>
+                      </div>
+                      <button class="btn btn-primary btn-sm" onclick="openProductOrderModal('${m.id}', '${p.id}')">
+                        Order This Item →
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              `).join('')}
+
+              <!-- "Other / Custom Request" Product Card Option -->
+              <div class="product-card" style="border:2px dashed var(--line);background:var(--sand-light);justify-content:center;align-items:center;padding:24px;text-align:center;">
+                <div style="font-size:32px;margin-bottom:8px;">✨</div>
+                <h3 style="font-family:var(--font-serif);font-size:18px;">Need Something Else?</h3>
+                <p style="font-size:12px;color:var(--ink-muted);margin:6px 0 16px;">Request a custom quote, special restoration, or custom fabric project not listed above.</p>
+                <button class="btn btn-orange btn-sm" onclick="openOrderModal('${m.id}', 'Custom Bespoke Request')">
+                  Request Other / Custom Service →
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    /* ==========================================================================
+       SCREEN 3: MY ORDERS & TRACKING
+       ========================================================================== */
+    function renderOrdersPage() {
+      const myOrders = db.orders.filter(o => o.customerId === db.currentUser);
+
+      return `
+        <div class="section-head">
+          <div>
+            <h2>My Active Requests &amp; Live Tracking</h2>
+            <p>Real-time queue monitoring, animated workbench status, and countdowns</p>
+          </div>
+          <button class="btn btn-primary" onclick="navigate('discover')">
+            + Request Another Maker
+          </button>
+        </div>
+
+        ${!myOrders.length ? `
+          <div style="background:var(--paper);border:1px dashed var(--line);border-radius:var(--radius);padding:40px;text-align:center;">
+            <p style="font-family:var(--font-serif);font-size:20px;margin-bottom:8px;">No orders in progress</p>
+            <p style="color:var(--ink-muted);font-size:13px;margin-bottom:16px;">Browse local makers to request alterations, shoe repairs, or artisanal bakes.</p>
+            <button class="btn btn-primary" onclick="navigate('discover')">Explore Nearby Makers</button>
+          </div>
+        ` : `
+          <div style="display:flex;flex-direction:column;gap:20px;">
+            ${myOrders.map(o => {
+              const maker = db.makers.find(m => m.id === o.makerId);
+              const brandLogo = MAKER_BRAND_LOGOS[maker?.id] || '';
+              const isReady = o.status === 'Ready';
+              const isCollected = o.status === 'Collected';
+              const isInProgress = o.status === 'In progress';
+
+              const steps = ['Requested', 'Accepted', 'In progress', 'Ready', 'Collected'];
+              const currentStepIdx = steps.indexOf(o.status);
+              const progressPercent = currentStepIdx === -1 ? 15 : Math.round(((currentStepIdx + 1) / steps.length) * 100);
+
+              return `
+                <div class="workbench-pipeline" style="margin-bottom:0;">
+                  <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:14px;">
+                    <div style="display:flex;align-items:center;gap:12px;">
+                      <div style="width:44px;height:44px;border-radius:12px;overflow:hidden;border:1px solid var(--line);">
+                        ${brandLogo || `<img src="${maker?.coverPhoto}" style="width:100%;height:100%;object-fit:cover;">`}
+                      </div>
+                      <div>
+                        <h3 style="font-family:var(--font-serif);font-size:20px;line-height:1.2;">${escapeHtml(o.service)}</h3>
+                        <p style="font-size:12px;color:var(--ink-muted);">Maker: <b>${escapeHtml(maker?.name || 'Local Artisan')}</b> · Order #${o.id}</p>
+                      </div>
+                    </div>
+
+                    <div style="text-align:right;">
+                      <div style="font-family:var(--font-serif);font-size:22px;color:var(--forest);font-weight:600;">₹${o.amount}</div>
+                      <span class="kyc-verified-badge" style="background:${o.paymentStatus === 'Paid' ? '#E3EFE8' : '#FBE9D8'};color:${o.paymentStatus === 'Paid' ? '#0F5A45' : '#E8743B'};">
+                        ${o.paymentStatus === 'Paid' ? '✓ Paid' : 'Due at Pickup'}
+                      </span>
+                    </div>
+                  </div>
+
+                  ${o.note ? `<div style="background:var(--bg);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--ink-muted);margin-bottom:14px;"><b>Note:</b> ${escapeHtml(o.note)}</div>` : ''}
+
+                  <div class="tracker-track-wrap">
+                    <div class="tracker-bar-bg">
+                      <div class="tracker-bar-fill" style="width:${progressPercent}%;"></div>
+                    </div>
+                    <div class="milestones-steps">
+                      ${steps.map((s, idx) => {
+                        const isDone = idx < currentStepIdx;
+                        const isCurrent = idx === currentStepIdx;
+                        return `
+                          <div class="milestone-step ${isDone ? 'done' : ''} ${isCurrent ? 'current' : ''}">
+                            <div>${idx + 1}. ${s}</div>
+                          </div>
+                        `;
+                      }).join('')}
+                    </div>
+                  </div>
+
+                  <div class="countdown-box">
+                    <div>
+                      <span style="font-size:10px;text-transform:uppercase;color:var(--ink-muted);display:block;font-weight:700;">Status Status</span>
+                      <b>${isReady ? '🎉 Ready for pickup at atelier!' : isCollected ? 'Completed & Handed Over' : isInProgress ? 'Artisan actively working on piece' : 'Accepted into queue'}</b>
+                    </div>
+                    <div>
+                      <span style="font-size:10px;text-transform:uppercase;color:var(--ink-muted);display:block;font-weight:700;text-align:right;">Approximate Clock</span>
+                      <div class="countdown-timer-val" id="countdown-${o.id}">
+                        ${o.readyAt ? formatTimeRemaining(o.readyAt) : 'Calculating...'}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding-top:12px;border-top:1px solid var(--line-subtle);flex-wrap:wrap;gap:8px;">
+                    <a class="btn btn-outline btn-sm" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(maker?.address + ', ' + maker?.city)}">
+                      📍 Directions to Studio
+                    </a>
+                    
+                    <div style="display:flex;gap:8px;">
+                      <button class="btn btn-outline btn-sm" onclick="navigate('invoice')">
+                        View Invoice
+                      </button>
+                      ${isReady ? `
+                        <button class="btn btn-primary btn-sm" onclick="markOrderCollected('${o.id}')">
+                          ✓ Confirm I Picked It Up
+                        </button>
+                      ` : ''}
+                      ${o.paymentStatus !== 'Paid' ? `
+                        <button class="btn btn-orange btn-sm" onclick="recordDemoPayment('${o.id}')">
+                          Pay ₹${o.amount} via Demo UPI
+                        </button>
+                      ` : ''}
+                    </div>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        `}
+      `;
+    }
+
+    /* ==========================================================================
+       SCREEN 4: MAKER STUDIO (with Demand & Sales Chart)
+       ========================================================================== */
+    function renderMakerStudioPage() {
+      const myMaker = db.makers.find(m => m.id === 'needle');
+      const makerOrders = db.orders.filter(o => o.makerId === myMaker.id);
+      const pendingCount = makerOrders.filter(o => o.status === 'Requested').length;
+
+      // Calculate 7-day sales and costs
+      const totalSales = makerOrders.reduce((sum, o) => sum + (o.paymentStatus === 'Paid' ? o.amount : 0), 1200);
+      const totalCosts = Math.round(totalSales * 0.38);
+      const grossMargin = totalSales - totalCosts;
+
+      return `
+        <div class="studio-dashboard">
+          <div class="section-head">
+            <div>
+              <div style="display:flex;align-items:center;gap:10px;">
+                <h2>Maker Studio · ${escapeHtml(myMaker.name)}</h2>
+                <span class="kyc-verified-badge">${myMaker.kyc.badge}</span>
+              </div>
+              <p>Manage workshop orders, upload new products with photos, and monitor demand analytics</p>
+            </div>
+            <div style="display:flex;gap:8px;">
+              <button class="btn ${myMaker.paused ? 'btn-orange' : 'btn-outline'}" onclick="toggleShopPause('${myMaker.id}')">
+                ${myMaker.paused ? 'Resume Receiving Orders' : 'Pause New Orders'}
+              </button>
+              <button class="btn btn-primary" onclick="openAddProductModal('${myMaker.id}')">
+                + Add Product
+              </button>
+            </div>
+          </div>
+
+          <!-- Quick Stats -->
+          <div class="stats-row">
+            <div class="stat-card">
+              <span>Orders in Queue</span>
+              <b>${myMaker.queue}</b>
+              <small>Wait: ${formatWaitLabel(calculateMakerWaitMinutes(myMaker))}</small>
+            </div>
+            <div class="stat-card">
+              <span>Total Active Jobs</span>
+              <b>${makerOrders.length}</b>
+              <small>${pendingCount} waiting reply</small>
+            </div>
+            <div class="stat-card">
+              <span>Craft Rating</span>
+              <b>${myMaker.rating.toFixed(1)} ★</b>
+              <small>${myMaker.reviewsCount} verified reviews</small>
+            </div>
+            <div class="stat-card">
+              <span>Gross Margin (7 Days)</span>
+              <b style="color:var(--forest);">₹${grossMargin}</b>
+              <small>Sales: ₹${totalSales} · Cost: ₹${totalCosts}</small>
+            </div>
+          </div>
+
+          <!-- 7-Day Demand & Sales Analytics Chart -->
+          <div class="workbench-pipeline">
+            <h3 style="font-family:var(--font-serif);font-size:20px;margin-bottom:6px;">Last 7 Days · Shop Performance &amp; Demand</h3>
+            <p style="font-size:12px;color:var(--ink-muted);margin-bottom:14px;">Simulated sales revenue, material costs, and order volume</p>
+
+            <div class="analytics-panel">
+              <div>
+                <div class="metric-line">
+                  <span>Total Payments Recorded</span>
+                  <b>₹${totalSales}</b>
+                </div>
+                <div class="metric-line">
+                  <span>Estimated Material Costs</span>
+                  <b>₹${totalCosts}</b>
+                </div>
+                <div class="metric-line">
+                  <span>Estimated Gross Margin</span>
+                  <b style="color:var(--forest);font-size:15px;">₹${grossMargin} (62%)</b>
+                </div>
+
+                <div class="chart-box">
+                  <div class="bar-col">
+                    <span class="bar-col-fill" style="height:45px;"></span>
+                    <span>Mon</span>
+                  </div>
+                  <div class="bar-col">
+                    <span class="bar-col-fill" style="height:60px;"></span>
+                    <span>Tue</span>
+                  </div>
+                  <div class="bar-col">
+                    <span class="bar-col-fill" style="height:35px;"></span>
+                    <span>Wed</span>
+                  </div>
+                  <div class="bar-col">
+                    <span class="bar-col-fill" style="height:75px;"></span>
+                    <span>Thu</span>
+                  </div>
+                  <div class="bar-col">
+                    <span class="bar-col-fill" style="height:90px;"></span>
+                    <span>Fri</span>
+                  </div>
+                  <div class="bar-col">
+                    <span class="bar-col-fill" style="height:110px;"></span>
+                    <span>Sat</span>
+                  </div>
+                  <div class="bar-col">
+                    <span class="bar-col-fill" style="height:80px;"></span>
+                    <span>Sun</span>
+                  </div>
+                </div>
+              </div>
+
+              <div style="background:var(--sand-light);padding:16px;border-radius:12px;">
+                <h4 style="font-family:var(--font-serif);font-size:16px;margin-bottom:8px;">Recent Demand by Craft Line</h4>
+                <div class="metric-line" style="border:0;padding:6px 0;">
+                  <span>Silk Blouse Stitching</span>
+                  <b>8 requests</b>
+                </div>
+                <div class="metric-line" style="border:0;padding:6px 0;">
+                  <span>Custom Kurta Fitting</span>
+                  <b>5 requests</b>
+                </div>
+                <div class="metric-line" style="border:0;padding:6px 0;">
+                  <span>Garment Alterations</span>
+                  <b>12 requests</b>
+                </div>
+                <div class="metric-line" style="border:0;padding:6px 0;">
+                  <span>Bridal Lehenga Structuring</span>
+                  <b>3 requests</b>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- KYC Verification Center -->
+          <div class="kyc-verification-box">
+            <div class="kyc-header">
+              <div>
+                <h3 style="font-family:var(--font-serif);font-size:20px;">Artisan KYC &amp; Verification Center (Item 1)</h3>
+                <p style="font-size:12px;color:var(--ink-muted);">Verified makers get the official Trust Checkmark, higher search rank, and customer trust.</p>
+              </div>
+              <span class="kyc-verified-badge" style="font-size:12px;padding:4px 10px;">
+                ✓ Verified Status: ${myMaker.kyc.status}
+              </span>
+            </div>
+
+            <div class="kyc-checklist">
+              <div class="kyc-item">
+                <div class="kyc-check-icon">✓</div>
+                <div>
+                  <b style="font-size:13px;display:block;">Govt Identity Proof</b>
+                  <small style="color:var(--ink-muted);font-size:11px;">${myMaker.kyc.docType} (${myMaker.kyc.docNumber})</small>
+                </div>
+              </div>
+              <div class="kyc-item">
+                <div class="kyc-check-icon">✓</div>
+                <div>
+                  <b style="font-size:13px;display:block;">Physical Workshop Location</b>
+                  <small style="color:var(--ink-muted);font-size:11px;">GPS Geolocation verified in Indiranagar</small>
+                </div>
+              </div>
+              <div class="kyc-item">
+                <div class="kyc-check-icon">✓</div>
+                <div>
+                  <b style="font-size:13px;display:block;">Trade / Craft Certification</b>
+                  <small style="color:var(--ink-muted);font-size:11px;">${myMaker.kyc.badge}</small>
+                </div>
+              </div>
+            </div>
+
+            <button class="btn btn-outline btn-sm" onclick="openKycEditModal('${myMaker.id}')">
+              Manage KYC Documents &amp; Upload Proof
+            </button>
+          </div>
+
+          <!-- Studio Orders Workflow -->
+          <div class="workbench-pipeline">
+            <h3 style="font-family:var(--font-serif);font-size:20px;margin-bottom:14px;">Active Workbench Queue</h3>
+            
+            ${!makerOrders.length ? '<p style="color:var(--ink-muted);">Workbench is currently clear.</p>' : `
+              <div style="display:flex;flex-direction:column;gap:14px;">
+                ${makerOrders.map(o => `
+                  <div style="background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+                    <div>
+                      <div style="display:flex;align-items:center;gap:8px;">
+                        <b style="font-family:var(--font-serif);font-size:16px;">${escapeHtml(o.service)}</b>
+                        <span class="kyc-verified-badge" style="background:var(--sand-light);color:var(--ink);">${o.status}</span>
+                      </div>
+                      <small style="color:var(--ink-muted);font-size:12px;">Customer: <b>${escapeHtml(o.customerName)}</b> · ₹${o.amount} · Needed: ${new Date(o.created).toLocaleDateString()}</small>
+                      ${o.note ? `<div style="font-size:11px;color:var(--ink);margin-top:4px;">Details: "${escapeHtml(o.note)}"</div>` : ''}
+                    </div>
+
+                    <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                      ${o.status === 'Requested' ? `
+                        <button class="btn btn-primary btn-sm" onclick="updateOrderStatus('${o.id}', 'Accepted')">Accept Order</button>
+                        <button class="btn btn-coral-soft btn-sm" onclick="openRejectOrderModal('${o.id}')">Decline (Choose Reason)</button>
+                      ` : ''}
+                      ${o.status === 'Accepted' ? `
+                        <button class="btn btn-orange btn-sm" onclick="updateOrderStatus('${o.id}', 'In progress')">Start Work (On Bench)</button>
+                      ` : ''}
+                      ${o.status === 'In progress' ? `
+                        <button class="btn btn-primary btn-sm" onclick="updateOrderStatus('${o.id}', 'Ready')">Mark Ready for Pickup</button>
+                      ` : ''}
+                      ${o.status === 'Ready' ? `
+                        <button class="btn btn-soft btn-sm" onclick="updateOrderStatus('${o.id}', 'Collected')">Mark Collected</button>
+                      ` : ''}
+                      ${o.status === 'Collected' ? `
+                        <span style="font-size:12px;color:var(--forest);font-weight:700;">✓ Completed</span>
+                      ` : ''}
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            `}
+          </div>
+
+          <!-- Product Catalog Management -->
+          <div class="workbench-pipeline">
+            <div class="pipeline-header">
+              <h3 style="font-family:var(--font-serif);font-size:20px;">Your Listed Products (${myMaker.products?.length || 0})</h3>
+              <button class="btn btn-primary btn-sm" onclick="openAddProductModal('${myMaker.id}')">+ Add Product</button>
+            </div>
+
+            <div class="products-grid">
+              ${(myMaker.products || []).map(p => `
+                <div class="product-card">
+                  <div class="product-img-wrap">
+                    <img class="product-img" src="${p.photo}" onerror="handleImgError(this, '${myMaker.craft}')">
+                  </div>
+                  <div class="product-body">
+                    <h3>${escapeHtml(p.title)}</h3>
+                    <p class="product-desc">${escapeHtml(p.desc)}</p>
+                    <div class="product-foot">
+                      <div class="product-price">₹${p.price}</div>
+                      <small style="color:var(--ink-muted);font-size:11px;">~${p.timeMin} mins</small>
+                    </div>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    /* ==========================================================================
+       SCREEN 5: REGISTER MAKER SHOP (M1 / M2 from Design Guide)
+       ========================================================================== */
+    function renderRegisterMakerPage() {
+      return `
+        <div style="max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:22px;">
+          <div class="section-head">
+            <div>
+              <div style="font-size:11px;font-weight:700;text-transform:uppercase;color:var(--forest);">Maker Onboarding (M1 &amp; M2)</div>
+              <h2>Open Your Neighbourhood Atelier</h2>
+              <p>List your craft services, set live queue parameters, and receive customer orders</p>
+            </div>
+          </div>
+
+          <div class="workbench-pipeline">
+            <form onsubmit="handleRegisterMakerSubmit(event)">
+              <div class="form-group">
+                <label>Shop / Atelier Name</label>
+                <input type="text" name="name" class="form-control" required placeholder="e.g. Maya's Ceramic Studio, Kumar Tailors">
+              </div>
+
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+                <div class="form-group">
+                  <label>Primary Craft</label>
+                  <select name="craft" class="form-control" required>
+                    <option value="Tailoring">Tailoring &amp; Alteration</option>
+                    <option value="Footwear">Footwear Repair &amp; Cobbler</option>
+                    <option value="Cakes">Cakes &amp; Artisanal Bakes</option>
+                    <option value="Ceramics">Pottery &amp; Ceramics</option>
+                    <option value="Jewelry">Jewelry &amp; Metalsmithing</option>
+                    <option value="Woodwork">Woodworking &amp; Joinery</option>
+                    <option value="Other">Other Craft / Custom</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Number of Workbench Artisans</label>
+                  <input type="number" name="workers" class="form-control" value="1" min="1" max="10" required>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Contact Phone / WhatsApp</label>
+                <input type="tel" name="phone" class="form-control" required value="+91 98765 43210">
+              </div>
+
+              <div class="form-group">
+                <label>Workshop Physical Address (Indiranagar, Bengaluru)</label>
+                <input type="text" name="address" class="form-control" required placeholder="e.g. 15, 12th Main, HAL 2nd Stage">
+              </div>
+
+              <div class="form-group">
+                <label>Starting Service &amp; Price</label>
+                <input type="text" name="service" class="form-control" required placeholder="e.g. Blouse stitching · ₹400">
+              </div>
+
+              <div class="form-group">
+                <label>Government ID / KYC Registration (Item 1)</label>
+                <input type="text" name="kyc" class="form-control" required placeholder="e.g. Aadhaar / MSME / Trade License / FSSAI">
+              </div>
+
+              <div class="form-group">
+                <label>Upload Workshop Cover Photo (Auto-compressed safely)</label>
+                <div class="upload-zone" onclick="document.getElementById('new-shop-photo').click()">
+                  <input type="file" id="new-shop-photo" accept="image/*" onchange="previewUploadedImage(this, 'shop-preview-img')">
+                  <div style="font-size:12px;font-weight:600;">Upload atelier cover photo</div>
+                  <small style="color:var(--ink-muted);font-size:10px;">Safely stored with in-browser canvas compression</small>
+                  <img id="shop-preview-img" class="upload-preview">
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-primary" style="width:100%;margin-top:10px;">
+                Publish Shop &amp; Open Live Queue →
+              </button>
+            </form>
+          </div>
+        </div>
+      `;
+    }
+
+    async function handleRegisterMakerSubmit(e) {
+      e.preventDefault();
+      const form = e.target;
+      const fileInput = document.getElementById('new-shop-photo');
+      let coverPhoto = 'https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=800&auto=format&fit=crop&q=80';
+
+      if (fileInput.files?.[0]) {
+        try {
+          coverPhoto = await compressImageFile(fileInput.files[0], 600, 0.75);
+        } catch (err) {
+          console.warn('Cover photo compression fallback:', err);
+        }
+      }
+
+      const id = 'maker-' + Date.now().toString().slice(-4);
+      const newMaker = {
+        id: id,
+        ownerId: db.currentUser,
+        name: form.name.value,
+        craft: form.craft.value,
+        desc: `${form.craft.value} studio handcrafted with care.`,
+        rating: 5.0,
+        reviewsCount: 1,
+        workers: Number(form.workers.value) || 1,
+        queue: 0,
+        baseMinPerOrder: 45,
+        priceRange: 'From ₹200',
+        startingRate: 200,
+        distance: 0.6,
+        address: form.address.value,
+        city: 'Bengaluru',
+        lat: 12.9716,
+        lng: 77.6412,
+        paused: false,
+        kyc: {
+          status: 'Verified',
+          docType: form.kyc.value,
+          docNumber: 'REG-' + Date.now().toString().slice(-4),
+          verifiedDate: new Date().toISOString().split('T')[0],
+          badge: 'Registered Artisan'
+        },
+        coverPhoto: coverPhoto,
+        products: [
+          { id: 'p-' + Date.now(), title: form.service.value, price: 250, timeMin: 45, desc: 'Signature craft offering.', photo: coverPhoto }
+        ]
+      };
+
+      db.makers.unshift(newMaker);
+      saveDatabase();
+      showToast('Atelier registered and open on the live radar map!');
+      navigate('maker-detail', id);
+    }
+
+    /* ==========================================================================
+       SCREEN 6: INVOICE & DEMO PAYMENT SCREEN
+       ========================================================================== */
+    function renderInvoiceAndPaymentPage() {
+      const order = db.orders[0] || {
+        id: 'ord-sample',
+        service: 'Silk Blouse Stitching',
+        amount: 450,
+        created: Date.now(),
+        customerName: 'Priya Raman',
+        status: 'In progress',
+        paymentStatus: 'Unpaid'
+      };
+      const maker = db.makers[0];
+
+      return `
+        <div style="max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:20px;">
+          <div class="section-head">
+            <div>
+              <div style="font-size:11px;font-weight:700;text-transform:uppercase;color:var(--forest);">Billing &amp; Settlement</div>
+              <h2>Order Invoice #${order.id}</h2>
+              <p>Prototype checkout &amp; printable digital invoice</p>
+            </div>
+            <button class="btn btn-outline btn-sm" onclick="window.print()">
+              🖨 Print Invoice
+            </button>
+          </div>
+
+          <div class="workbench-pipeline" style="padding:32px;">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1px solid var(--line);padding-bottom:18px;margin-bottom:20px;">
+              <div>
+                <div class="brand-title">Craft<span>Pulse</span></div>
+                <small style="color:var(--ink-muted);">Neighbourhood Artisan Network · Indiranagar, Bengaluru</small>
+              </div>
+              <div style="text-align:right;">
+                <b style="font-family:var(--font-serif);font-size:18px;">INVOICE</b>
+                <div style="font-size:12px;color:var(--ink-muted);">Date: ${new Date(order.created).toLocaleDateString()}</div>
+              </div>
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;">
+              <div>
+                <small style="font-size:10px;text-transform:uppercase;color:var(--ink-muted);font-weight:700;">FROM (MAKER):</small>
+                <p><b>${escapeHtml(maker.name)}</b><br>${maker.address}, Bengaluru<br>KYC: ${maker.kyc.badge}</p>
+              </div>
+              <div>
+                <small style="font-size:10px;text-transform:uppercase;color:var(--ink-muted);font-weight:700;">BILLED TO (NEIGHBOUR):</small>
+                <p><b>${escapeHtml(order.customerName)}</b><br>Indiranagar, Bengaluru<br>Order ID: ${order.id}</p>
+              </div>
+            </div>
+
+            <div class="metric-line">
+              <span>Item / Service: <b>${escapeHtml(order.service)}</b></span>
+              <b>₹${order.amount}</b>
+            </div>
+            <div class="metric-line">
+              <span>Platform Pilot Fee</span>
+              <b>₹0 (Waived)</b>
+            </div>
+            <div class="metric-line" style="font-size:16px;border-top:2px solid var(--line);margin-top:10px;">
+              <span>Total Amount Due</span>
+              <b style="font-family:var(--font-serif);font-size:22px;color:var(--forest);">₹${order.amount}</b>
+            </div>
+
+            <div style="background:var(--sand-light);border-radius:10px;padding:16px;margin:20px 0;">
+              <h4 style="font-family:var(--font-serif);font-size:16px;margin-bottom:8px;">Demo Payment Options</h4>
+              <div style="display:flex;gap:12px;flex-wrap:wrap;">
+                <button class="btn btn-primary" onclick="recordDemoPayment('${order.id}')">
+                  Record UPI Demo Payment (₹${order.amount})
+                </button>
+                <button class="btn btn-outline" onclick="recordDemoPayment('${order.id}')">
+                  Record Card Demo Payment
+                </button>
+                <button class="btn btn-soft" onclick="recordDemoPayment('${order.id}')">
+                  Pay at Atelier Counter
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    /* ==========================================================================
+       SCREEN 7: FULL UI DESIGN GUIDE VIEWER (15 Screens + 9 States from Doc)
+       ========================================================================== */
+    function renderDesignGuideViewer() {
+      const guideData = [
+        { id: 'C1', title: 'Welcome and Choose Role', purpose: 'Splits the app into a customer side and a maker side.', shows: 'Chosen role cards (Customer / Maker).', taps: 'Pick a role, Continue, Log in.' },
+        { id: 'C2', title: 'Log in & Authentication', purpose: 'Gets the person into their account quickly.', shows: 'Email, password, role tabs.', taps: 'Switch tabs, Log in, Forgot password.' },
+        { id: 'C2b', title: 'Sign up / Registration', purpose: 'Creates a customer or maker account in under a minute.', shows: 'Name, email, mobile number, password.', taps: 'Create account, Log in.' },
+        { id: 'C3', title: 'Home: Find a Maker', purpose: 'The main screen showing nearby makers and live queue.', shows: 'Shop name, rating, distance, open/busy, queue, wait time.', taps: 'Search, filter chips, sort, open maker, switch to map.' },
+        { id: 'C4', title: 'Radar Map View', purpose: 'Shows where makers are located around the customer.', shows: 'Shop location pins, selected maker summary card.', taps: 'Tap a pin, View profile, Order.' },
+        { id: 'C5', title: 'Maker Profile & Products', purpose: 'Gives the customer everything needed to trust and choose a maker.', shows: 'Services, prices, queue, wait time, phone, KYC badge.', taps: 'Call, WhatsApp, Place order.' },
+        { id: 'C6', title: 'Order Form & Photo Upload', purpose: 'Collects the details a maker needs to accept a job.', shows: 'Service, fabric, date needed, reference photo.', taps: 'Fill the form, upload image, Send request.' },
+        { id: 'C7', title: 'My Orders & Live Tracking', purpose: 'Shows order moving live through workbench stages.', shows: 'Order status, history stepper, expected ready time.', taps: 'Directions, Pay, Mark Collected.' },
+        { id: 'C8', title: 'Leave a Review', purpose: 'Builds trust after order is marked collected.', shows: 'Star rating, quick tags, comment.', taps: 'Rate, pick tags, Submit review.' },
+        { id: 'M1', title: 'Maker Setup: Step 1', purpose: 'Creates maker profile. Worker count feeds the wait engine.', shows: 'Shop name, phone, craft, number of workers.', taps: 'Fill the form, Continue.' },
+        { id: 'M2', title: 'Services, Hours & Map Pin', purpose: 'Lets makers list services, prices, minutes per job.', shows: 'Services, prices, minutes, hours, map location.', taps: 'Add a service, place pin, Save.' },
+        { id: 'M3', title: 'Maker Studio Dashboard', purpose: 'A quick picture of the day for the artisan.', shows: 'New, active and done counts, workload, current wait.', taps: 'Review requests, open orders.' },
+        { id: 'M4', title: 'New Requests & Rejection Reasons', purpose: 'Lets maker accept or reject with a reason (Too busy, Out of fabric, Closed, Other).', shows: 'Customer name, request details, reject reasons.', taps: 'Accept, Reject, choose reason.' },
+        { id: 'M5', title: 'Active Orders & Progress Stepper', purpose: 'One tap moves an order forward to Next Stage.', shows: 'Order stage, expected ready time, time left.', taps: 'Next stage (Start work, Mark ready).' },
+        { id: 'M6', title: 'Services & Profile Edit', purpose: 'Keeps the shop accurate; closing stops new requests.', shows: 'Open or closed toggle, services, workers, phone.', taps: 'Edit service, toggle open, Save.' },
+        { id: 'S1', title: 'System State: Empty Workbench', purpose: 'Invites maker to act instead of showing a blank screen.', shows: 'Prompt to complete shop profile.', taps: 'Preview my shop.' },
+        { id: 'S2', title: 'System State: Loading Skeleton', purpose: 'Grey placeholder cards fade in/out to shorten perceived wait.', shows: 'Pulsing placeholder boxes.', taps: 'None.' },
+        { id: 'S3', title: 'System State: Error Code Handled', purpose: 'Says what happened and how to fix with support code.', shows: 'A loose thread · LOOP-204 error.', taps: 'Try again.' }
+      ];
+
+      return `
+        <div style="display:flex;flex-direction:column;gap:24px;">
+          <div class="section-head">
+            <div>
+              <div style="font-size:11px;font-weight:700;text-transform:uppercase;color:var(--forest);">UI Design Guide &amp; Architecture Reference</div>
+              <h2>LocalLoop &amp; CraftPulse Design Specification</h2>
+              <p>All 15 core app screens &amp; system states from the design guide, rendered side-by-side with Light &amp; Dark mode views</p>
+            </div>
+            <div style="display:flex;gap:8px;">
+              <button class="btn btn-primary btn-sm" onclick="navigate('discover')">Explore Live App</button>
+              <button class="btn btn-outline btn-sm" onclick="openRoleChooserModal()">Launch Role Chooser (C1)</button>
+            </div>
+          </div>
+
+          <div style="background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:24px;">
+            ${guideData.map(screen => `
+              <div class="guide-card-row">
+                <div class="guide-pair">
+                  <!-- Light Mode Mock -->
+                  <div class="phone-mock">
+                    <span style="font-size:9px;text-transform:uppercase;color:var(--orange);font-weight:700;">${screen.id} · LIGHT MODE</span>
+                    <b style="font-family:var(--font-serif);font-size:14px;">${screen.title}</b>
+                    <p style="font-size:11px;color:var(--ink-muted);line-height:1.4;">${screen.shows}</p>
+                    <div style="margin-top:auto;border-top:1px solid #E4DCC8;padding-top:6px;font-size:10px;color:var(--forest);font-weight:600;">
+                      Action: ${screen.taps}
+                    </div>
+                  </div>
+
+                  <!-- Dark Mode Mock -->
+                  <div class="phone-mock dark-mock">
+                    <span style="font-size:9px;text-transform:uppercase;color:#F0925F;font-weight:700;">${screen.id} · DARK MODE</span>
+                    <b style="font-family:var(--font-serif);font-size:14px;color:#F1EDE0;">${screen.title}</b>
+                    <p style="font-size:11px;color:#A9B3AE;line-height:1.4;">${screen.shows}</p>
+                    <div style="margin-top:auto;border-top:1px solid #2E3F38;padding-top:6px;font-size:10px;color:#4FB08A;font-weight:600;">
+                      Action: ${screen.taps}
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <span class="kyc-verified-badge" style="margin-bottom:6px;">Frame ID: ${screen.id}</span>
+                  <h3 style="font-family:var(--font-serif);font-size:20px;margin-bottom:6px;">${screen.title}</h3>
+                  <div style="margin:8px 0;font-size:13px;">
+                    <b style="color:var(--orange);">Purpose:</b> <span style="color:var(--ink-muted);">${screen.purpose}</span>
+                  </div>
+                  <div style="margin:8px 0;font-size:13px;">
+                    <b style="color:var(--forest);">Data Displayed:</b> <span style="color:var(--ink-muted);">${screen.shows}</span>
+                  </div>
+                  <div style="margin:8px 0;font-size:13px;">
+                    <b style="color:var(--ink);">Interactive Triggers:</b> <span style="color:var(--ink-muted);">${screen.taps}</span>
+                  </div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    /* ==========================================================================
+       SCREEN 8: USER PROFILE & KYC
+       ========================================================================== */
+    function renderProfilePage() {
+      const u = db.users.find(x => x.id === db.currentUser) || db.users[0];
+
+      return `
+        <div style="max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:22px;">
+          <div class="section-head">
+            <div>
+              <h2>User Profile &amp; Trust Identity</h2>
+              <p>Manage contact details, saved makers, and KYC verification status</p>
+            </div>
+            <button class="btn btn-outline btn-sm" onclick="openRoleChooserModal()">
+              Switch Active Role (C1)
+            </button>
+          </div>
+
+          <div class="workbench-pipeline">
+            <div style="display:flex;align-items:center;gap:18px;margin-bottom:20px;">
+              <div style="width:64px;height:64px;border-radius:50%;background:var(--forest);color:#FFF;display:grid;place-items:center;font-family:var(--font-serif);font-size:26px;">
+                ${u.name.charAt(0)}
+              </div>
+              <div>
+                <h3 style="font-family:var(--font-serif);font-size:22px;">${escapeHtml(u.name)}</h3>
+                <p style="color:var(--ink-muted);font-size:13px;">${escapeHtml(u.email)} · ${escapeHtml(u.phone)}</p>
+                <div style="margin-top:4px;">
+                  <span class="kyc-verified-badge">
+                    ✓ KYC: ${u.kycType}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div style="border-top:1px solid var(--line);padding-top:16px;">
+              <h4 style="font-family:var(--font-serif);font-size:18px;margin-bottom:10px;">Saved Neighbourhood Makers (${db.savedMakers.length})</h4>
+              <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                ${db.savedMakers.map(id => {
+                  const m = db.makers.find(x => x.id === id);
+                  if (!m) return '';
+                  return `
+                    <div style="background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:8px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;" onclick="navigate('maker-detail', '${m.id}')">
+                      <b>${escapeHtml(m.name)}</b>
+                      <span style="color:var(--forest);font-size:12px;">→</span>
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    /* ==========================================================================
+       MODALS: ROLE CHOOSER (C1), REJECT REASONS (M4), ORDERS & DATABASE
+       ========================================================================== */
+    function openRoleChooserModal() {
+      const modal = document.getElementById('modal-content');
+      modal.innerHTML = `
+        <div class="modal-head">
+          <div>
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;color:var(--forest);">Welcome to CraftPulse (C1)</div>
+            <h2>Choose Your Experience Role</h2>
+          </div>
+          <button class="modal-close" onclick="closeModal()">×</button>
+        </div>
+
+        <p style="color:var(--ink-muted);font-size:13px;margin-bottom:18px;">
+          Explore the platform from either perspective:
+        </p>
+
+        <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:20px;">
+          <div style="border:2px solid ${db.currentUser === 'user_priya' ? 'var(--forest)' : 'var(--line)'};border-radius:14px;padding:18px;cursor:pointer;background:var(--bg);" onclick="selectRole('user_priya')">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <h3 style="font-family:var(--font-serif);font-size:18px;">🧑 I need something made (Customer)</h3>
+              ${db.currentUser === 'user_priya' ? '<span class="kyc-verified-badge">ACTIVE</span>' : ''}
+            </div>
+            <p style="font-size:12px;color:var(--ink-muted);margin-top:4px;">Browse neighbourhood tailors, cobblers and bakers, track live workbench queue times, and manage orders.</p>
+          </div>
+
+          <div style="border:2px solid ${db.currentUser === 'user_asha' ? 'var(--forest)' : 'var(--line)'};border-radius:14px;padding:18px;cursor:pointer;background:var(--bg);" onclick="selectRole('user_asha')">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <h3 style="font-family:var(--font-serif);font-size:18px;">👩‍🔧 I make things (Artisan Maker)</h3>
+              ${db.currentUser === 'user_asha' ? '<span class="kyc-verified-badge">ACTIVE</span>' : ''}
+            </div>
+            <p style="font-size:12px;color:var(--ink-muted);margin-top:4px;">Manage workbench queue, accept requests, update job stages, upload product pictures, and view sales analytics.</p>
+          </div>
+        </div>
+
+        <button class="btn btn-outline" style="width:100%;" onclick="closeModal()">Close</button>
+      `;
+      document.getElementById('modal-container').classList.add('show');
+    }
+
+    function selectRole(userId) {
+      db.currentUser = userId;
+      db.activeRole = userId === 'user_asha' ? 'maker' : 'customer';
+      saveDatabase();
+      closeModal();
+      showToast(userId === 'user_asha' ? 'Switched to Maker Studio mode' : 'Switched to Customer mode');
+      navigate(userId === 'user_asha' ? 'studio' : 'discover');
+    }
+
+    function openRejectOrderModal(orderId) {
+      const modal = document.getElementById('modal-content');
+      modal.innerHTML = `
+        <div class="modal-head">
+          <div>
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;color:var(--red);">Decline Order (M4)</div>
+            <h2>Select Reason for Declining</h2>
+          </div>
+          <button class="modal-close" onclick="closeModal()">×</button>
+        </div>
+
+        <p style="color:var(--ink-muted);font-size:13px;margin-bottom:16px;">
+          Giving a reason lets the customer quickly choose another neighbourhood maker:
+        </p>
+
+        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:18px;">
+          <label style="border:1px solid var(--line);border-radius:10px;padding:12px;display:flex;align-items:center;gap:10px;cursor:pointer;">
+            <input type="radio" name="reject_reason" value="Too busy" checked>
+            <span>Too busy / Workbench queue full</span>
+          </label>
+          <label style="border:1px solid var(--line);border-radius:10px;padding:12px;display:flex;align-items:center;gap:10px;cursor:pointer;">
+            <input type="radio" name="reject_reason" value="Out of fabric">
+            <span>Out of required materials / fabric</span>
+          </label>
+          <label style="border:1px solid var(--line);border-radius:10px;padding:12px;display:flex;align-items:center;gap:10px;cursor:pointer;">
+            <input type="radio" name="reject_reason" value="Closed">
+            <span>Shop closed for maintenance / holiday</span>
+          </label>
+          <!-- "Other" Rejection Reason Option -->
+          <label style="border:1px solid var(--line);border-radius:10px;padding:12px;display:flex;align-items:center;gap:10px;cursor:pointer;">
+            <input type="radio" name="reject_reason" value="Other">
+            <span>Other custom reason</span>
+          </label>
+        </div>
+
+        <button class="btn btn-coral-soft" style="width:100%;" onclick="confirmRejectOrder('${orderId}')">
+          Confirm Decline Order
+        </button>
+      `;
+      document.getElementById('modal-container').classList.add('show');
+    }
+
+    function confirmRejectOrder(orderId) {
+      const sel = document.querySelector('input[name="reject_reason"]:checked')?.value || 'Other';
+      const o = db.orders.find(x => x.id === orderId);
+      if (o) {
+        o.status = 'Rejected';
+        o.rejectReason = sel;
+        const m = db.makers.find(x => x.id === o.makerId);
+        if (m) m.queue = Math.max(0, (Number(m.queue) || 0) - 1);
+        saveDatabase();
+        closeModal();
+        showToast(`Order declined: ${sel}`);
+        renderCurrentPage();
+      }
+    }
+
+    function openOrderModal(makerId, prefilledService = '', prefilledPrice = null) {
+      const m = db.makers.find(x => x.id === makerId);
+      if (!m) return;
+
+      const modal = document.getElementById('modal-content');
+      modal.innerHTML = `
+        <div class="modal-head">
+          <div>
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;color:var(--forest);">Request Custom Craft</div>
+            <h2>Order from ${escapeHtml(m.name)}</h2>
+          </div>
+          <button class="modal-close" onclick="closeModal()">×</button>
+        </div>
+
+        <form id="order-form" onsubmit="handleOrderSubmit(event, '${m.id}')">
+          <div class="form-group">
+            <label>Service or Product Needed</label>
+            <input type="text" name="service" class="form-control" required value="${escapeHtml(prefilledService || (m.products?.[0]?.title || 'Custom Service'))}" placeholder="e.g. Blouse stitching, sole repair, chocolate cake, Other custom piece">
+          </div>
+
+          <div class="form-group">
+            <label>Estimated Base Price (₹)</label>
+            <input type="number" name="amount" class="form-control" required value="${prefilledPrice || m.startingRate}" min="50">
+          </div>
+
+          <div class="form-group">
+            <label>Date &amp; Time Needed</label>
+            <input type="date" name="date" class="form-control" required min="${new Date().toISOString().split('T')[0]}" value="${new Date(Date.now() + 86400000).toISOString().split('T')[0]}">
+          </div>
+
+          <div class="form-group">
+            <label>Details &amp; Measurements for Maker</label>
+            <textarea name="note" class="form-control" placeholder="Measurements, occasion, fabric supplied, custom instructions, or Other notes..."></textarea>
+          </div>
+
+          <!-- Picture Upload Feature (Item 4: Canvas compressed in-browser) -->
+          <div class="form-group">
+            <label>Upload Reference Photo (Fabric / Design / Shoe / Other)</label>
+            <div class="upload-zone" onclick="document.getElementById('order-photo-input').click()">
+              <input type="file" id="order-photo-input" accept="image/*" onchange="previewUploadedImage(this, 'order-preview-img')">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin:0 auto 4px;color:var(--ink-muted);"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              <div style="font-size:12px;font-weight:600;">Click to upload reference photo</div>
+              <small style="font-size:10px;color:var(--ink-muted);">Auto-compressed safely for database storage</small>
+              <img id="order-preview-img" class="upload-preview">
+            </div>
+          </div>
+
+          <div style="background:var(--sand-light);border-radius:10px;padding:12px;margin-bottom:16px;font-size:12px;">
+            ⚡ <b>Live Turnaround:</b> Expected ready in <b>${formatWaitLabel(calculateMakerWaitMinutes(m))}</b> based on current workbench queue.
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width:100%;">
+            Send Order Request to Maker →
+          </button>
+        </form>
+      `;
+
+      document.getElementById('modal-container').classList.add('show');
+    }
+
+    function openProductOrderModal(makerId, productId) {
+      const m = db.makers.find(x => x.id === makerId);
+      const p = m?.products?.find(x => x.id === productId);
+      if (!m || !p) return;
+      openOrderModal(makerId, p.title, p.price);
+    }
+
+    async function handleOrderSubmit(e, makerId) {
+      e.preventDefault();
+      const form = e.target;
+      const service = form.service.value;
+      const amount = Number(form.amount.value);
+      const note = form.note.value;
+
+      const m = db.makers.find(x => x.id === makerId);
+      const waitMin = calculateMakerWaitMinutes(m);
+
+      const newOrder = {
+        id: 'ord-' + Date.now().toString().slice(-4),
+        makerId: makerId,
+        customerId: db.currentUser,
+        customerName: db.users.find(u => u.id === db.currentUser)?.name || 'Neighbour Customer',
+        service: service,
+        amount: amount,
+        note: note,
+        status: 'Requested',
+        created: Date.now(),
+        estimatedMinutes: waitMin,
+        readyAt: Date.now() + (waitMin * 60000),
+        paymentStatus: 'Unpaid'
+      };
+
+      db.orders.unshift(newOrder);
+      if (m) m.queue = (Number(m.queue) || 0) + 1;
+      saveDatabase();
+
+      closeModal();
+      showToast(`Request sent to ${m.name}! Placed in live queue.`);
+      navigate('orders');
+    }
+
+    function openAddProductModal(makerId) {
+      const m = db.makers.find(x => x.id === makerId);
+      const modal = document.getElementById('modal-content');
+      modal.innerHTML = `
+        <div class="modal-head">
+          <div>
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;color:var(--forest);">Catalog Management</div>
+            <h2>Add Product to ${escapeHtml(m.name)}</h2>
+          </div>
+          <button class="modal-close" onclick="closeModal()">×</button>
+        </div>
+
+        <form onsubmit="handleAddProductSubmit(event, '${m.id}')">
+          <div class="form-group">
+            <label>Product or Craft Service Title</label>
+            <input type="text" name="title" class="form-control" required placeholder="e.g. Sourdough Focaccia, Ankle Boot Resole, Other custom piece">
+          </div>
+
+          <div class="form-group">
+            <label>Price (₹)</label>
+            <input type="number" name="price" class="form-control" required min="20" placeholder="e.g. 450">
+          </div>
+
+          <div class="form-group">
+            <label>Approximate Crafting Minutes</label>
+            <input type="number" name="timeMin" class="form-control" required min="10" value="60">
+          </div>
+
+          <div class="form-group">
+            <label>Short Description &amp; Materials</label>
+            <textarea name="desc" class="form-control" required placeholder="Details about fabric, ingredients, craft technique..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Product Photo (Item 4: Auto-compressed safely)</label>
+            <div class="upload-zone" onclick="document.getElementById('new-prod-photo').click()">
+              <input type="file" id="new-prod-photo" accept="image/*" onchange="previewUploadedImage(this, 'prod-preview-img')">
+              <div style="font-size:12px;font-weight:600;">Choose product image</div>
+              <small style="color:var(--ink-muted);font-size:10px;">Compressed via HTML5 Canvas into lightweight base64</small>
+              <img id="prod-preview-img" class="upload-preview">
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width:100%;">
+            Publish Product to Storefront
+          </button>
+        </form>
+      `;
+      document.getElementById('modal-container').classList.add('show');
+    }
+
+    async function handleAddProductSubmit(e, makerId) {
+      e.preventDefault();
+      const form = e.target;
+      const fileInput = document.getElementById('new-prod-photo');
+      let photoUrl = 'https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=500&auto=format&fit=crop&q=80';
+
+      if (fileInput.files?.[0]) {
+        try {
+          photoUrl = await compressImageFile(fileInput.files[0], 600, 0.75);
+        } catch (err) {
+          console.warn('Compress fallback:', err);
+        }
+      }
+
+      const m = db.makers.find(x => x.id === makerId);
+      if (m) {
+        if (!m.products) m.products = [];
+        m.products.push({
+          id: 'p-' + Date.now().toString().slice(-4),
+          title: form.title.value,
+          price: Number(form.price.value),
+          timeMin: Number(form.timeMin.value),
+          desc: form.desc.value,
+          photo: photoUrl
+        });
+        saveDatabase();
+      }
+
+      closeModal();
+      showToast('New product added to catalogue!');
+      renderCurrentPage();
+    }
+
+    function openKycEditModal(makerId) {
+      const m = db.makers.find(x => x.id === makerId);
+      const modal = document.getElementById('modal-content');
+      modal.innerHTML = `
+        <div class="modal-head">
+          <div>
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;color:var(--forest);">Trust &amp; Verification</div>
+            <h2>Artisan KYC Management</h2>
+          </div>
+          <button class="modal-close" onclick="closeModal()">×</button>
+        </div>
+
+        <form onsubmit="handleKycSubmit(event, '${m.id}')">
+          <div class="form-group">
+            <label>Government ID / Registration Type</label>
+            <select name="docType" class="form-control">
+              <option value="Aadhaar & Trade License" ${m.kyc.docType.includes('Aadhaar') ? 'selected' : ''}>Aadhaar &amp; Trade License</option>
+              <option value="MSME Udyam Registration" ${m.kyc.docType.includes('MSME') ? 'selected' : ''}>MSME Udyam Registration</option>
+              <option value="FSSAI Food Safety License" ${m.kyc.docType.includes('FSSAI') ? 'selected' : ''}>FSSAI Food Safety License</option>
+              <option value="GST & Karnataka Trade License" ${m.kyc.docType.includes('GST') ? 'selected' : ''}>GST &amp; Karnataka Trade License</option>
+              <option value="BIS Hallmark License" ${m.kyc.docType.includes('BIS') ? 'selected' : ''}>BIS Hallmark License</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Document Registration Number</label>
+            <input type="text" name="docNumber" class="form-control" value="${escapeHtml(m.kyc.docNumber)}" required>
+          </div>
+
+          <div class="form-group">
+            <label>Verification Trust Badge Label</label>
+            <input type="text" name="badge" class="form-control" value="${escapeHtml(m.kyc.badge)}" required placeholder="e.g. Master Guild Certified, FSSAI Certified">
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width:100%;">
+            Update Verified KYC Credentials
+          </button>
+        </form>
+      `;
+      document.getElementById('modal-container').classList.add('show');
+    }
+
+    function handleKycSubmit(e, makerId) {
+      e.preventDefault();
+      const form = e.target;
+      const m = db.makers.find(x => x.id === makerId);
+      if (m) {
+        m.kyc.docType = form.docType.value;
+        m.kyc.docNumber = form.docNumber.value;
+        m.kyc.badge = form.badge.value;
+        m.kyc.status = 'Verified';
+        saveDatabase();
+      }
+      closeModal();
+      showToast('KYC Credentials successfully verified!');
+      renderCurrentPage();
+    }
+
+    function openDatabaseModal() {
+      const modal = document.getElementById('modal-content');
+      const dbJson = JSON.stringify(db, null, 2);
+      const dataSize = (new Blob([dbJson]).size / 1024).toFixed(1);
+
+      modal.innerHTML = `
+        <div class="modal-head">
+          <div>
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;color:var(--forest);">Persistence &amp; Sync Center</div>
+            <h2>Database Link &amp; State Manager (Item 8)</h2>
+          </div>
+          <button class="modal-close" onclick="closeModal()">×</button>
+        </div>
+
+        <div style="margin-bottom:18px;">
+          <p style="font-size:13px;color:var(--ink-muted);line-height:1.5;">
+            CraftPulse uses a client-side unified database with live <b>BroadcastChannel</b> syncing across all tabs. You can export the database as a portable JSON file, import backups, or reset to sample data.
+          </p>
+        </div>
+
+        <div class="stats-row" style="margin-bottom:18px;grid-template-columns:1fr 1fr;">
+          <div class="stat-card">
+            <span>Storage Size</span>
+            <b>${dataSize} KB</b>
+            <small>Stored in LocalStorage &amp; Memory</small>
+          </div>
+          <div class="stat-card">
+            <span>Records Count</span>
+            <b>${db.makers.length} Makers</b>
+            <small>${db.orders.length} Orders · ${db.users.length} Users</small>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px;">
+          <button class="btn btn-primary" onclick="exportDatabaseFile()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Export Database (Download craftpulse-db.json)
+          </button>
+
+          <label class="btn btn-outline" style="cursor:pointer;display:inline-flex;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            Import Database (Upload JSON File)
+            <input type="file" accept=".json" style="display:none;" onchange="importDatabaseFile(this)">
+          </label>
+
+          <button class="btn btn-coral-soft" onclick="resetDatabaseToSeed()">
+            Reset to Curated Default Sample Data
+          </button>
+        </div>
+
+        <small style="color:var(--ink-muted);font-size:11px;">
+          Tip: Open CraftPulse in two separate browser windows to watch live order stage updates and queue progress sync automatically!
+        </small>
+      `;
+
+      document.getElementById('modal-container').classList.add('show');
+    }
+
+    function exportDatabaseFile() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(db, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `craftpulse-db-${Date.now()}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+      showToast('Database exported successfully!');
+    }
+
+    function importDatabaseFile(input) {
+      const file = input.files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const parsed = JSON.parse(e.target.result);
+          if (parsed.makers && parsed.users) {
+            db = parsed;
+            saveDatabase();
+            closeModal();
+            showToast('Database successfully restored from JSON!');
+            renderCurrentPage();
+          } else {
+            alert('Invalid database format.');
+          }
+        } catch (err) {
+          alert('Failed to parse JSON file.');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function resetDatabaseToSeed() {
+      if (confirm('Reset all makers, orders, and products to original demo state?')) {
+        db = createSeedData();
+        saveDatabase();
+        closeModal();
+        showToast('Database restored to default demo state.');
+        renderCurrentPage();
+      }
+    }
+
+    function closeModal() {
+      document.getElementById('modal-container').classList.remove('show');
+    }
+
+    function previewUploadedImage(input, previewId) {
+      const file = input.files?.[0];
+      if (file) {
+        const preview = document.getElementById(previewId);
+        if (preview) {
+          preview.src = URL.createObjectURL(file);
+          preview.style.display = 'block';
+        }
+      }
+    }
+
+    /* Filters & Actions */
+    function setCategoryFilter(cat) {
+      categoryFilter = cat;
+      renderCurrentPage();
+    }
+
+    function setRateFilter(rate) {
+      rateFilter = rate;
+      renderCurrentPage();
+    }
+
+    function handleSearch(val) {
+      searchQuery = val;
+      renderCurrentPage();
+    }
+
+    function handlePriceSlider(val) {
+      maxPriceSlider = Number(val);
+      renderCurrentPage();
+    }
+
+    function handleSortChange(val) {
+      sortMode = val;
+      renderCurrentPage();
+    }
+
+    function setViewMode(mode) {
+      currentViewMode = mode;
+      renderCurrentPage();
+    }
+
+    function resetFilters() {
+      categoryFilter = 'All';
+      rateFilter = 'All';
+      searchQuery = '';
+      maxPriceSlider = 2500;
+      sortMode = 'wait';
+      renderCurrentPage();
+    }
+
+    function toggleSaveMaker(id) {
+      if (db.savedMakers.includes(id)) {
+        db.savedMakers = db.savedMakers.filter(x => x !== id);
+        showToast('Removed from saved makers');
+      } else {
+        db.savedMakers.push(id);
+        showToast('Maker saved to favourites ♥');
+      }
+      saveDatabase();
+      renderCurrentPage();
+    }
+
+    function toggleShopPause(makerId) {
+      const m = db.makers.find(x => x.id === makerId);
+      if (m) {
+        m.paused = !m.paused;
+        saveDatabase();
+        showToast(m.paused ? 'Shop paused. No new requests.' : 'Shop is open for requests!');
+        renderCurrentPage();
+      }
+    }
+
+    function updateOrderStatus(orderId, newStatus) {
+      const o = db.orders.find(x => x.id === orderId);
+      if (o) {
+        o.status = newStatus;
+        if (newStatus === 'Accepted') {
+          o.acceptedAt = Date.now();
+          o.readyAt = Date.now() + (o.estimatedMinutes * 60000);
+        } else if (newStatus === 'Ready') {
+          o.readyAt = Date.now();
+          const m = db.makers.find(x => x.id === o.makerId);
+          if (m) m.queue = Math.max(0, (Number(m.queue) || 0) - 1);
+        } else if (newStatus === 'Collected') {
+          o.collectedAt = Date.now();
+        }
+        saveDatabase();
+        showToast(`Order status updated to: ${newStatus}`);
+        renderCurrentPage();
+      }
+    }
+
+    function markOrderCollected(orderId) {
+      updateOrderStatus(orderId, 'Collected');
+    }
+
+    function recordDemoPayment(orderId) {
+      const o = db.orders.find(x => x.id === orderId);
+      if (o) {
+        o.paymentStatus = 'Paid';
+        o.paymentMethod = 'Demo UPI';
+        saveDatabase();
+        showToast('Payment of ₹' + o.amount + ' confirmed via Demo UPI!');
+        renderCurrentPage();
+      }
+    }
+
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme') || 'light';
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      db.theme = next;
+      saveDatabase();
+      document.getElementById('theme-icon').textContent = next === 'dark' ? '☀' : '☾';
+    }
+
+    function quickSwitchRole() {
+      if (db.currentUser === 'user_priya') {
+        selectRole('user_asha');
+      } else {
+        selectRole('user_priya');
+      }
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      const text = document.getElementById('toast-text');
+      if (t && text) {
+        text.textContent = msg;
+        t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 2800);
+      }
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    /* Live Countdown Interval Tick */
+    setInterval(() => {
+      if (currentPage === 'orders') {
+        db.orders.forEach(o => {
+          const el = document.getElementById(`countdown-${o.id}`);
+          if (el && o.readyAt) {
+            el.textContent = formatTimeRemaining(o.readyAt);
+          }
+        });
+      }
+    }, 1000);
+
+    /* Initialize Theme & Initial Render */
+    if (db.theme) {
+      document.documentElement.setAttribute('data-theme', db.theme);
+      document.getElementById('theme-icon').textContent = db.theme === 'dark' ? '☀' : '☾';
+    }
+    renderCurrentPage();
+  </script>
+</body>
+</html>
