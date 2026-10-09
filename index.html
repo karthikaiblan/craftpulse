@@ -766,8 +766,125 @@
     .maker-card-desc {
       font-size: 13px;
       color: var(--ink-muted);
-      margin-bottom: 14px;
+      margin-bottom: 10px;
       line-height: 1.45;
+    }
+
+    /* COMPACT ANIMATED HUMAN STANDING QUEUE WIDGET (Matches user reference) */
+    .compact-queue-widget {
+      background: var(--bg);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 8px 12px;
+      margin: 4px 0 12px;
+      position: relative;
+      overflow: hidden;
+    }
+    .queue-rail-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      position: relative;
+    }
+    .queue-end-label {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      color: var(--ink-muted);
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+    .queue-end-label.you-label {
+      color: var(--royal-emerald);
+    }
+    .queue-end-label.ready-label {
+      color: var(--royal-gold);
+    }
+    .queue-track-line {
+      flex: 1;
+      position: relative;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .queue-rail-bar {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 50%;
+      height: 2px;
+      background: var(--line);
+      transform: translateY(-50%);
+      z-index: 1;
+    }
+    .queue-human-line {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+    .queue-human-node {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .queue-human-icon {
+      width: 18px;
+      height: 18px;
+      color: var(--ink);
+      animation: humanIdle 3s ease-in-out infinite;
+      transition: transform 0.3s ease;
+    }
+    @keyframes humanIdle {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-1.5px); }
+    }
+    .queue-human-node.leaving {
+      animation: personLeaveQueue 0.65s forwards cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes personLeaveQueue {
+      0% { transform: translateX(0) scale(1); opacity: 1; }
+      50% { transform: translateX(20px) scale(0.85); opacity: 0.6; }
+      100% { transform: translateX(45px) scale(0.2); opacity: 0; }
+    }
+    .queue-human-badge {
+      font-size: 8.5px;
+      font-weight: 700;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-pill);
+      padding: 0 4px;
+      line-height: 1.1;
+      margin-top: -2px;
+      color: var(--ink-muted);
+    }
+    .queue-human-node.is-user .queue-human-icon {
+      color: var(--royal-gold);
+      filter: drop-shadow(0 2px 4px var(--royal-gold-glow));
+    }
+    .queue-human-node.is-user .queue-human-badge {
+      background: var(--royal-gold);
+      color: #111A16;
+      border-color: var(--royal-gold);
+    }
+    .queue-status-caption {
+      font-size: 11px;
+      color: var(--ink-muted);
+      text-align: center;
+      margin-top: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+    }
+    .queue-status-caption b {
+      color: var(--royal-gold);
     }
 
     .preview-chips {
@@ -1517,6 +1634,106 @@
     }
 
     /* ==========================================================================
+       COMPACT ANIMATED HUMAN STANDING QUEUE SYSTEM (User Reference Feature)
+       ========================================================================== */
+    function renderCompactQueue(maker, activeUser) {
+      if (!maker) return '';
+      const queueCount = Math.max(0, Number(maker.queue) || 0);
+
+      // Check if logged-in customer has an active order with this maker
+      const myOrder = activeUser ? db.orders.find(o => o.makerId === maker.id && o.customerId === activeUser.id && o.status !== 'Collected' && o.status !== 'Rejected') : null;
+
+      let aheadCount = queueCount;
+      if (myOrder) {
+        const makerOrders = db.orders.filter(o => o.makerId === maker.id && o.status !== 'Collected' && o.status !== 'Rejected');
+        const myIndex = makerOrders.findIndex(o => o.id === myOrder.id);
+        aheadCount = myIndex === -1 ? 0 : myIndex;
+      }
+
+      // Generate human standing icons (up to 4 to stay sleek and compact like screenshot)
+      let peopleHtml = '';
+      if (queueCount === 0 && !myOrder) {
+        peopleHtml = `
+          <div style="font-size:11px;color:var(--royal-emerald);font-weight:700;display:flex;align-items:center;gap:4px;">
+            <span>✓</span> <span>Open Queue · Instant Start</span>
+          </div>
+        `;
+      } else {
+        const numNodes = Math.min(4, Math.max(1, queueCount));
+        for (let i = 1; i <= numNodes; i++) {
+          const isUserNode = myOrder && (i === numNodes);
+          peopleHtml += `
+            <div class="queue-human-node ${isUserNode ? 'is-user' : ''}" id="qnode-${maker.id}-${i}">
+              <svg class="queue-human-icon" viewBox="0 0 24 24" fill="currentColor">
+                <circle cx="12" cy="4.5" r="2.5"/>
+                <path d="M15 8.5H9c-1.1 0-2 .9-2 2v4.5c0 .55.45 1 1 1s1-.45 1-1V12h1v9c0 .55.45 1 1 1s1-.45 1-1v-6h1v6c0 .55.45 1 1 1s1-.45 1-1v-9h1v3c0 .55.45 1 1 1s1-.45 1-1v-4.5c0-1.1-.9-2-2-2z"/>
+              </svg>
+              <span class="queue-human-badge">${isUserNode ? 'YOU' : '#' + i}</span>
+            </div>
+          `;
+        }
+      }
+
+      let caption = '';
+      if (myOrder) {
+        if (myOrder.status === 'Ready') {
+          caption = `<span>🎉 Your order is <b>READY for pickup!</b></span>`;
+        } else if (aheadCount === 0) {
+          caption = `<span>⚡ You are <b>NEXT on the workbench!</b> (Slot #1)</span>`;
+        } else {
+          caption = `<span>👤 <b>${aheadCount} order${aheadCount > 1 ? 's' : ''} ahead of you</b> · time is approximate</span>`;
+        }
+      } else {
+        if (queueCount === 0) {
+          caption = `<span>Open queue · Check in or order anytime</span>`;
+        } else {
+          caption = `<span><b>${queueCount} order${queueCount > 1 ? 's' : ''} ahead</b> · time is approximate</span>`;
+        }
+      }
+
+      return `
+        <div class="compact-queue-widget" data-maker-queue="${maker.id}" id="queue-widget-${maker.id}">
+          <div class="queue-rail-row">
+            <span class="queue-end-label ${myOrder ? 'you-label' : ''}">YOU</span>
+            <div class="queue-track-line">
+              <div class="queue-rail-bar"></div>
+              <div class="queue-human-line">
+                ${peopleHtml}
+              </div>
+            </div>
+            <span class="queue-end-label ready-label">READY</span>
+          </div>
+          <div class="queue-status-caption">
+            ${caption}
+          </div>
+        </div>
+      `;
+    }
+
+    function triggerQueueExitAnimation(makerId) {
+      const nodes = document.querySelectorAll(`[data-maker-queue="${makerId}"] .queue-human-node`);
+      if (nodes.length > 0) {
+        nodes[0].classList.add('leaving');
+      }
+    }
+
+    function simulateOrderCompletion(makerId) {
+      const m = db.makers.find(x => x.id === makerId);
+      if (!m) return;
+      triggerQueueExitAnimation(makerId);
+      setTimeout(() => {
+        m.queue = Math.max(0, (Number(m.queue) || 0) - 1);
+        const pending = db.orders.find(o => o.makerId === makerId && o.status !== 'Ready' && o.status !== 'Collected');
+        if (pending) {
+          pending.status = 'Ready';
+        }
+        saveDatabase();
+        showToast(`Order completed by ${m.name}! Queue shifted forward.`);
+        renderCurrentPage();
+      }, 550);
+    }
+
+    /* ==========================================================================
        RENDER NAVIGATION (Desktop + Mobile Bottom Bar)
        ========================================================================== */
     function renderNavBar() {
@@ -2195,6 +2412,9 @@
                 <div class="maker-card-body">
                   <p class="maker-card-desc">${escapeHtml(m.desc)}</p>
 
+                  <!-- Compact Animated Human Standing Queue Widget (User Reference) -->
+                  ${renderCompactQueue(m, currentUser())}
+
                   <div class="preview-chips">
                     ${(m.products || []).slice(0, 3).map(p => `
                       <div class="product-mini-chip" onclick="openOrderModal('${m.id}', '${escapeHtml(p.title)}', ${p.price})">
@@ -2267,6 +2487,23 @@
                 Google Map Directions ↗
               </a>
             </div>
+          </div>
+
+          <!-- Live Workbench Queue Section in Maker Profile (Real-time update) -->
+          <div style="background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:18px 22px;box-shadow:var(--shadow-sm);margin-bottom:24px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px;">
+              <div>
+                <b style="font-family:var(--font-serif);font-size:17px;">Live Workbench Queue Status</b>
+                <p style="font-size:12px;color:var(--ink-muted);">Monitored in real time. When an order is completed, the front person moves away and the queue shifts forward.</p>
+              </div>
+              <div style="display:flex;gap:8px;align-items:center;">
+                <span class="kyc-verified-badge">⚡ Real-time Sync</span>
+                <button class="btn btn-outline btn-sm" style="font-size:11px;padding:4px 10px;border-color:var(--royal-gold);" onclick="simulateOrderCompletion('${m.id}')" title="Test queue animation">
+                  ⚡ Simulate 1 Order Complete
+                </button>
+              </div>
+            </div>
+            ${renderCompactQueue(m, currentUser())}
           </div>
 
           <!-- Product Catalog Grid (Requirement 2: Exact matching photos) -->
@@ -2925,13 +3162,16 @@
       const o = db.orders.find(x => x.id === orderId);
       if (o) {
         o.status = newStatus;
-        if (newStatus === 'Ready') {
+        if (newStatus === 'Ready' || newStatus === 'Collected') {
           const m = db.makers.find(x => x.id === o.makerId);
           if (m) m.queue = Math.max(0, (Number(m.queue) || 0) - 1);
+          triggerQueueExitAnimation(o.makerId);
         }
         saveDatabase();
         showToast(`Status updated: ${newStatus}`);
-        renderCurrentPage();
+        setTimeout(() => {
+          renderCurrentPage();
+        }, 550);
       }
     }
 
