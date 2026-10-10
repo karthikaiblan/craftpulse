@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>CraftPulse · Laptop Edition</title>
   <script>window.__CRAFTPULSE_DEVICE_MODE = "laptop";</script>
-  <title>CraftPulse · Royal Neighbourhood Makers & Live Craft Queue</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&display=swap" rel="stylesheet">
@@ -1366,7 +1366,7 @@
       </div>
       <div class="device-switch-links">
         <a href="laptop.html" class="device-nav-link" id="btn-view-laptop" title="Open Laptop / Desktop View"><span>💻</span> Laptop View</a>
-        <a href="phone.html" class="device-nav-link" id="btn-view-phone" title="Open Mobile / Phone View"><span>📱</span> Phone View</a>
+        <a href="mobile.html" class="device-nav-link" id="btn-view-phone" title="Open Mobile / Mobile View"><span>📱</span> Mobile View</a>
         <a href="craftpulse_source_code.zip" download class="device-zip-btn" title="Download Complete ZIP Package"><span>⬇</span> Download ZIP</a>
       </div>
     </div>
@@ -1420,7 +1420,7 @@
        STORAGE & DATABASE SCHEMA (v4 - Full Diverse Makers & Exact Matching Photos)
        ========================================================================== */
     const STORAGE_KEY = 'craftpulse_zephyr_v5';
-    const SYNC_CHANNEL = new BroadcastChannel('craftpulse-sync-v5');
+    const SYNC_CHANNEL = (typeof window !== 'undefined' && typeof window.BroadcastChannel !== 'undefined') ? new BroadcastChannel('craftpulse-sync-v5') : null;
 
     function createSeedData() {
       return {
@@ -2076,19 +2076,23 @@
       try {
         delete db.currentUser;
         localStorage.setItem(STORAGE_KEY, JSON.stringify(db));
-        SYNC_CHANNEL.postMessage({ type: 'SYNC', payload: db });
+        if (SYNC_CHANNEL) {
+          try { SYNC_CHANNEL.postMessage({ type: 'SYNC', payload: db }); } catch(err){}
+        }
       } catch (e) {
         console.error('Storage error:', e);
       }
     }
 
-    SYNC_CHANNEL.onmessage = (e) => {
-      if (e.data?.type === 'SYNC' && e.data.payload) {
-        db = e.data.payload;
-        delete db.currentUser;
-        renderCurrentPage();
-      }
-    };
+    if (SYNC_CHANNEL) {
+      SYNC_CHANNEL.onmessage = (e) => {
+        if (e.data?.type === 'SYNC' && e.data.payload) {
+          db = e.data.payload;
+          delete db.currentUser;
+          renderCurrentPage();
+        }
+      };
+    }
 
     /* ==========================================================================
        ZEPHYR PURE DOMAIN ENGINE (LocalLoop Architecture Reference)
@@ -2845,6 +2849,10 @@
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
             Discover Ateliers
           </button>
+          <button class="nav-btn ${currentPage === 'catalog' ? 'active' : ''}" onclick="navigate('catalog')">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/></svg>
+            Maker Catalog
+          </button>
           <button class="nav-btn ${currentPage === 'orders' ? 'active' : ''}" onclick="navigate('orders')">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg>
             My Orders (${orderCount})
@@ -2862,15 +2870,15 @@
         mobileNav.innerHTML = `
           <div class="mob-nav-item ${currentPage === 'discover' ? 'active' : ''}" onclick="navigate('discover')">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            <span>Discover</span>
+            <span>Ateliers</span>
+          </div>
+          <div class="mob-nav-item ${currentPage === 'catalog' ? 'active' : ''}" onclick="navigate('catalog')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/></svg>
+            <span>Catalog</span>
           </div>
           <div class="mob-nav-item ${currentPage === 'orders' ? 'active' : ''}" onclick="navigate('orders')">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg>
             <span>Orders</span>
-          </div>
-          <div class="mob-nav-item ${currentPage === 'invoice' ? 'active' : ''}" onclick="navigate('invoice')">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
-            <span>Invoices</span>
           </div>
           <div class="mob-nav-item ${currentPage === 'profile' ? 'active' : ''}" onclick="navigate('profile')">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
@@ -2964,7 +2972,7 @@
       }
 
       if (u.role === 'customer') {
-        if (currentPage === 'studio' || currentPage === 'maker-orders' || currentPage === 'catalog') {
+        if (currentPage === 'studio' || currentPage === 'maker-orders') {
           currentPage = 'discover';
         }
       } else {
@@ -2979,7 +2987,9 @@
       else if (currentPage === 'invoice') container.innerHTML = renderInvoicePage();
       else if (currentPage === 'studio') container.innerHTML = renderMakerStudioPage();
       else if (currentPage === 'maker-orders') container.innerHTML = renderMakerStudioPage();
-      else if (currentPage === 'catalog') container.innerHTML = renderMakerCatalogPage();
+      else if (currentPage === 'catalog') {
+        container.innerHTML = (u.role === 'maker') ? renderMakerCatalogPage() : renderCustomerCatalogPage();
+      }
       else if (currentPage === 'profile') container.innerHTML = renderProfilePage();
       else if (currentPage === 'auth') container.innerHTML = renderAuthScreen();
       else if (currentPage === 'device-select') container.innerHTML = renderDeviceChooserScreen();
@@ -3717,6 +3727,61 @@
               </article>
             `;
           }).join('')}
+        </div>
+      `;
+    }
+
+    /* ==========================================================================
+       SCREEN 2.5: UNIFIED ARTISAN CATALOG (Browse All Pieces Across Ateliers)
+       ========================================================================== */
+    function renderCustomerCatalogPage() {
+      const allProducts = [];
+      (db.makers || []).forEach(m => {
+        (m.products || []).forEach(p => {
+          allProducts.push({
+            ...p,
+            makerId: m.id,
+            makerName: m.name,
+            craft: m.craft,
+            approxWaitText: m.approxWaitText,
+            makerLogo: m.logoImg || m.coverPhoto
+          });
+        });
+      });
+
+      return `
+        <div class="section-head">
+          <div>
+            <h2 style="font-family:var(--font-serif);font-size:26px;">Artisan Catalog Offerings (${allProducts.length})</h2>
+            <p style="color:var(--ink-muted);font-size:13px;">Browse handcrafted pieces across all verified neighbourhood ateliers in Indiranagar</p>
+          </div>
+          <button class="btn btn-gold btn-sm" onclick="navigate('discover')">View Ateliers &amp; Makers →</button>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));gap:20px;">
+          ${allProducts.map(p => `
+            <div style="background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;transition:var(--transition);">
+              <div style="height:190px;background:#EDE6D8;position:relative;">
+                <img src="${p.photo}" alt="${escapeHtml(p.title)}" style="width:100%;height:100%;object-fit:cover;">
+                <span class="craft-tag-pill" style="position:absolute;top:10px;left:10px;background:rgba(10,61,46,0.88);color:#FFF;">${p.craft}</span>
+              </div>
+              <div style="padding:16px;flex:1;display:flex;flex-direction:column;">
+                <div style="font-size:11.5px;color:var(--royal-gold);font-weight:700;margin-bottom:4px;">${escapeHtml(p.makerName)}</div>
+                <h3 style="font-family:var(--font-serif);font-size:18px;margin-bottom:6px;">${escapeHtml(p.title)}</h3>
+                <p style="font-size:12.5px;color:var(--ink-muted);flex:1;margin-bottom:14px;line-height:1.45;">${escapeHtml(p.desc)}</p>
+                
+                <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line-subtle);padding-top:12px;">
+                  <div>
+                    <b style="font-family:var(--font-serif);font-size:20px;color:var(--royal-emerald);">₹${p.price}</b>
+                    <small style="display:block;font-size:11px;color:var(--ink-muted);">${p.approxWaitText}</small>
+                  </div>
+                  <button class="btn btn-emerald btn-sm" onclick="openOrderModal('${p.makerId}', '${escapeHtml(p.title)}', ${p.price})">
+                    Order Piece →
+                  </button>
+                </div>
+              </div>
+            </div>
+          `).join('')}
         </div>
       `;
     }
