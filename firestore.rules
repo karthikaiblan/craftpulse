@@ -1,0 +1,55 @@
+rules_version = '2';
+
+// LocalLoop clients only read data from Firestore. Every business mutation is
+// performed by a callable Cloud Function using the Admin SDK, which is not
+// constrained by these client rules.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    // A user may read only their own private profile. A collection query is
+    // permitted only when Firestore can prove every returned document has this
+    // path UID, so clients should read users/{request.auth.uid} directly.
+    match /users/{userId} {
+      allow read: if signedIn() && request.auth.uid == userId;
+      allow write: if false;
+    }
+
+    // Provider profiles and reviews are discoverable to signed-in users. Do
+    // not place private customer information in either document type.
+    match /providers/{providerId} {
+      allow read: if signedIn();
+      allow write: if false;
+    }
+
+    // Firestore evaluates collection queries against this predicate. Therefore
+    // order listeners must constrain either customerId or providerId to the
+    // current caller's UID; broad order queries are denied.
+    match /orders/{orderId} {
+      allow read: if signedIn()
+        && (resource.data.customerId == request.auth.uid
+          || resource.data.providerId == request.auth.uid);
+      allow write: if false;
+    }
+
+    // Reviews are intentionally public to every authenticated LocalLoop user.
+    match /reviews/{orderId} {
+      allow read: if signedIn();
+      allow write: if false;
+    }
+
+    // Categories are curated outside the client application.
+    match /categories/{categoryId} {
+      allow read: if signedIn();
+      allow write: if false;
+    }
+
+    // Explicit default-deny coverage, including unknown collections and any
+    // future subcollections until a deliberate rule is added above.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

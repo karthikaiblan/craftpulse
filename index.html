@@ -265,6 +265,107 @@
       white-space: nowrap;
     }
 
+    /* Independent Device Indicator & Quick Switch Pill */
+    .device-indicator-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--royal-gold-light);
+      border: 1.5px solid var(--royal-gold);
+      padding: 6px 13px;
+      border-radius: var(--radius-pill);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--ink);
+      cursor: pointer;
+      transition: var(--transition);
+      white-space: nowrap;
+      user-select: none;
+    }
+    .device-indicator-pill:hover {
+      background: var(--paper);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-sm);
+    }
+    .device-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--royal-emerald);
+      box-shadow: 0 0 8px var(--royal-emerald);
+      flex-shrink: 0;
+      animation: pulseGlow 2s infinite ease-in-out;
+    }
+    .device-switch-tag {
+      font-size: 10px;
+      background: var(--royal-gold);
+      color: #111A16;
+      padding: 1px 7px;
+      border-radius: 8px;
+      margin-left: 2px;
+      font-weight: 800;
+    }
+
+    /* Device Chooser Screen */
+    .device-role-wrap {
+      max-width: 860px;
+      margin: 30px auto;
+      padding: 10px;
+      animation: fadeInUp 0.4s ease;
+    }
+    .device-hero-header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    .device-badge-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--royal-gold-light);
+      border: 1px solid var(--royal-gold);
+      color: var(--royal-gold-dark, #AA820A);
+      padding: 4px 14px;
+      border-radius: var(--radius-pill);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 12px;
+    }
+    .device-choices-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+    .device-card-option {
+      background: var(--paper);
+      border: 1.5px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: var(--transition);
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+    }
+    .device-card-option:hover {
+      border-color: var(--royal-gold);
+      transform: translateY(-4px);
+      box-shadow: var(--shadow);
+    }
+    .device-card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      font-size: 22px;
+      margin-bottom: 14px;
+      border: 1px solid var(--line);
+      background: var(--bg);
+    }
+
     /* ==========================================================================
        MOBILE BOTTOM NAVIGATION BAR (Requirement 6)
        ========================================================================== */
@@ -1135,6 +1236,11 @@
     }
 
     /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .wrap { padding-bottom: 90px; }
+      .top-tools { gap: 6px; }
+      .device-indicator-pill .device-label { max-width: 105px; overflow: hidden; text-overflow: ellipsis; }
+    }
     @media (max-width: 600px) {
       .royal-hero { padding: 24px 20px; }
       .market-filter-section { padding: 16px; }
@@ -1192,12 +1298,11 @@
     /* ==========================================================================
        STORAGE & DATABASE SCHEMA (v4 - Full Diverse Makers & Exact Matching Photos)
        ========================================================================== */
-    const STORAGE_KEY = 'craftpulse_royal_v4';
-    const SYNC_CHANNEL = new BroadcastChannel('craftpulse-sync-v4');
+    const STORAGE_KEY = 'craftpulse_zephyr_v5';
+    const SYNC_CHANNEL = new BroadcastChannel('craftpulse-sync-v5');
 
     function createSeedData() {
       return {
-        currentUser: 'user_priya', // Default customer for demo
         savedMakers: ['footshop', 'needle'],
         theme: 'light',
         users: [
@@ -1206,7 +1311,10 @@
             name: 'Priya Raman',
             email: 'customer@demo.local',
             phone: '+91 98450 12345',
+            language: 'en',
             role: 'customer',
+            isProvider: false,
+            savedMakers: ['footshop', 'needle'],
             kycStatus: 'Verified',
             kycBadge: 'Verified Neighbour'
           },
@@ -1215,7 +1323,10 @@
             name: 'Karthikai',
             email: 'karthikai1312@gmail.com',
             phone: '+91 98765 43210',
+            language: 'en',
             role: 'customer',
+            isProvider: false,
+            savedMakers: ['footshop'],
             kycStatus: 'Verified',
             kycBadge: 'Verified Patron'
           },
@@ -1224,7 +1335,9 @@
             name: 'Vikram Sundaram',
             email: 'footshop@demo.local',
             phone: '+91 97412 88990',
+            language: 'en',
             role: 'maker',
+            isProvider: true,
             makerId: 'footshop',
             kycStatus: 'Verified',
             kycBadge: 'Footwear & Sneaker Guild'
@@ -1234,7 +1347,9 @@
             name: 'Meera Chawla',
             email: 'cakehouse@demo.local',
             phone: '+91 99887 66554',
+            language: 'en',
             role: 'maker',
+            isProvider: true,
             makerId: 'cakehouse',
             kycStatus: 'Verified',
             kycBadge: 'FSSAI Food Certified Master'
@@ -1244,7 +1359,9 @@
             name: 'Asha Kumar',
             email: 'maker@demo.local',
             phone: '+91 98860 33445',
+            language: 'en',
             role: 'maker',
+            isProvider: true,
             makerId: 'needle',
             kycStatus: 'Verified',
             kycBadge: 'Master Tailor'
@@ -1254,10 +1371,14 @@
           {
             id: 'footshop',
             ownerId: 'user_footshop',
+            shopName: 'Footshop & Simplicity Sneaker Studio',
             name: 'Footshop & Simplicity Sneaker Studio',
             craft: 'Footwear',
+            categoryId: 'footwear',
             desc: 'Custom sneaker restoration, heavy-duty Vibram resoling, and handcrafted bespoke kicks.',
             rating: 4.9,
+            ratingSum: 823.2,
+            ratingCount: 168,
             reviewsCount: 168,
             workers: 3,
             queue: 2,
@@ -1265,9 +1386,15 @@
             approxWaitText: 'Approx. 1–2 hrs',
             startingRate: 180,
             distance: 0.8,
+            lat: 12.9784,
+            lng: 77.6408,
+            geohash: 'tdr1y7f8u',
             address: '42, 12th Main Road, HAL 2nd Stage, Indiranagar',
             city: 'Bengaluru',
+            phone: '+91 97412 88990',
             paused: false,
+            isPaused: false,
+            plan: 'free',
             logoImg: 'images/sneaker_footshop.jpg',
             coverPhoto: 'images/sneaker_simplicity.jpg',
             kyc: {
@@ -1276,6 +1403,20 @@
               docNumber: 'UDYAM-KR-03-99881',
               badge: 'Master Cobbler & Sneaker Artisan'
             },
+            workingHours: [
+              null,
+              { open: '09:30', close: '20:30' },
+              { open: '09:30', close: '20:30' },
+              { open: '09:30', close: '20:30' },
+              { open: '09:30', close: '20:30' },
+              { open: '09:30', close: '20:30' },
+              { open: '09:30', close: '18:00' }
+            ],
+            services: [
+              { name: 'Custom Hand-Painted Canvas Sneakers', price: 850, avgTime: 120, unit: 'minutes' },
+              { name: 'Vibram Heavy-Duty Sole Replacement', price: 390, avgTime: 90, unit: 'minutes' },
+              { name: 'Deep Clean, Deodorize & Suede Revival', price: 180, avgTime: 45, unit: 'minutes' }
+            ],
             products: [
               {
                 id: 'p-snk-1',
@@ -1293,20 +1434,24 @@
               },
               {
                 id: 'p-snk-3',
-                title: 'Sneaker Deep Clean & Leather Nourish',
-                price: 240,
-                desc: 'Ultrasonic midsole cleaning, organic foam wash, deodorizing, and leather balm.',
-                photo: 'images/sneaker_footshop.jpg'
+                title: 'Deep Clean, Deodorize & Suede Revival',
+                price: 180,
+                desc: 'Ultrasonic foam extraction, brass suede brush treatment, and cedar deodorizing.',
+                photo: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=500&auto=format&fit=crop&q=80'
               }
             ]
           },
           {
             id: 'cakehouse',
             ownerId: 'user_cakehouse',
+            shopName: 'Cake House & Bake Atelier',
             name: 'Cake House & Bake Atelier',
             craft: 'Cakes',
+            categoryId: 'cakes',
             desc: 'Small-batch artisanal celebration cakes, layered bakes, and gourmet patisserie.',
             rating: 5.0,
+            ratingSum: 1075.0,
+            ratingCount: 215,
             reviewsCount: 215,
             workers: 4,
             queue: 3,
@@ -1314,9 +1459,15 @@
             approxWaitText: 'Approx. 2–3 hrs',
             startingRate: 220,
             distance: 1.4,
+            lat: 12.9750,
+            lng: 77.6380,
+            geohash: 'tdr1y7e5p',
             address: '89, Defence Colony, 6th Cross, Indiranagar',
             city: 'Bengaluru',
+            phone: '+91 99887 66554',
             paused: false,
+            isPaused: false,
+            plan: 'free',
             logoImg: 'images/cake_house.jpg',
             coverPhoto: 'images/cake_stand.jpg',
             kyc: {
@@ -1325,6 +1476,19 @@
               docNumber: 'FSSAI-21224012000341',
               badge: 'FSSAI Food Certified Master'
             },
+            workingHours: [
+              { open: '10:00', close: '20:00' },
+              { open: '09:00', close: '21:00' },
+              { open: '09:00', close: '21:00' },
+              { open: '09:00', close: '21:00' },
+              { open: '09:00', close: '21:00' },
+              { open: '09:00', close: '21:00' },
+              { open: '09:00', close: '21:00' }
+            ],
+            services: [
+              { name: 'Belgian Dark Truffle Cake (0.5kg)', price: 750, avgTime: 120, unit: 'minutes' },
+              { name: 'Signature Patisserie Slice & Tart Box', price: 280, avgTime: 45, unit: 'minutes' }
+            ],
             products: [
               {
                 id: 'p-ck-1',
@@ -1335,13 +1499,6 @@
               },
               {
                 id: 'p-ck-2',
-                title: 'Artisan Cherry Blossom Tiered Cake',
-                price: 1200,
-                desc: 'Hand-piped buttercream flowers with Madagascar vanilla bean and berry reduction.',
-                photo: 'images/cake_stand.jpg'
-              },
-              {
-                id: 'p-ck-3',
                 title: 'Signature Patisserie Slice & Tart Box',
                 price: 280,
                 desc: 'Selection of fresh berry tarts and artisanal gateau slices.',
@@ -1352,10 +1509,14 @@
           {
             id: 'needle',
             ownerId: 'user_asha',
+            shopName: 'Asha Bespoke Couture & Silk Atelier',
             name: 'Asha Bespoke Couture & Silk Atelier',
             craft: 'Tailoring',
+            categoryId: 'tailoring',
             desc: 'Heritage bridal blouse stitching, handloom saree falls & pico, and bespoke custom ethnic tailoring.',
             rating: 4.9,
+            ratingSum: 901.6,
+            ratingCount: 184,
             reviewsCount: 184,
             workers: 4,
             queue: 5,
@@ -1363,9 +1524,15 @@
             approxWaitText: 'Approx. 1–3 hrs',
             startingRate: 150,
             distance: 0.6,
+            lat: 12.9716,
+            lng: 77.6412,
+            geohash: 'tdr1y74bc',
             address: '14, 5th Cross, 100 Feet Road, Indiranagar',
             city: 'Bengaluru',
+            phone: '+91 98860 33445',
             paused: false,
+            isPaused: false,
+            plan: 'free',
             logoImg: 'https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=200&auto=format&fit=crop&q=80',
             coverPhoto: 'https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=800&auto=format&fit=crop&q=80',
             kyc: {
@@ -1374,6 +1541,20 @@
               docNumber: 'KA-BLR-TR-2023-8819',
               badge: 'Master Tailor & Couture Verified'
             },
+            workingHours: [
+              null,
+              { open: '10:00', close: '20:00' },
+              { open: '10:00', close: '20:00' },
+              { open: '10:00', close: '20:00' },
+              { open: '10:00', close: '20:00' },
+              { open: '10:00', close: '20:00' },
+              { open: '10:00', close: '18:00' }
+            ],
+            services: [
+              { name: 'Raw Silk Boat-Neck Designer Blouse', price: 550, avgTime: 150, unit: 'minutes' },
+              { name: 'Kanjeevaram Saree Falls & Hand Pico', price: 180, avgTime: 60, unit: 'minutes' },
+              { name: 'Hand-Embroidered Zardozi Kurta', price: 890, avgTime: 240, unit: 'minutes' }
+            ],
             products: [
               {
                 id: 'p1',
@@ -1401,10 +1582,14 @@
           {
             id: 'clay',
             ownerId: '',
+            shopName: 'Clay & Kiln Pottery Studio',
             name: 'Clay & Kiln Pottery Studio',
             craft: 'Ceramics',
+            categoryId: 'pottery',
             desc: 'Stoneware ceramics, terracotta hand-thrown planters, rustic tableware, and Kintsugi pottery repairs.',
             rating: 4.8,
+            ratingSum: 364.8,
+            ratingCount: 76,
             reviewsCount: 76,
             workers: 2,
             queue: 2,
@@ -1412,9 +1597,15 @@
             approxWaitText: 'Approx. 2–4 hrs',
             startingRate: 180,
             distance: 2.1,
+            lat: 12.9690,
+            lng: 77.6450,
+            geohash: 'tdr1y69df',
             address: '22, Michaelpalya, 80 Feet Road, Indiranagar',
             city: 'Bengaluru',
+            phone: '+91 98451 44556',
             paused: false,
+            isPaused: false,
+            plan: 'free',
             logoImg: 'https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=200&auto=format&fit=crop&q=80',
             coverPhoto: 'https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=800&auto=format&fit=crop&q=80',
             kyc: {
@@ -1423,6 +1614,19 @@
               docNumber: 'KCC-IND-4091',
               badge: 'Crafts Council Certified'
             },
+            workingHours: [
+              null,
+              { open: '10:00', close: '19:00' },
+              { open: '10:00', close: '19:00' },
+              { open: '10:00', close: '19:00' },
+              { open: '10:00', close: '19:00' },
+              { open: '10:00', close: '19:00' },
+              { open: '10:00', close: '17:00' }
+            ],
+            services: [
+              { name: 'Hand-Thrown Speckled Ceramic Mug', price: 350, avgTime: 90, unit: 'minutes' },
+              { name: 'Terracotta Hand-Carved Water Jug', price: 420, avgTime: 120, unit: 'minutes' }
+            ],
             products: [
               {
                 id: 'p-pot-1',
@@ -1443,10 +1647,14 @@
           {
             id: 'aura',
             ownerId: '',
+            shopName: 'Aura Heritage Silver & Filigree Works',
             name: 'Aura Heritage Silver & Filigree Works',
             craft: 'Jewelry',
+            categoryId: 'jewelry',
             desc: 'Hallmarked 92.5 sterling silver filigree jewelry, custom stone setting, and heirloom restoration.',
             rating: 4.9,
+            ratingSum: 450.8,
+            ratingCount: 92,
             reviewsCount: 92,
             workers: 2,
             queue: 1,
@@ -1454,9 +1662,15 @@
             approxWaitText: 'Approx. 1–2 hrs',
             startingRate: 200,
             distance: 2.5,
+            lat: 12.9602,
+            lng: 77.6480,
+            geohash: 'tdr1y4h2k',
             address: '61, Old Airport Road, Kodihalli, Near Leela Palace',
             city: 'Bengaluru',
+            phone: '+91 97420 33221',
             paused: false,
+            isPaused: false,
+            plan: 'free',
             logoImg: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=200&auto=format&fit=crop&q=80',
             coverPhoto: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&auto=format&fit=crop&q=80',
             kyc: {
@@ -1465,6 +1679,19 @@
               docNumber: 'BIS-HM-KA-88190',
               badge: 'BIS Hallmark Licensed'
             },
+            workingHours: [
+              null,
+              { open: '10:30', close: '20:00' },
+              { open: '10:30', close: '20:00' },
+              { open: '10:30', close: '20:00' },
+              { open: '10:30', close: '20:00' },
+              { open: '10:30', close: '20:00' },
+              { open: '10:30', close: '19:00' }
+            ],
+            services: [
+              { name: '92.5 Sterling Silver Filigree Bangle', price: 980, avgTime: 180, unit: 'minutes' },
+              { name: 'Silver Ring Resizing & Ultrasonic Polish', price: 220, avgTime: 45, unit: 'minutes' }
+            ],
             products: [
               {
                 id: 'p-jwl-1',
@@ -1485,10 +1712,14 @@
           {
             id: 'woodcraft',
             ownerId: '',
+            shopName: 'Rajan Master Woodcraft & Teak Studio',
             name: 'Rajan Master Woodcraft & Teak Studio',
             craft: 'Woodcraft',
+            categoryId: 'woodcraft',
             desc: 'Hand-carved rosewood boxes, live-edge teak serving boards, and precision furniture restoration.',
             rating: 4.9,
+            ratingSum: 284.2,
+            ratingCount: 58,
             reviewsCount: 58,
             workers: 2,
             queue: 2,
@@ -1496,9 +1727,15 @@
             approxWaitText: 'Approx. 2–3 hrs',
             startingRate: 250,
             distance: 3.1,
+            lat: 12.9650,
+            lng: 77.6420,
+            geohash: 'tdr1y5m8z',
             address: '102, 100 Feet Road, Domlur, Indiranagar',
             city: 'Bengaluru',
+            phone: '+91 99001 77665',
             paused: false,
+            isPaused: false,
+            plan: 'free',
             logoImg: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?w=200&auto=format&fit=crop&q=80',
             coverPhoto: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?w=800&auto=format&fit=crop&q=80',
             kyc: {
@@ -1507,6 +1744,19 @@
               docNumber: 'KFD-W-9014',
               badge: 'Heritage Woodcraft Master'
             },
+            workingHours: [
+              null,
+              { open: '09:00', close: '19:00' },
+              { open: '09:00', close: '19:00' },
+              { open: '09:00', close: '19:00' },
+              { open: '09:00', close: '19:00' },
+              { open: '09:00', close: '19:00' },
+              { open: '09:00', close: '17:00' }
+            ],
+            services: [
+              { name: 'Hand-Carved Rosewood Keepsake Box', price: 680, avgTime: 180, unit: 'minutes' },
+              { name: 'Natural Teak Cutting & Charcuterie Board', price: 490, avgTime: 90, unit: 'minutes' }
+            ],
             products: [
               {
                 id: 'p-wd-1',
@@ -1529,30 +1779,84 @@
           {
             id: 'ord-101',
             makerId: 'footshop',
+            providerId: 'footshop',
             customerId: 'user_priya',
             customerName: 'Priya Raman',
+            customerPhone: '+91 98450 12345',
             service: 'Custom Hand-Painted Canvas Sneakers',
+            serviceMinutes: 120,
             amount: 850,
-            note: 'Royal emerald floral vines painted on side panels.',
-            status: 'Ready', // READY FOR PICKUP to test Requirement 4!
+            details: {
+              materialsBy: 'Customer',
+              notes: 'Royal emerald floral vines painted on side panels.',
+              size: 'UK 6',
+              dateNeeded: '2026-10-15'
+            },
+            status: 'Ready',
             created: Date.now() - 7200000,
-            approxTiming: 'Approx. 1–2 hrs',
+            createdAt: new Date(Date.now() - 7200000).toISOString(),
+            readyAt: new Date(Date.now() - 1800000).toISOString(),
+            estReadyAt: new Date(Date.now() - 1800000).toISOString(),
+            approxTiming: 'Ready Now',
             paymentStatus: 'Unpaid',
             paymentMethod: null
           },
           {
             id: 'ord-102',
             makerId: 'needle',
+            providerId: 'needle',
             customerId: 'user_priya',
             customerName: 'Priya Raman',
+            customerPhone: '+91 98450 12345',
             service: 'Raw Silk Boat-Neck Designer Blouse',
+            serviceMinutes: 150,
             amount: 550,
-            note: 'Navy blue silk with boat neck design.',
+            details: {
+              materialsBy: 'Customer',
+              notes: 'Navy blue silk with boat neck design.',
+              size: '36 Bust',
+              dateNeeded: '2026-10-14'
+            },
             status: 'In progress',
             created: Date.now() - 3600000,
+            createdAt: new Date(Date.now() - 3600000).toISOString(),
+            startedAt: new Date(Date.now() - 1800000).toISOString(),
+            estReadyAt: new Date(Date.now() + 7200000).toISOString(),
             approxTiming: 'Approx. 1–3 hrs',
             paymentStatus: 'Unpaid',
             paymentMethod: null
+          }
+        ],
+        reviews: [
+          {
+            id: 'rev-1',
+            orderId: 'ord-100',
+            providerId: 'footshop',
+            customerId: 'user_karthi',
+            customerName: 'Karthikai',
+            rating: 5,
+            text: 'Flawless emerald and gold sneaker restoration! Attention to detail on the leather work is world-class.',
+            createdAt: new Date(Date.now() - 86400000 * 2).toISOString()
+          },
+          {
+            id: 'rev-2',
+            orderId: 'ord-99',
+            providerId: 'needle',
+            customerId: 'user_priya',
+            customerName: 'Priya Raman',
+            rating: 5,
+            text: 'Impeccable blouse fitting and delicate piping. Finished right on time as promised.',
+            createdAt: new Date(Date.now() - 86400000 * 4).toISOString()
+          },
+          {
+            id: 'rev-3',
+            orderId: 'ord-98',
+            providerId: 'cakehouse',
+            customerId: 'user_karthi',
+            customerName: 'Karthikai',
+            rating: 5,
+            text: 'The Belgian dark truffle cake was heavenly and ready on the minute of pickup.',
+            createdAt: new Date(Date.now() - 86400000 * 1).toISOString()
           }
         ]
       };
@@ -1569,17 +1873,62 @@
     let authMode = 'login';
     let signupRole = 'customer';
 
+    /* ==========================================================================
+       INDEPENDENT PER-DEVICE SESSION & ROLE MANAGEMENT
+       ========================================================================== */
+    const DEVICE_ID = (function() {
+      try {
+        let id = localStorage.getItem('craftpulse_device_id_v5');
+        if (!id) {
+          id = 'dev_' + Math.random().toString(36).slice(2, 8);
+          localStorage.setItem('craftpulse_device_id_v5', id);
+        }
+        return id;
+      } catch (e) {
+        return 'dev_' + Math.random().toString(36).slice(2, 8);
+      }
+    })();
+
+    function getDeviceUserId() {
+      try {
+        return localStorage.getItem('craftpulse_user_' + DEVICE_ID) ||
+               sessionStorage.getItem('craftpulse_device_user') ||
+               localStorage.getItem('craftpulse_active_user') ||
+               null;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function setDeviceUserId(userId) {
+      try {
+        if (userId) {
+          localStorage.setItem('craftpulse_user_' + DEVICE_ID, userId);
+          sessionStorage.setItem('craftpulse_device_user', userId);
+          localStorage.setItem('craftpulse_active_user', userId);
+        } else {
+          localStorage.removeItem('craftpulse_user_' + DEVICE_ID);
+          sessionStorage.removeItem('craftpulse_device_user');
+          localStorage.removeItem('craftpulse_active_user');
+        }
+      } catch (e) {}
+    }
+
     function loadDatabase() {
       try {
         const stored = localStorage.getItem(STORAGE_KEY);
         if (stored) {
           const parsed = JSON.parse(stored);
-          if (parsed.makers && parsed.users) return parsed;
+          if (parsed.makers && parsed.users) {
+            delete parsed.currentUser;
+            return parsed;
+          }
         }
       } catch (e) {
         console.warn('DB fallback:', e);
       }
       const initial = createSeedData();
+      delete initial.currentUser;
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(initial));
       } catch (e) {}
@@ -1592,6 +1941,7 @@
       if (newData) db = newData;
       if (!db) return;
       try {
+        delete db.currentUser;
         localStorage.setItem(STORAGE_KEY, JSON.stringify(db));
         SYNC_CHANNEL.postMessage({ type: 'SYNC', payload: db });
       } catch (e) {
@@ -1602,12 +1952,601 @@
     SYNC_CHANNEL.onmessage = (e) => {
       if (e.data?.type === 'SYNC' && e.data.payload) {
         db = e.data.payload;
+        delete db.currentUser;
         renderCurrentPage();
       }
     };
 
+    /* ==========================================================================
+       ZEPHYR PURE DOMAIN ENGINE (LocalLoop Architecture Reference)
+       Enforcing Legal State Machine, Working-Hour Queue Logic & Review Aggregates
+       ========================================================================== */
+    function getDefaultWorkingHours() {
+      return [
+        null,
+        { open: '09:30', close: '20:30' },
+        { open: '09:30', close: '20:30' },
+        { open: '09:30', close: '20:30' },
+        { open: '09:30', close: '20:30' },
+        { open: '09:30', close: '20:30' },
+        { open: '09:30', close: '18:00' }
+      ];
+    }
+
+    const ZephyrDomain = (function() {
+      const ORDER_STATUSES = Object.freeze([
+        'Requested', 'Quoted', 'Accepted', 'In progress', 'Ready', 'Collected', 'Rejected', 'Cancelled'
+      ]);
+
+      const ACTIVE_STATUSES = new Set(['Accepted', 'In progress']);
+
+      const TRANSITIONS = Object.freeze({
+        acceptFixedPrice: Object.freeze({ from: 'Requested', to: 'Accepted', actor: 'maker' }),
+        sendQuote: Object.freeze({ from: 'Requested', to: 'Quoted', actor: 'maker' }),
+        rejectOrder: Object.freeze({ from: 'Requested', to: 'Rejected', actor: 'maker' }),
+        confirmQuote: Object.freeze({ from: 'Quoted', to: 'Accepted', actor: 'customer' }),
+        cancelOrder: Object.freeze({ from: ['Requested', 'Quoted', 'Accepted'], to: 'Cancelled', actor: 'customer' }),
+        startOrder: Object.freeze({ from: 'Accepted', to: 'In progress', actor: 'maker' }),
+        markReady: Object.freeze({ from: 'In progress', to: 'Ready', actor: 'maker' }),
+        markCollected: Object.freeze({ from: 'Ready', to: 'Collected', actor: 'maker' }),
+      });
+
+      function assertTransition(action, currentStatus, actor) {
+        const transition = TRANSITIONS[action];
+        if (!transition) throw new Error(`Unsupported order action: ${action}`);
+        if (transition.actor !== actor) throw new Error(`Action ${action} is not permitted for actor: ${actor}`);
+        const validFrom = Array.isArray(transition.from) ? transition.from : [transition.from];
+        if (!validFrom.includes(currentStatus)) {
+          throw new Error(`Cannot perform ${action} while order is ${currentStatus}`);
+        }
+        return transition.to;
+      }
+
+      function timeToMinutes(val) {
+        if (!val || typeof val !== 'string') return 540;
+        const [h, m] = val.split(':').map(Number);
+        return (h * 60) + (m || 0);
+      }
+
+      function dayWindow(date, hours) {
+        if (!hours || !Array.isArray(hours)) return null;
+        const d = new Date(date);
+        const entry = hours[d.getDay()];
+        if (!entry || !entry.open || !entry.close) return null;
+        const openM = timeToMinutes(entry.open);
+        const closeM = timeToMinutes(entry.close);
+        if (closeM <= openM) return null;
+        const start = new Date(d);
+        start.setHours(0, openM, 0, 0);
+        const end = new Date(d);
+        end.setHours(0, closeM, 0, 0);
+        return { start, end };
+      }
+
+      function startOfNextDay(date) {
+        const next = new Date(date);
+        next.setDate(next.getDate() + 1);
+        next.setHours(0, 0, 0, 0);
+        return next;
+      }
+
+      function nextOpen(time, hours) {
+        let curr = new Date(time);
+        for (let i = 0; i < 15; i++) {
+          const w = dayWindow(curr, hours);
+          if (w && curr < w.start) return w.start;
+          if (w && curr < w.end) return curr;
+          curr = startOfNextDay(curr);
+        }
+        return null;
+      }
+
+      function addWorkingMinutes(start, minutes, hours) {
+        let curr = nextOpen(start, hours) || new Date(start);
+        let remaining = Math.max(0, minutes);
+        let loops = 0;
+        while (curr && remaining > 0 && loops < 50) {
+          loops++;
+          const w = dayWindow(curr, hours);
+          if (!w) {
+            curr = nextOpen(startOfNextDay(curr), hours);
+            continue;
+          }
+          const available = (w.end.getTime() - curr.getTime()) / 60000;
+          if (remaining <= available) {
+            return new Date(curr.getTime() + (remaining * 60000));
+          }
+          remaining -= available;
+          curr = nextOpen(startOfNextDay(w.end), hours);
+        }
+        return curr || new Date(new Date(start).getTime() + (minutes * 60000));
+      }
+
+      function workingMinutesBetween(start, end, hours) {
+        const first = new Date(start);
+        const last = new Date(end);
+        if (isNaN(first.getTime()) || isNaN(last.getTime()) || first >= last) return 0;
+        let curr = nextOpen(first, hours);
+        let total = 0;
+        let loops = 0;
+        while (curr && curr < last && loops < 50) {
+          loops++;
+          const w = dayWindow(curr, hours);
+          if (!w) {
+            curr = nextOpen(startOfNextDay(curr), hours);
+            continue;
+          }
+          total += Math.max(0, (Math.min(last.getTime(), w.end.getTime()) - curr.getTime()) / 60000);
+          curr = nextOpen(startOfNextDay(w.end), hours);
+        }
+        return total;
+      }
+
+      function serviceToMinutes(service, hours) {
+        if (!service) return 60;
+        let mins = Number(service.avgTime) || 60;
+        if (service.unit === 'hours') mins *= 60;
+        else if (service.unit === 'days') mins *= 480;
+        return mins;
+      }
+
+      function remainingMinutes(order, now, hours) {
+        const total = Number(order.serviceMinutes) || 60;
+        if (order.status !== 'In progress' || !order.startedAt) return total;
+        const worked = workingMinutesBetween(order.startedAt, now, hours);
+        return Math.max(total * 0.1, total - worked);
+      }
+
+      function estimateWait(provider, activeOrders, now = new Date()) {
+        if (!provider) return { queueCount: 0, estWaitMinutes: 0, queueClearsAt: now };
+        const hours = provider.workingHours || getDefaultWorkingHours();
+        const workers = Math.max(1, Number(provider.workers) || 1);
+        const active = (activeOrders || []).filter(o => (o.makerId === provider.id || o.providerId === provider.id) && ACTIVE_STATUSES.has(o.status));
+        const backlog = active.reduce((sum, o) => sum + remainingMinutes(o, now, hours), 0);
+        const waitMinutes = backlog / workers;
+        return {
+          queueCount: active.length,
+          estWaitMinutes: Math.round(waitMinutes),
+          queueClearsAt: addWorkingMinutes(now, waitMinutes, hours)
+        };
+      }
+
+      function readyAtAcceptance(provider, otherActiveOrders, order, now = new Date()) {
+        const wait = estimateWait(provider, otherActiveOrders, now);
+        const duration = Number(order.serviceMinutes) || 60;
+        return addWorkingMinutes(wait.queueClearsAt, duration, provider.workingHours || getDefaultWorkingHours());
+      }
+
+      function formatApproxTiming(estReadyAt, defaultText = 'Approx. 1–3 hrs') {
+        if (!estReadyAt) return defaultText;
+        const readyDate = new Date(estReadyAt);
+        if (isNaN(readyDate.getTime())) return defaultText;
+        const now = new Date();
+        const diffHours = (readyDate.getTime() - now.getTime()) / 3600000;
+        const timeStr = readyDate.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
+        const isToday = readyDate.toDateString() === now.toDateString();
+        const tomorrow = new Date(now);
+        tomorrow.setDate(now.getDate() + 1);
+        const isTomorrow = readyDate.toDateString() === tomorrow.toDateString();
+
+        if (diffHours <= 0) return 'Ready Now';
+        if (diffHours < 4 && isToday) {
+          const minH = Math.max(1, Math.floor(diffHours));
+          const maxH = Math.ceil(diffHours + 0.5);
+          return `Approx. ${minH}–${maxH} hrs (~${timeStr})`;
+        }
+        if (isToday) return `Ready today by ${timeStr}`;
+        if (isTomorrow) return `Ready tomorrow by ${timeStr}`;
+        return `Ready by ${readyDate.toLocaleDateString([], { month: 'short', day: 'numeric' })} (~${timeStr})`;
+      }
+
+      function encodeGeohash(lat, lng, precision = 9) {
+        const alphabet = '0123456789bcdefghjkmnpqrstuvwxyz';
+        let latitude = [-90, 90];
+        let longitude = [-180, 180];
+        let evenBit = true;
+        let bit = 0;
+        let character = 0;
+        let result = '';
+
+        while (result.length < precision) {
+          if (evenBit) {
+            const midpoint = (longitude[0] + longitude[1]) / 2;
+            if (lng >= midpoint) {
+              character = (character << 1) + 1;
+              longitude[0] = midpoint;
+            } else {
+              character <<= 1;
+              longitude[1] = midpoint;
+            }
+          } else {
+            const midpoint = (latitude[0] + latitude[1]) / 2;
+            if (lat >= midpoint) {
+              character = (character << 1) + 1;
+              latitude[0] = midpoint;
+            } else {
+              character <<= 1;
+              latitude[1] = midpoint;
+            }
+          }
+          evenBit = !evenBit;
+          if (bit < 4) {
+            bit += 1;
+          } else {
+            result += alphabet[character];
+            bit = 0;
+            character = 0;
+          }
+        }
+        return result;
+      }
+
+      function recalculateMakerQueue(makerId) {
+        if (!db) return;
+        const maker = db.makers.find(m => m.id === makerId);
+        if (!maker) return;
+        const wait = estimateWait(maker, db.orders);
+        maker.queue = wait.queueCount;
+        maker.approxWaitText = formatApproxTiming(wait.queueClearsAt, maker.approxWaitText);
+      }
+
+      function recalculateMakerRating(makerId) {
+        if (!db || !db.reviews) return;
+        const maker = db.makers.find(m => m.id === makerId);
+        if (!maker) return;
+        const makerRevs = db.reviews.filter(r => r.providerId === makerId);
+        if (makerRevs.length > 0) {
+          const sum = makerRevs.reduce((acc, r) => acc + (Number(r.rating) || 5), 0);
+          maker.ratingSum = sum;
+          maker.ratingCount = makerRevs.length;
+          maker.rating = Number((sum / makerRevs.length).toFixed(1));
+          maker.reviewsCount = makerRevs.length;
+        }
+      }
+
+      return {
+        ORDER_STATUSES,
+        TRANSITIONS,
+        ACTIVE_STATUSES,
+        assertTransition,
+        dayWindow,
+        nextOpen,
+        addWorkingMinutes,
+        workingMinutesBetween,
+        serviceToMinutes,
+        remainingMinutes,
+        estimateWait,
+        readyAtAcceptance,
+        formatApproxTiming,
+        encodeGeohash,
+        recalculateMakerQueue,
+        recalculateMakerRating
+      };
+    })();
+
+    /* ==========================================================================
+       LOCALLOOP BACKEND CLIENT API ADAPTER (Matching ZEPHYR contracts & Firebase API)
+       ========================================================================== */
+    const localLoop = {
+      auth: {
+        observeSession(onData, onError) {
+          const user = currentUser();
+          if (onData) onData(user ? { uid: user.id, email: user.email, name: user.name } : null);
+          return () => {};
+        },
+        async signUpEmail(input) {
+          const newId = 'user_' + Date.now().toString().slice(-5);
+          const newUser = {
+            id: newId,
+            name: input.name || 'Artisan Patron',
+            email: input.email,
+            phone: input.phone || '',
+            language: input.language || 'en',
+            role: input.role || 'customer',
+            isProvider: input.role === 'maker',
+            savedMakers: [],
+            kycStatus: 'Verified',
+            kycBadge: 'Verified Patron'
+          };
+          db.users.push(newUser);
+          saveDatabase();
+          setDeviceUserId(newId);
+          return { user: newUser };
+        },
+        async signInEmail(input) {
+          const user = db.users.find(u => u.email.toLowerCase() === input.email.toLowerCase());
+          if (!user) throw new Error("Account not found with this email.");
+          setDeviceUserId(user.id);
+          return { user };
+        },
+        async signInGoogle() {
+          const user = db.users[0];
+          setDeviceUserId(user.id);
+          return { user };
+        },
+        async signOut() {
+          setDeviceUserId(null);
+          return true;
+        }
+      },
+
+      users: {
+        async getMine() {
+          const u = currentUser();
+          if (!u) throw new Error("Signed out");
+          return u;
+        },
+        async updateMine(patch) {
+          const u = currentUser();
+          if (!u) throw new Error("Signed out");
+          Object.assign(u, patch);
+          saveDatabase();
+          return { user: u };
+        },
+        async updateSavedMakers(savedMakers) {
+          db.savedMakers = savedMakers;
+          saveDatabase();
+          return { savedMakers };
+        }
+      },
+
+      providers: {
+        async get(providerId) {
+          const p = db.makers.find(m => m.id === providerId);
+          if (!p) throw new Error("Provider not found");
+          return p;
+        },
+        async update(input) {
+          const p = db.makers.find(m => m.id === input.id || m.ownerId === currentUser()?.id);
+          if (!p) throw new Error("Provider not found");
+          Object.assign(p, input);
+          saveDatabase();
+          return { provider: p };
+        },
+        async completeOnboarding(input) {
+          db.makers.unshift(input);
+          saveDatabase();
+          return { provider: input };
+        },
+        subscribe(providerId, onData, onError) {
+          const p = db.makers.find(m => m.id === providerId);
+          if (onData) onData(p);
+          return () => {};
+        }
+      },
+
+      discovery: {
+        async list(options = {}) {
+          let list = [...db.makers];
+          if (options.categoryId) list = list.filter(m => m.categoryId === options.categoryId || m.craft === options.categoryId);
+          if (options.limit) list = list.slice(0, options.limit);
+          return list;
+        },
+        subscribe(options, onData, onError) {
+          this.list(options).then(onData).catch(onError);
+          return () => {};
+        }
+      },
+
+      orders: {
+        async create(input) {
+          const u = currentUser();
+          if (!u) throw new Error("Please sign in to place an order.");
+          const provider = db.makers.find(m => m.id === input.providerId || m.id === input.makerId);
+          if (!provider) throw new Error("Atelier not found.");
+
+          const serviceDef = (provider.services || []).find(s => s.name.toLowerCase() === (input.service || '').toLowerCase());
+          const serviceMinutes = serviceDef ? ZephyrDomain.serviceToMinutes(serviceDef, provider.workingHours) : (provider.baseMinPerOrder || 60);
+
+          const newOrder = {
+            id: 'ord-' + Date.now().toString().slice(-4),
+            makerId: provider.id,
+            providerId: provider.id,
+            customerId: u.id,
+            customerName: u.name,
+            customerPhone: u.phone || '',
+            service: input.service,
+            serviceMinutes: serviceMinutes,
+            amount: Number(input.amount) || serviceDef?.price || provider.startingRate || 250,
+            details: {
+              materialsBy: input.details?.materialsBy || 'Customer',
+              notes: input.details?.notes || input.note || '',
+              size: input.details?.size || 'Standard',
+              dateNeeded: input.details?.dateNeeded || ''
+            },
+            status: 'Requested',
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+            approxTiming: provider.approxWaitText || 'Approx. 1–3 hrs',
+            paymentStatus: 'Unpaid',
+            paymentMethod: null
+          };
+
+          db.orders.unshift(newOrder);
+          ZephyrDomain.recalculateMakerQueue(provider.id);
+          saveDatabase();
+          return { order: newOrder };
+        },
+
+        async acceptFixedPrice(orderId) {
+          const o = db.orders.find(x => x.id === orderId);
+          if (!o) throw new Error("Order not found");
+          const provider = db.makers.find(m => m.id === o.makerId);
+          ZephyrDomain.assertTransition('acceptFixedPrice', o.status, 'maker');
+          const otherActives = db.orders.filter(x => x.makerId === o.makerId && ZephyrDomain.ACTIVE_STATUSES.has(x.status) && x.id !== o.id);
+          const now = new Date();
+          const estReadyDate = ZephyrDomain.readyAtAcceptance(provider, otherActives, o, now);
+          o.status = 'Accepted';
+          o.estReadyAt = estReadyDate ? estReadyDate.toISOString() : null;
+          o.approxTiming = ZephyrDomain.formatApproxTiming(o.estReadyAt, provider?.approxWaitText);
+          o.updatedAt = now.toISOString();
+          ZephyrDomain.recalculateMakerQueue(o.makerId);
+          saveDatabase();
+          return { order: o };
+        },
+
+        async sendQuote(input) {
+          const o = db.orders.find(x => x.id === input.orderId);
+          if (!o) throw new Error("Order not found");
+          ZephyrDomain.assertTransition('sendQuote', o.status, 'maker');
+          o.status = 'Quoted';
+          o.quotePrice = input.quotePrice;
+          o.quoteTime = input.quoteTime;
+          o.amount = input.quotePrice;
+          o.updatedAt = new Date().toISOString();
+          saveDatabase();
+          return { order: o };
+        },
+
+        async confirmQuote(orderId) {
+          const o = db.orders.find(x => x.id === orderId);
+          if (!o) throw new Error("Order not found");
+          const provider = db.makers.find(m => m.id === o.makerId);
+          ZephyrDomain.assertTransition('confirmQuote', o.status, 'customer');
+          const otherActives = db.orders.filter(x => x.makerId === o.makerId && ZephyrDomain.ACTIVE_STATUSES.has(x.status) && x.id !== o.id);
+          const now = new Date();
+          const estReadyDate = ZephyrDomain.readyAtAcceptance(provider, otherActives, o, now);
+          o.status = 'Accepted';
+          o.estReadyAt = estReadyDate ? estReadyDate.toISOString() : null;
+          o.approxTiming = ZephyrDomain.formatApproxTiming(o.estReadyAt, provider?.approxWaitText);
+          o.updatedAt = now.toISOString();
+          ZephyrDomain.recalculateMakerQueue(o.makerId);
+          saveDatabase();
+          return { order: o };
+        },
+
+        async start(orderId) {
+          const o = db.orders.find(x => x.id === orderId);
+          if (!o) throw new Error("Order not found");
+          ZephyrDomain.assertTransition('startOrder', o.status, 'maker');
+          const now = new Date();
+          o.status = 'In progress';
+          o.startedAt = now.toISOString();
+          o.updatedAt = now.toISOString();
+          ZephyrDomain.recalculateMakerQueue(o.makerId);
+          saveDatabase();
+          return { order: o };
+        },
+
+        async markReady(orderId) {
+          const o = db.orders.find(x => x.id === orderId);
+          if (!o) throw new Error("Order not found");
+          ZephyrDomain.assertTransition('markReady', o.status, 'maker');
+          const now = new Date();
+          o.status = 'Ready';
+          o.readyAt = now.toISOString();
+          o.approxTiming = 'Ready Now';
+          o.updatedAt = now.toISOString();
+          ZephyrDomain.recalculateMakerQueue(o.makerId);
+          triggerQueueExitAnimation(o.makerId);
+          saveDatabase();
+          return { order: o };
+        },
+
+        async markCollected(orderId) {
+          const o = db.orders.find(x => x.id === orderId);
+          if (!o) throw new Error("Order not found");
+          ZephyrDomain.assertTransition('markCollected', o.status, 'maker');
+          const now = new Date();
+          o.status = 'Collected';
+          o.collectedAt = now.toISOString();
+          o.updatedAt = now.toISOString();
+          ZephyrDomain.recalculateMakerQueue(o.makerId);
+          saveDatabase();
+          return { order: o };
+        },
+
+        async reject(input) {
+          const id = typeof input === 'string' ? input : input.orderId;
+          const o = db.orders.find(x => x.id === id);
+          if (!o) throw new Error("Order not found");
+          ZephyrDomain.assertTransition('rejectOrder', o.status, 'maker');
+          const now = new Date();
+          o.status = 'Rejected';
+          o.rejectReason = input.rejectReason || 'Declined by artisan';
+          o.updatedAt = now.toISOString();
+          ZephyrDomain.recalculateMakerQueue(o.makerId);
+          saveDatabase();
+          return { order: o };
+        },
+
+        async cancel(orderId) {
+          const o = db.orders.find(x => x.id === orderId);
+          if (!o) throw new Error("Order not found");
+          ZephyrDomain.assertTransition('cancelOrder', o.status, 'customer');
+          const now = new Date();
+          o.status = 'Cancelled';
+          o.updatedAt = now.toISOString();
+          ZephyrDomain.recalculateMakerQueue(o.makerId);
+          saveDatabase();
+          return { order: o };
+        },
+
+        subscribeOne(orderId, onData, onError) {
+          const o = db.orders.find(x => x.id === orderId);
+          if (onData) onData(o);
+          return () => {};
+        },
+        subscribeCustomerOrders(onData, onError) {
+          const u = currentUser();
+          if (onData) onData(db.orders.filter(o => o.customerId === u?.id));
+          return () => {};
+        },
+        subscribeMakerOrders(onData, onError) {
+          const u = currentUser();
+          const m = myShop();
+          if (onData) onData(db.orders.filter(o => o.makerId === m?.id));
+          return () => {};
+        }
+      },
+
+      reviews: {
+        async create(input) {
+          const u = currentUser();
+          if (!u) throw new Error("Signed-out: sign in to review.");
+          const o = db.orders.find(x => x.id === input.orderId);
+          if (!o) throw new Error("Order not found.");
+          if (o.customerId !== u.id) throw new Error("Only the customer who placed this order may review it.");
+          if (o.status !== 'Collected') throw new Error("Reviews unlock only after collection.");
+
+          const provider = db.makers.find(m => m.id === o.makerId);
+          if (!provider) throw new Error("Provider not found.");
+
+          const revId = 'rev-' + Date.now().toString().slice(-4);
+          const newRev = {
+            id: revId,
+            orderId: input.orderId,
+            providerId: provider.id,
+            customerId: u.id,
+            customerName: u.name,
+            rating: Math.max(1, Math.min(5, Math.round(Number(input.rating) || 5))),
+            text: (input.text || '').trim(),
+            createdAt: new Date().toISOString()
+          };
+
+          if (!db.reviews) db.reviews = [];
+          db.reviews.unshift(newRev);
+          ZephyrDomain.recalculateMakerRating(provider.id);
+          saveDatabase();
+          return { review: newRev };
+        },
+
+        subscribeForProvider(providerId, onData, onError) {
+          const revs = (db.reviews || []).filter(r => r.providerId === providerId);
+          if (onData) onData(revs);
+          return () => {};
+        }
+      }
+    };
+
+    window.localLoop = localLoop;
+    window.ZephyrDomain = ZephyrDomain;
+
+
     function currentUser() {
-      return db.users.find(u => u.id === db.currentUser);
+      const uid = getDeviceUserId();
+      if (!uid || !db?.users) return null;
+      return db.users.find(u => u.id === uid) || null;
     }
 
     function isMaker() {
@@ -1628,7 +2567,8 @@
     }
 
     function handleBrandClick() {
-      if (!currentUser()) navigate('auth');
+      const u = currentUser();
+      if (!u) navigate('device-select');
       else if (isMaker()) navigate('studio');
       else navigate('discover');
     }
@@ -1638,7 +2578,8 @@
        ========================================================================== */
     function renderCompactQueue(maker, activeUser) {
       if (!maker) return '';
-      const queueCount = Math.max(0, Number(maker.queue) || 0);
+      const waitEst = ZephyrDomain.estimateWait(maker, db.orders);
+      const queueCount = waitEst.queueCount;
 
       // Check if logged-in customer has an active order with this maker
       const myOrder = activeUser ? db.orders.find(o => o.makerId === maker.id && o.customerId === activeUser.id && o.status !== 'Collected' && o.status !== 'Rejected') : null;
@@ -1745,11 +2686,19 @@
 
       if (!u) {
         navContainer.innerHTML = '';
-        sessionSlot.innerHTML = '';
+        sessionSlot.innerHTML = `
+          <div class="device-indicator-pill" onclick="navigate('device-select')" title="Configure this device role">
+            <span class="device-dot" style="background:var(--royal-gold);box-shadow:0 0 6px var(--royal-gold);"></span>
+            <span class="device-label">📱 Device Setup</span>
+          </div>
+        `;
         authSlot.innerHTML = `<button class="btn btn-gold btn-sm" onclick="navigate('auth')">Sign In 🔑</button>`;
         mobileNav.innerHTML = `
-          <div class="mob-nav-item active" onclick="navigate('auth')">
-            <span>🔑</span><span>Sign In</span>
+          <div class="mob-nav-item active" onclick="navigate('device-select')">
+            <span style="font-size:18px;">📱</span><span>Device Role</span>
+          </div>
+          <div class="mob-nav-item" onclick="navigate('auth')">
+            <span style="font-size:18px;">🔑</span><span>Sign In</span>
           </div>
         `;
         return;
@@ -1784,7 +2733,7 @@
           </div>
           <div class="mob-nav-item ${currentPage === 'orders' ? 'active' : ''}" onclick="navigate('orders')">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg>
-            <span>My Orders</span>
+            <span>Orders</span>
           </div>
           <div class="mob-nav-item ${currentPage === 'invoice' ? 'active' : ''}" onclick="navigate('invoice')">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
@@ -1794,11 +2743,17 @@
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
             <span>Profile</span>
           </div>
+          <div class="mob-nav-item" onclick="openDeviceRoleModal()" style="color:var(--royal-gold);" title="Switch device role">
+            <span style="font-size:16px;">🔄</span>
+            <span>Role ⇄</span>
+          </div>
         `;
 
         sessionSlot.innerHTML = `
-          <div class="user-session-pill" title="${escapeHtml(u.name)}">
-            <span>🧑 ${escapeHtml(u.name.split(' ')[0])}</span>
+          <div class="device-indicator-pill" onclick="openDeviceRoleModal()" title="Device: Customer · Tap to switch role">
+            <span class="device-dot"></span>
+            <span class="device-label">🧑 ${escapeHtml(u.name.split(' ')[0])}</span>
+            <span class="device-switch-tag">⇄ Switch</span>
           </div>
         `;
       } 
@@ -1842,17 +2797,23 @@
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
             <span>Profile</span>
           </div>
+          <div class="mob-nav-item" onclick="openDeviceRoleModal()" style="color:var(--royal-gold);" title="Switch device role">
+            <span style="font-size:16px;">🔄</span>
+            <span>Role ⇄</span>
+          </div>
         `;
 
         sessionSlot.innerHTML = `
-          <div class="user-session-pill" style="border-color:var(--royal-emerald);background:var(--royal-emerald-light);color:var(--royal-emerald-dark);" title="${escapeHtml(u.name)}">
-            <span>✂ ${escapeHtml(u.name.split(' ')[0])}</span>
+          <div class="device-indicator-pill" style="border-color:var(--royal-gold);background:var(--royal-gold-light);" onclick="openDeviceRoleModal()" title="Device: Maker Studio · Tap to switch role">
+            <span class="device-dot" style="background:var(--royal-gold);box-shadow:0 0 6px var(--royal-gold);"></span>
+            <span class="device-label">✂ ${escapeHtml(u.name.split(' ')[0])}</span>
+            <span class="device-switch-tag">⇄ Switch</span>
           </div>
         `;
       }
 
       authSlot.innerHTML = `
-        <button class="tool-btn" style="color:var(--royal-copper);border-color:rgba(200,90,42,0.3);" onclick="handleLogout()" title="Sign out">
+        <button class="tool-btn" style="color:var(--royal-copper);border-color:rgba(200,90,42,0.3);" onclick="handleLogout()" title="Sign out this device">
           Sign Out 🚪
         </button>
       `;
@@ -1864,7 +2825,8 @@
 
       const u = currentUser();
       if (!u) {
-        container.innerHTML = renderAuthScreen();
+        if (currentPage === 'auth') container.innerHTML = renderAuthScreen();
+        else container.innerHTML = renderDeviceChooserScreen();
         return;
       }
 
@@ -1887,6 +2849,195 @@
       else if (currentPage === 'catalog') container.innerHTML = renderMakerCatalogPage();
       else if (currentPage === 'profile') container.innerHTML = renderProfilePage();
       else if (currentPage === 'auth') container.innerHTML = renderAuthScreen();
+      else if (currentPage === 'device-select') container.innerHTML = renderDeviceChooserScreen();
+    }
+
+    /* ==========================================================================
+       SCREEN 0: INDEPENDENT DEVICE SETUP & ROLE CHOOSER (Per-Device Independence)
+       ========================================================================== */
+    function renderDeviceChooserScreen() {
+      return `
+        <div class="device-role-wrap">
+          <div class="device-hero-header">
+            <span class="device-badge-chip">📱 Independent Device Setup</span>
+            <h1 style="font-family:var(--font-serif);font-size:32px;margin:8px 0 10px;">Select Role for This Device</h1>
+            <p style="color:var(--ink-muted);font-size:14px;max-width:560px;margin:0 auto;line-height:1.5;">
+              Every device runs separately and independently. Choose how you want this device (laptop or phone) to operate:
+            </p>
+          </div>
+
+          <div class="device-choices-grid">
+            <!-- Choice 1: Customer Mode -->
+            <div class="device-card-option" onclick="setDeviceRoleAndUser('user_priya', 'discover')">
+              <div>
+                <div class="device-card-icon" style="color:var(--royal-emerald);">🧑</div>
+                <h3 style="font-family:var(--font-serif);font-size:20px;margin-bottom:6px;">Customer Mode</h3>
+                <p style="font-size:12.5px;color:var(--ink-muted);line-height:1.45;margin-bottom:14px;">
+                  Explore artisan ateliers, place bespoke custom orders, track real-time queue position with the animated human standing rail, and generate tax invoices.
+                </p>
+                <div style="font-size:11px;background:var(--bg);padding:6px 10px;border-radius:8px;border:1px solid var(--line);margin-bottom:14px;">
+                  <b>Active Profile:</b> Priya Raman (with 2 live tracked orders)
+                </div>
+              </div>
+              <button class="btn btn-emerald" style="width:100%;">
+                Launch as Customer →
+              </button>
+            </div>
+
+            <!-- Choice 2: Maker Atelier Studio -->
+            <div class="device-card-option" onclick="setDeviceRoleAndUser('user_footshop', 'studio')">
+              <div>
+                <div class="device-card-icon" style="color:var(--royal-gold);">✂</div>
+                <h3 style="font-family:var(--font-serif);font-size:20px;margin-bottom:6px;">Artisan Maker Studio</h3>
+                <p style="font-size:12.5px;color:var(--ink-muted);line-height:1.45;margin-bottom:14px;">
+                  Live workbench dashboard for makers: accept queue requests, mark orders "Ready for Pickup", manage catalog pieces, and test instant queue departures.
+                </p>
+                <div style="font-size:11px;background:var(--bg);padding:6px 10px;border-radius:8px;border:1px solid var(--line);margin-bottom:14px;">
+                  <b>Active Studio:</b> Footshop &amp; Sneaker Studio (Vikram)
+                </div>
+              </div>
+              <button class="btn btn-gold" style="width:100%;">
+                Launch as Maker Studio →
+              </button>
+            </div>
+
+            <!-- Choice 3: Sign In / Create Account -->
+            <div class="device-card-option" onclick="navigate('auth')">
+              <div>
+                <div class="device-card-icon" style="color:var(--ink);">🔑</div>
+                <h3 style="font-family:var(--font-serif);font-size:20px;margin-bottom:6px;">Custom Sign In / New ID</h3>
+                <p style="font-size:12.5px;color:var(--ink-muted);line-height:1.45;margin-bottom:14px;">
+                  Sign in with your email (e.g. Karthikai) or register a new verified artisan atelier or patron customer account for this device.
+                </p>
+                <div style="font-size:11px;background:var(--bg);padding:6px 10px;border-radius:8px;border:1px solid var(--line);margin-bottom:14px;">
+                  <b>Includes:</b> Embedded KYC verification during signup
+                </div>
+              </div>
+              <button class="btn btn-outline" style="width:100%;">
+                Sign In / Register →
+              </button>
+            </div>
+          </div>
+
+          <div style="text-align:center;margin-top:30px;font-size:12px;color:var(--ink-muted);">
+            <span>📱 Device ID: <code>${DEVICE_ID}</code> · Session is saved locally to this physical browser</span>
+          </div>
+        </div>
+      `;
+    }
+
+    function setDeviceRoleAndUser(userId, page) {
+      setDeviceUserId(userId);
+      const u = currentUser();
+      showToast(`Device set to: ${u ? u.name : 'User'} (${u?.role === 'maker' ? 'Maker Atelier' : 'Customer'})`);
+      navigate(page);
+    }
+
+    function switchDeviceUser(userId, targetPage) {
+      setDeviceUserId(userId);
+      const u = currentUser();
+      closeModal();
+      showToast(`This device switched to: ${u.name} (${u.role === 'maker' ? 'Maker Atelier' : 'Customer'})`);
+      navigate(targetPage || (u.role === 'maker' ? 'studio' : 'discover'));
+    }
+
+    function resetDeviceSession() {
+      if (confirm("Reset this device's session? You will be returned to the role chooser.")) {
+        setDeviceUserId(null);
+        showToast("Device session reset");
+        renderCurrentPage();
+      }
+    }
+
+    function openDeviceRoleModal() {
+      const modal = document.getElementById('modal-content');
+      const u = currentUser();
+
+      modal.innerHTML = `
+        <div class="modal-head">
+          <div>
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;color:var(--royal-gold);">Device Independence</div>
+            <h2>Switch Role for this Device</h2>
+          </div>
+          <button class="modal-close" onclick="closeModal()">×</button>
+        </div>
+
+        <p style="font-size:12.5px;color:var(--ink-muted);margin-bottom:14px;">
+          This device (<code>${DEVICE_ID}</code>) runs independently from your other phones and laptops. Tap to switch identity on this screen:
+        </p>
+
+        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px;">
+          <!-- Option 1: Priya (Customer) -->
+          <div style="border:1.5px solid ${u?.id === 'user_priya' ? 'var(--royal-gold)' : 'var(--line)'};background:${u?.id === 'user_priya' ? 'var(--royal-gold-light)' : 'var(--bg)'};border-radius:12px;padding:12px 14px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:var(--transition);" onclick="switchDeviceUser('user_priya', 'discover')">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div style="width:38px;height:38px;border-radius:50%;background:var(--royal-emerald);color:#FFF;display:grid;place-items:center;font-size:18px;">🧑</div>
+              <div>
+                <b style="font-size:14px;display:block;">Customer: Priya Raman</b>
+                <small style="color:var(--ink-muted);font-size:11.5px;">Has 2 sample orders &amp; live human queue tracker</small>
+              </div>
+            </div>
+            ${u?.id === 'user_priya' ? '<span class="kyc-verified-badge">Current</span>' : '<span class="btn btn-outline btn-sm" style="font-size:11px;padding:3px 8px;">Switch →</span>'}
+          </div>
+
+          <!-- Option 2: Footshop (Maker) -->
+          <div style="border:1.5px solid ${u?.id === 'user_footshop' ? 'var(--royal-gold)' : 'var(--line)'};background:${u?.id === 'user_footshop' ? 'var(--royal-gold-light)' : 'var(--bg)'};border-radius:12px;padding:12px 14px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:var(--transition);" onclick="switchDeviceUser('user_footshop', 'studio')">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div style="width:38px;height:38px;border-radius:50%;background:#AA820A;color:#FFF;display:grid;place-items:center;font-size:18px;">👟</div>
+              <div>
+                <b style="font-size:14px;display:block;">Maker: Footshop &amp; Sneakers (Vikram)</b>
+                <small style="color:var(--ink-muted);font-size:11.5px;">Artisan workbench dashboard &amp; queue controls</small>
+              </div>
+            </div>
+            ${u?.id === 'user_footshop' ? '<span class="kyc-verified-badge">Current</span>' : '<span class="btn btn-outline btn-sm" style="font-size:11px;padding:3px 8px;">Switch →</span>'}
+          </div>
+
+          <!-- Option 3: Asha (Maker) -->
+          <div style="border:1.5px solid ${u?.id === 'user_asha' ? 'var(--royal-gold)' : 'var(--line)'};background:${u?.id === 'user_asha' ? 'var(--royal-gold-light)' : 'var(--bg)'};border-radius:12px;padding:12px 14px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:var(--transition);" onclick="switchDeviceUser('user_asha', 'studio')">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div style="width:38px;height:38px;border-radius:50%;background:#0A3D2E;color:#FFF;display:grid;place-items:center;font-size:18px;">🧵</div>
+              <div>
+                <b style="font-size:14px;display:block;">Maker: Asha Bespoke Couture</b>
+                <small style="color:var(--ink-muted);font-size:11.5px;">Silk tailoring &amp; bridal blouse atelier</small>
+              </div>
+            </div>
+            ${u?.id === 'user_asha' ? '<span class="kyc-verified-badge">Current</span>' : '<span class="btn btn-outline btn-sm" style="font-size:11px;padding:3px 8px;">Switch →</span>'}
+          </div>
+
+          <!-- Option 4: Cake House (Maker) -->
+          <div style="border:1.5px solid ${u?.id === 'user_cakehouse' ? 'var(--royal-gold)' : 'var(--line)'};background:${u?.id === 'user_cakehouse' ? 'var(--royal-gold-light)' : 'var(--bg)'};border-radius:12px;padding:12px 14px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:var(--transition);" onclick="switchDeviceUser('user_cakehouse', 'studio')">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div style="width:38px;height:38px;border-radius:50%;background:#C85A2A;color:#FFF;display:grid;place-items:center;font-size:18px;">🎂</div>
+              <div>
+                <b style="font-size:14px;display:block;">Maker: Cake House &amp; Bakes (Meera)</b>
+                <small style="color:var(--ink-muted);font-size:11.5px;">Artisanal celebration cakes &amp; patisserie</small>
+              </div>
+            </div>
+            ${u?.id === 'user_cakehouse' ? '<span class="kyc-verified-badge">Current</span>' : '<span class="btn btn-outline btn-sm" style="font-size:11px;padding:3px 8px;">Switch →</span>'}
+          </div>
+
+          <!-- Option 5: Karthikai (Customer) -->
+          <div style="border:1.5px solid ${u?.id === 'user_karthi' ? 'var(--royal-gold)' : 'var(--line)'};background:${u?.id === 'user_karthi' ? 'var(--royal-gold-light)' : 'var(--bg)'};border-radius:12px;padding:12px 14px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:var(--transition);" onclick="switchDeviceUser('user_karthi', 'discover')">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div style="width:38px;height:38px;border-radius:50%;background:var(--royal-emerald);color:#FFF;display:grid;place-items:center;font-size:18px;">👤</div>
+              <div>
+                <b style="font-size:14px;display:block;">Customer: Karthikai</b>
+                <small style="color:var(--ink-muted);font-size:11.5px;">karthikai1312@gmail.com</small>
+              </div>
+            </div>
+            ${u?.id === 'user_karthi' ? '<span class="kyc-verified-badge">Current</span>' : '<span class="btn btn-outline btn-sm" style="font-size:11px;padding:3px 8px;">Switch →</span>'}
+          </div>
+        </div>
+
+        <div style="border-top:1px solid var(--line);padding-top:14px;display:flex;gap:10px;">
+          <button class="btn btn-outline btn-sm" style="flex:1;" onclick="closeModal();navigate('auth');">
+            🔑 Sign In / New Account
+          </button>
+          <button class="btn btn-coral btn-sm" style="flex:1;" onclick="closeModal();handleLogout();">
+            🚪 Sign Out This Device
+          </button>
+        </div>
+      `;
+      document.getElementById('modal-container').classList.add('show');
     }
 
     /* ==========================================================================
@@ -2051,9 +3202,8 @@
       const user = db.users.find(u => u.email.toLowerCase() === email);
 
       if (user) {
-        db.currentUser = user.id;
-        saveDatabase();
-        showToast(`Welcome back, ${user.name}!`);
+        setDeviceUserId(user.id);
+        showToast(`This device is logged in as ${user.name}!`);
         navigate(user.role === 'maker' ? 'studio' : 'discover');
       } else {
         alert('Account not found with this email. Please check the spelling or switch to "Create Account".');
@@ -2061,18 +3211,16 @@
     }
 
     function quickLoginDemo(userId) {
-      db.currentUser = userId;
-      saveDatabase();
+      setDeviceUserId(userId);
       const u = currentUser();
-      showToast(`Logged in as ${u.name}`);
-      navigate(u.role === 'maker' ? 'studio' : 'discover');
+      showToast(`This device is now: ${u?.name || 'User'}`);
+      navigate(u && u.role === 'maker' ? 'studio' : 'discover');
     }
 
     function handleLogout() {
-      db.currentUser = null;
-      saveDatabase();
-      showToast('Successfully signed out');
-      navigate('auth');
+      setDeviceUserId(null);
+      showToast('This device has been signed out');
+      navigate('device-select');
     }
 
     function handleSignupSubmit(e) {
@@ -2134,8 +3282,8 @@
       }
 
       db.users.push(newUser);
-      db.currentUser = newId;
       saveDatabase();
+      setDeviceUserId(newId);
       showToast(`Welcome to CraftPulse, ${newUser.name}!`);
       navigate(isNewMaker ? 'studio' : 'discover');
     }
@@ -2506,6 +3654,33 @@
             ${renderCompactQueue(m, currentUser())}
           </div>
 
+          <!-- Verified Patron Reviews (ZEPHYR Backend Integration) -->
+          <div style="background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow-sm);margin-bottom:24px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
+              <div>
+                <b style="font-family:var(--font-serif);font-size:18px;">★ Verified Patron Reviews (${(db.reviews || []).filter(r => r.providerId === m.id).length})</b>
+                <p style="font-size:12px;color:var(--ink-muted);">Direct feedback from patrons whose orders have been completed and collected</p>
+              </div>
+              <span class="kyc-verified-badge" style="background:var(--royal-gold-light);color:#6B5005;">Average Rating: ★ ${m.rating.toFixed(1)}</span>
+            </div>
+
+            ${!(db.reviews || []).filter(r => r.providerId === m.id).length ? `
+              <p style="font-size:13px;color:var(--ink-muted);font-style:italic;">No customer reviews yet. Place an order to be the first verified reviewer!</p>
+            ` : `
+              <div style="display:flex;flex-direction:column;gap:10px;">
+                ${(db.reviews || []).filter(r => r.providerId === m.id).map(r => `
+                  <div style="background:var(--bg);border-radius:10px;padding:12px 16px;border:1px solid var(--line-subtle);">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+                      <b style="font-size:13px;">${escapeHtml(r.customerName)}</b>
+                      <span style="color:var(--royal-gold);font-size:13px;font-weight:700;">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</span>
+                    </div>
+                    <p style="font-size:12.5px;color:var(--ink);margin:0;line-height:1.45;">"${escapeHtml(r.text)}"</p>
+                  </div>
+                `).join('')}
+              </div>
+            `}
+          </div>
+
           <!-- Product Catalog Grid (Requirement 2: Exact matching photos) -->
           <div class="section-head">
             <div>
@@ -2592,6 +3767,20 @@
                   <div class="milestones-steps">
                     ${steps.map((s, i) => `<span class="${i < idx ? 'done' : i === idx ? 'current' : ''}">${i+1}. ${s}</span>`).join('')}
                   </div>
+                  <!-- Review Button for Completed/Collected Orders (ZEPHYR Feature) -->
+                  ${o.status === 'Collected' ? `
+                    <div style="margin-top:14px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+                      <div>
+                        <span style="font-size:10.5px;text-transform:uppercase;color:var(--royal-emerald);font-weight:700;">✓ Fulfillment Complete</span>
+                        <b style="display:block;font-size:13.5px;">Order Collected &amp; Verified</b>
+                      </div>
+                      ${!(db.reviews || []).find(r => r.orderId === o.id) ? `
+                        <button class="btn btn-gold btn-sm" onclick="openReviewModal('${o.id}')">★ Rate &amp; Review Atelier</button>
+                      ` : `
+                        <span style="color:var(--royal-gold);font-size:12px;font-weight:700;">✓ Reviewed ★</span>
+                      `}
+                    </div>
+                  ` : ''}
 
                   <!-- Approximate Timing Block (Requirement 3: Approx time, e.g. 1-3 hrs) -->
                   <div style="background:var(--bg);border-radius:12px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;margin-top:14px;flex-wrap:wrap;gap:10px;">
@@ -3003,6 +4192,31 @@
               </div>
             ` : ''}
           </div>
+
+          <!-- Multi-Device Setup Card in Profile -->
+          <div class="workbench-pipeline" style="margin-top:20px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
+              <div>
+                <h3 style="font-family:var(--font-serif);font-size:18px;">📱 Device Session &amp; Multi-Device Setup</h3>
+                <p style="font-size:12px;color:var(--ink-muted);">Each phone, tablet, and computer runs independently on CraftPulse.</p>
+              </div>
+              <span class="kyc-verified-badge">Device ID: ${DEVICE_ID}</span>
+            </div>
+
+            <div style="background:var(--bg);border-radius:12px;padding:14px;margin-bottom:16px;font-size:13px;">
+              <p><b>Current Device Mode:</b> ${u.role === 'maker' ? '✂ Artisan Maker Atelier' : '🧑 Neighbourhood Customer'}</p>
+              <p style="color:var(--ink-muted);font-size:12px;margin-top:4px;">You can set this phone to be a Customer and your laptop to be a Maker Atelier, or run separate independent accounts simultaneously.</p>
+            </div>
+
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+              <button class="btn btn-gold btn-sm" onclick="openDeviceRoleModal()">
+                🔄 Switch Device Role (Customer ⇄ Maker)
+              </button>
+              <button class="btn btn-outline btn-sm" onclick="resetDeviceSession()">
+                🗑 Reset Device Session
+              </button>
+            </div>
+          </div>
         </div>
       `;
     }
@@ -3049,30 +4263,30 @@
     function handleOrderSubmit(e, makerId) {
       e.preventDefault();
       const form = e.target;
-      const u = currentUser();
-      const m = db.makers.find(x => x.id === makerId);
+      const service = form.service.value;
+      const amount = Number(form.amount.value);
+      const note = form.note ? form.note.value : '';
+      const materialsBy = form.materialsBy ? form.materialsBy.value : 'Customer';
+      const size = form.size ? form.size.value : 'Standard';
+      const dateNeeded = form.dateNeeded ? form.dateNeeded.value : '';
 
-      const newOrder = {
-        id: 'ord-' + Date.now().toString().slice(-4),
-        makerId: makerId,
-        customerId: u.id,
-        customerName: u.name,
-        service: form.service.value,
-        amount: Number(form.amount.value),
-        note: form.note.value,
-        status: 'Requested',
-        created: Date.now(),
-        approxTiming: m?.approxWaitText || 'Approx. 1–3 hrs',
-        paymentStatus: 'Unpaid',
-        paymentMethod: null
-      };
-
-      db.orders.unshift(newOrder);
-      if (m) m.queue = (Number(m.queue) || 0) + 1;
-      saveDatabase();
-      closeModal();
-      showToast('Order sent to atelier queue!');
-      navigate('orders');
+      localLoop.orders.create({
+        providerId: makerId,
+        service: service,
+        amount: amount,
+        details: {
+          materialsBy: materialsBy,
+          notes: note,
+          size: size,
+          dateNeeded: dateNeeded
+        }
+      }).then(() => {
+        closeModal();
+        showToast('Order sent to atelier workbench queue via LocalLoop!');
+        navigate('orders');
+      }).catch(err => {
+        alert(err.message || 'Error creating order');
+      });
     }
 
     function openAddProductModal(makerId) {
@@ -3146,37 +4360,105 @@
     }
 
     function confirmReject(orderId) {
-      const o = db.orders.find(x => x.id === orderId);
-      if (o) {
-        o.status = 'Rejected';
-        const m = db.makers.find(x => x.id === o.makerId);
-        if (m) m.queue = Math.max(0, (Number(m.queue) || 0) - 1);
-        saveDatabase();
+      const reasonEl = document.querySelector('input[name="rej_reason"]:checked');
+      const reason = reasonEl ? reasonEl.value : 'Queue is currently full';
+      localLoop.orders.reject({ orderId, rejectReason: reason }).then(() => {
         closeModal();
         showToast('Order declined');
         renderCurrentPage();
-      }
+      }).catch(err => {
+        alert(err.message || 'Error declining order');
+      });
     }
 
     function updateOrderStatus(orderId, newStatus) {
-      const o = db.orders.find(x => x.id === orderId);
-      if (o) {
-        o.status = newStatus;
-        if (newStatus === 'Ready' || newStatus === 'Collected') {
-          const m = db.makers.find(x => x.id === o.makerId);
-          if (m) m.queue = Math.max(0, (Number(m.queue) || 0) - 1);
-          triggerQueueExitAnimation(o.makerId);
-        }
-        saveDatabase();
+      let promise;
+      if (newStatus === 'Accepted') promise = localLoop.orders.acceptFixedPrice(orderId);
+      else if (newStatus === 'In progress') promise = localLoop.orders.start(orderId);
+      else if (newStatus === 'Ready') promise = localLoop.orders.markReady(orderId);
+      else if (newStatus === 'Collected') promise = localLoop.orders.markCollected(orderId);
+      else {
+        const o = db.orders.find(x => x.id === orderId);
+        if (o) { o.status = newStatus; saveDatabase(); }
+        promise = Promise.resolve();
+      }
+
+      promise.then(() => {
         showToast(`Status updated: ${newStatus}`);
         setTimeout(() => {
           renderCurrentPage();
         }, 550);
-      }
+      }).catch(err => {
+        alert(err.message || 'Status transition error');
+      });
     }
 
     function markOrderCollected(orderId) {
       updateOrderStatus(orderId, 'Collected');
+    }
+
+
+    /* ==========================================================================
+       VERIFIED PATRON REVIEWS (ZEPHYR Backend Integration)
+       ========================================================================== */
+    function openReviewModal(orderId) {
+      const o = db.orders.find(x => x.id === orderId);
+      if (!o) return;
+      const m = db.makers.find(x => x.id === o.makerId);
+
+      const modal = document.getElementById('modal-content');
+      modal.innerHTML = `
+        <div class="modal-head">
+          <div>
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;color:var(--royal-gold);">Verified Patron Review</div>
+            <h2>Review Order #${o.id}</h2>
+          </div>
+          <button class="modal-close" onclick="closeModal()">×</button>
+        </div>
+
+        <form onsubmit="handleReviewSubmit(event, '${o.id}')">
+          <div style="background:var(--bg);border-radius:12px;padding:14px;margin-bottom:16px;">
+            <b style="font-family:var(--font-serif);">${escapeHtml(o.service)}</b>
+            <small style="display:block;color:var(--ink-muted);margin-top:2px;">Atelier: ${escapeHtml(m?.name || 'Artisan')}</small>
+          </div>
+
+          <div class="form-group">
+            <label>Artisan Rating</label>
+            <select name="rating" class="form-control" style="font-size:15px;font-weight:700;color:var(--royal-gold);">
+              <option value="5">★★★★★ 5 Stars · Masterpiece Craftsmanship</option>
+              <option value="4">★★★★☆ 4 Stars · Very Good Finish & Precision</option>
+              <option value="3">★★★☆☆ 3 Stars · Satisfactory Craft</option>
+              <option value="2">★★☆☆☆ 2 Stars · Needs Improvement</option>
+              <option value="1">★☆☆☆☆ 1 Star · Subpar</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Review & Feedback</label>
+            <textarea name="text" class="form-control" rows="3" placeholder="Share your thoughts on the craftsmanship, fit, and artisan interaction..." required></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-gold" style="width:100%;">
+            Publish Review to Atelier Profile ★
+          </button>
+        </form>
+      `;
+      document.getElementById('modal-container').classList.add('show');
+    }
+
+    function handleReviewSubmit(e, orderId) {
+      e.preventDefault();
+      const form = e.target;
+      const rating = Number(form.rating.value);
+      const text = form.text.value;
+
+      localLoop.reviews.create({ orderId, rating, text }).then(() => {
+        closeModal();
+        showToast('★ Review published to atelier profile!');
+        renderCurrentPage();
+      }).catch(err => {
+        alert(err.message || 'Error submitting review');
+      });
     }
 
     function closeModal() {
@@ -3209,15 +4491,17 @@
     }
 
     function toggleSaveMaker(id) {
-      if (db.savedMakers.includes(id)) {
-        db.savedMakers = db.savedMakers.filter(x => x !== id);
+      let updated = [...(db.savedMakers || [])];
+      if (updated.includes(id)) {
+        updated = updated.filter(x => x !== id);
         showToast('Removed from saved');
       } else {
-        db.savedMakers.push(id);
+        updated.push(id);
         showToast('Atelier saved to favourites ♥');
       }
-      saveDatabase();
-      renderCurrentPage();
+      localLoop.users.updateSavedMakers(updated).then(() => {
+        renderCurrentPage();
+      });
     }
 
     function toggleShopPause(makerId) {

@@ -1,4 +1,40 @@
-# Ignore binaries and temporary logs
+# Local environment/configuration files. Keep the documented template tracked.
+.env
+.env.*
+!.env.example
+functions/.env
+functions/.env.*
+!functions/.env.example
+functions/.runtimeconfig.json
+
+# Credentials and service-account exports must never be committed.
+service-account*.json
+*-firebase-adminsdk-*.json
+firebase-adminsdk-*.json
+
+# Firebase CLI and Emulator Suite output.
+.firebase/
+firebase-debug.log
+firebase-debug.*.log
+firestore-debug.log
+ui-debug.log
+
+# Dependencies and generated output.
+node_modules/
+functions/node_modules/
+coverage/
+dist/
+build/
+.cache/
+*.tsbuildinfo
 cloudflared.exe
 *.log
 chrome_check.txt
+ZEPHYR.zip
+craftpulse_source_code.zip
+
+# Editor and operating-system artifacts.
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
