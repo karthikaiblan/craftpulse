@@ -1247,9 +1247,129 @@
       .maker-grid { grid-template-columns: 1fr; }
       .maker-full-cover { height: 230px; }
     }
+
+    /* Multi-Device Switcher Banner */
+    .device-switch-banner {
+      background: linear-gradient(90deg, #021a12 0%, #063828 50%, #021a12 100%);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.35);
+      padding: 6px 4vw;
+      font-size: 11.5px;
+      color: #F8F5EE;
+    }
+    .device-switch-inner {
+      max-width: 1260px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .device-switch-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .device-tag-badge {
+      background: var(--royal-gold);
+      color: #04271d;
+      font-weight: 800;
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: var(--radius-pill);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    .device-title-mode {
+      font-weight: 600;
+      font-size: 11px;
+      color: #E2ECE7;
+    }
+    .device-switch-links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .device-nav-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 11px;
+      border-radius: var(--radius-pill);
+      color: #E2ECE7;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 11px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.18);
+      transition: var(--transition);
+    }
+    .device-nav-link:hover {
+      background: rgba(212, 175, 55, 0.25);
+      border-color: var(--royal-gold);
+      color: #FFF;
+    }
+    .device-nav-link.active-device {
+      background: var(--royal-gold);
+      color: #04271d;
+      border-color: var(--royal-gold);
+      font-weight: 700;
+      box-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+    }
+    .device-zip-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 12px;
+      border-radius: var(--radius-pill);
+      color: #04271d;
+      background: linear-gradient(135deg, #F3D279 0%, #D4AF37 100%);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 11px;
+      border: 1px solid #D4AF37;
+      box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3);
+      transition: var(--transition);
+    }
+    .device-zip-btn:hover {
+      background: #FFF;
+      color: var(--royal-emerald);
+      box-shadow: 0 4px 12px rgba(255, 255, 255, 0.4);
+    }
+    @media (max-width: 600px) {
+      .device-switch-inner {
+        justify-content: center;
+        gap: 6px;
+      }
+      .device-title-mode { display: none; }
+    }
+
+    /* Force Phone Mode / Laptop Mode Classes */
+    body.mode-phone .nav-links-scroll { display: none !important; }
+    body.mode-phone .mobile-bottom-nav { display: flex !important; }
+    body.mode-phone { padding-bottom: 78px; }
+
+    body.mode-laptop .nav-links-scroll { display: flex !important; }
+    body.mode-laptop .mobile-bottom-nav { display: none !important; }
+    body.mode-laptop { padding-bottom: 0px; }
   </style>
 </head>
 <body>
+
+  <!-- MULTI-DEVICE SWITCHER BANNER -->
+  <div class="device-switch-banner" id="device-switch-banner">
+    <div class="device-switch-inner">
+      <div class="device-switch-left">
+        <span class="device-tag-badge">CraftPulse</span>
+        <span class="device-title-mode" id="banner-mode-indicator">Universal Hub</span>
+      </div>
+      <div class="device-switch-links">
+        <a href="laptop.html" class="device-nav-link" id="btn-view-laptop" title="Open Laptop / Desktop View"><span>💻</span> Laptop View</a>
+        <a href="phone.html" class="device-nav-link" id="btn-view-phone" title="Open Mobile / Phone View"><span>📱</span> Phone View</a>
+        <a href="craftpulse_source_code.zip" download class="device-zip-btn" title="Download Complete ZIP Package"><span>⬇</span> Download ZIP</a>
+      </div>
+    </div>
+  </div>
 
   <!-- TOP BAR -->
   <header class="topbar">
@@ -1876,27 +1996,40 @@
     /* ==========================================================================
        INDEPENDENT PER-DEVICE SESSION & ROLE MANAGEMENT
        ========================================================================== */
+    const URL_PARAM_MODE = new URLSearchParams(window.location.search).get('device');
+    const DEVICE_MODE = window.__CRAFTPULSE_DEVICE_MODE || URL_PARAM_MODE || (window.location.pathname.toLowerCase().includes('phone') ? 'phone' : window.location.pathname.toLowerCase().includes('laptop') ? 'laptop' : 'auto');
+
     const DEVICE_ID = (function() {
       try {
-        let id = localStorage.getItem('craftpulse_device_id_v5');
+        const key = DEVICE_MODE === 'phone' ? 'craftpulse_device_id_phone' :
+                    DEVICE_MODE === 'laptop' ? 'craftpulse_device_id_laptop' :
+                    'craftpulse_device_id_v5';
+        let id = localStorage.getItem(key);
         if (!id) {
-          id = 'dev_' + Math.random().toString(36).slice(2, 8);
-          localStorage.setItem('craftpulse_device_id_v5', id);
+          id = (DEVICE_MODE === 'phone' ? 'phone_' : DEVICE_MODE === 'laptop' ? 'laptop_' : 'dev_') + Math.random().toString(36).slice(2, 8);
+          localStorage.setItem(key, id);
         }
         return id;
       } catch (e) {
-        return 'dev_' + Math.random().toString(36).slice(2, 8);
+        return (DEVICE_MODE === 'phone' ? 'phone_' : DEVICE_MODE === 'laptop' ? 'laptop_' : 'dev_') + Math.random().toString(36).slice(2, 8);
       }
     })();
 
     function getDeviceUserId() {
       try {
-        return localStorage.getItem('craftpulse_user_' + DEVICE_ID) ||
-               sessionStorage.getItem('craftpulse_device_user') ||
-               localStorage.getItem('craftpulse_active_user') ||
-               null;
+        const user = localStorage.getItem('craftpulse_user_' + DEVICE_ID) ||
+                     sessionStorage.getItem('craftpulse_device_user_' + DEVICE_ID);
+        if (user) return user;
+
+        // Smart preset defaults so both devices launch instantly with live data
+        if (DEVICE_MODE === 'phone') {
+          return 'user_priya'; // Priya (Customer) on Phone
+        } else if (DEVICE_MODE === 'laptop') {
+          return 'user_footshop'; // Vikram / Footshop (Maker) on Laptop
+        }
+        return localStorage.getItem('craftpulse_active_user') || 'user_priya';
       } catch (e) {
-        return null;
+        return 'user_priya';
       }
     }
 
@@ -1904,12 +2037,11 @@
       try {
         if (userId) {
           localStorage.setItem('craftpulse_user_' + DEVICE_ID, userId);
-          sessionStorage.setItem('craftpulse_device_user', userId);
+          sessionStorage.setItem('craftpulse_device_user_' + DEVICE_ID, userId);
           localStorage.setItem('craftpulse_active_user', userId);
         } else {
           localStorage.removeItem('craftpulse_user_' + DEVICE_ID);
-          sessionStorage.removeItem('craftpulse_device_user');
-          localStorage.removeItem('craftpulse_active_user');
+          sessionStorage.removeItem('craftpulse_device_user_' + DEVICE_ID);
         }
       } catch (e) {}
     }
@@ -4541,6 +4673,21 @@
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#39;');
+    }
+
+    /* Initialize Device Mode Appearance */
+    if (DEVICE_MODE === 'phone') {
+      document.body.classList.add('mode-phone');
+      const btnPhone = document.getElementById('btn-view-phone');
+      if (btnPhone) btnPhone.classList.add('active-device');
+      const ind = document.getElementById('banner-mode-indicator');
+      if (ind) ind.textContent = '📱 Phone Edition (Active)';
+    } else if (DEVICE_MODE === 'laptop') {
+      document.body.classList.add('mode-laptop');
+      const btnLaptop = document.getElementById('btn-view-laptop');
+      if (btnLaptop) btnLaptop.classList.add('active-device');
+      const ind = document.getElementById('banner-mode-indicator');
+      if (ind) ind.textContent = '💻 Laptop Edition (Active)';
     }
 
     /* Initialize */
